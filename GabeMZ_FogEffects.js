@@ -384,6 +384,7 @@ GabeMZ.fogEffects = GabeMZ.fogEffects || {};
         if (GabeMZ.fogEffects.tempFog.length > 0) {
             GabeMZ.fogEffects.tempFog.forEach(fog => {
                 this.removeChild(GabeMZ.fogEffects.fogList[fog[1]]); 
+                GabeMZ.fogEffects.fogList[fog[1]] = null;
                 if (fog[0]) this.createFog(fog[0], fog[1]);
             });
         } else {
