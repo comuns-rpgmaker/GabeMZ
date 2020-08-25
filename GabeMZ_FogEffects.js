@@ -53,7 +53,7 @@
  * @param fogSettings
  * @text Fog Settings
  * @desc Set the Fog Setings to use in game maps
- * @type struct<fogSettingsStuct>[]
+ * @type struct<fogSettingsStruct>[]
  * 
  * @command setFogEffect
  * @text Set Fog Effect
@@ -94,7 +94,7 @@
  * @min 1
  */
 
-/*~struct~fogSettingsStuct:
+/*~struct~fogSettingsStruct:
  * @param fogFilename
  * @text Fog Filename
  * @desc Set the Fog Filename
@@ -189,7 +189,7 @@
  * @param fogSettings
  * @text Fog Settings
  * @desc Define as configurações de efeitos de névoa que serão usadas pelo plugin
- * @type struct<fogSettingsStuct>[]
+ * @type struct<fogSettingsStruct>[]
  * 
  * @command setFogEffect
  * @text Set Fog Effect
@@ -230,7 +230,7 @@
  * @min 1
  */
 
-/*~struct~fogSettingsStuct:br
+/*~struct~fogSettingsStruct:br
  * @param fogFilename
  * @text Fog Filename
  * @desc Defina o arquivo de imagem da névoa
