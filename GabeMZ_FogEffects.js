@@ -9,6 +9,7 @@
  * @target MZ
  * @plugindesc Add fog effects on the game screen.
  * @author Gabe (Gabriel Nascimento)
+ * @url https://github.com/comuns-rpgmaker/GabeMZ
  * 
  * @help GabeMZ - Fog Effects
  * 
@@ -143,6 +144,7 @@
  * @target MZ
  * @plugindesc Adicionas efeitos de névoa ao jogo.
  * @author Gabe (Gabriel Nascimento)
+ * @url https://github.com/comuns-rpgmaker/GabeMZ
  * 
  * @help GabeMZ - Fog Effects
  * 
