@@ -368,7 +368,7 @@ GabeMZ.fogEffects = GabeMZ.fogEffects || {};
         let fogSetting = JSON.parse(GabeMZ.fogEffects.fogSettings[id - 1]);
         this._fog = new TilingSprite();
         this._fog.bitmap = ImageManager.loadFogs(fogSetting.fogFilename);
-        this._fog.move(0, 0, Graphics.width, Graphics.height);
+        this._fog.move(-48, -48, Graphics.width + 96, Graphics.height + 96);
         this._fog.opacity = parseInt(fogSetting.fogOpacity);
         this._fog.blendMode = parseInt(fogSetting.fogBlendMode);
         this._fog.constX = 0;
