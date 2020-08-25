@@ -273,48 +273,45 @@
  * @max 50
  * @default 0
  */ 
- 
-var Imported = Imported || {};
-Imported.GabeMZ = Imported.GabeMZ || {};
-Imported.GabeMZ.fogEffects = 1.0;
 
-var GabeMZ = GabeMZ || {};
-GabeMZ.fogEffects = GabeMZ.fogEffects || {};
+var GabeMZ                = GabeMZ || {};
+GabeMZ.FogEffects         = GabeMZ.FogEffects || {};
+GabeMZ.FogEffects.VERSION = [1, 0, 3];
 
 (() => {
 
     const pluginName = "GabeMZ_FogEffects";
     GabeMZ.params = PluginManager.parameters(pluginName);
 
-    GabeMZ.fogEffects.fogSettings = JSON.parse(GabeMZ.params.fogSettings);
-    GabeMZ.fogEffects.fogList = [];
-    GabeMZ.fogEffects.currentMap = 0
+    GabeMZ.FogEffects.fogSettings = JSON.parse(GabeMZ.params.fogSettings);
+    GabeMZ.FogEffects.fogList = [];
+    GabeMZ.FogEffects.currentMap = 0
     //-----------------------------------------------------------------------------
     // PluginManager
     //
     // The static class that manages the plugins.
 
     PluginManager.registerCommand(pluginName, "setFogEffect", args => {
-        GabeMZ.fogEffects.tempFog = [];
+        GabeMZ.FogEffects.tempFog = [];
         settings = JSON.parse(args.settings);
         settings.forEach( arg => {
             arg = JSON.parse(arg);
-            GabeMZ.fogEffects.tempFog.push([parseInt(arg.fogID), parseInt(arg.fogLayer)]);
+            GabeMZ.FogEffects.tempFog.push([parseInt(arg.fogID), parseInt(arg.fogLayer)]);
         });
-        GabeMZ.fogEffects.needRefresh = true;
+        GabeMZ.FogEffects.needRefresh = true;
     });
 
     PluginManager.registerCommand(pluginName, "removeFogEffectLayer", args => {
-        GabeMZ.fogEffects.tempFog = [];
+        GabeMZ.FogEffects.tempFog = [];
         let layers = JSON.parse(args.fogLayer);
-        layers.forEach( layer => {GabeMZ.fogEffects.tempFog.push([null, parseInt(layer)])});
-        GabeMZ.fogEffects.needRefresh = true;
+        layers.forEach( layer => {GabeMZ.FogEffects.tempFog.push([null, parseInt(layer)])});
+        GabeMZ.FogEffects.needRefresh = true;
     });
 
     PluginManager.registerCommand(pluginName, "clearScreen", args => {
         let layer = parseInt(args.fogLayer);
-        GabeMZ.fogEffects.tempFog = {id: null, layer: null};
-        GabeMZ.fogEffects.needRefresh = true;
+        GabeMZ.FogEffects.tempFog = {id: null, layer: null};
+        GabeMZ.FogEffects.needRefresh = true;
     });
 
     //-----------------------------------------------------------------------------
@@ -340,20 +337,20 @@ GabeMZ.fogEffects = GabeMZ.fogEffects || {};
     let _Spriteset_Base_update = Spriteset_Base.prototype.update;
     Spriteset_Base.prototype.update = function() {
         _Spriteset_Base_update.call(this);
-        if (GabeMZ.fogEffects.needRefresh) this.refreshFogList();
-        if (!GabeMZ.fogEffects.fogList) return;
-        GabeMZ.fogEffects.fogList.forEach(fog => {
+        if (GabeMZ.FogEffects.needRefresh) this.refreshFogList();
+        if (!GabeMZ.FogEffects.fogList) return;
+        GabeMZ.FogEffects.fogList.forEach(fog => {
             if (fog) this.updateFog(fog);
         });
     };
 
     Spriteset_Base.prototype.createFogList = function() {
-        if (GabeMZ.fogEffects.currentMap == $gameMap.mapId()) {
-            GabeMZ.fogEffects.fogList.forEach( (fog, id) => {
+        if (GabeMZ.FogEffects.currentMap == $gameMap.mapId()) {
+            GabeMZ.FogEffects.fogList.forEach( (fog, id) => {
                 if (fog) this.createFog(fog.id, id);
             });
         } else {
-            GabeMZ.fogEffects.currentMap = $gameMap.mapId()
+            GabeMZ.FogEffects.currentMap = $gameMap.mapId()
             this.clearList();
             let reg = /<addFog\s*(\d+):\s*(\d+)>/g;
             let match;
@@ -365,7 +362,7 @@ GabeMZ.fogEffects = GabeMZ.fogEffects || {};
 
     Spriteset_Base.prototype.createFog = function(id, layer) {
         if (layer < 1) return;
-        let fogSetting = JSON.parse(GabeMZ.fogEffects.fogSettings[id - 1]);
+        let fogSetting = JSON.parse(GabeMZ.FogEffects.fogSettings[id - 1]);
         this._fog = new TilingSprite();
         this._fog.bitmap = ImageManager.loadFogs(fogSetting.fogFilename);
         this._fog.move(-48, -48, Graphics.width + 96, Graphics.height + 96);
@@ -377,25 +374,25 @@ GabeMZ.fogEffects = GabeMZ.fogEffects || {};
         this._fog.speedY = -parseFloat(fogSetting.fogMoveY);
         this._fog.id = id;
         this.addChildAt(this._fog, 1); 
-        GabeMZ.fogEffects.fogList[layer] = this._fog;
+        GabeMZ.FogEffects.fogList[layer] = this._fog;
     }
 
     Spriteset_Base.prototype.refreshFogList = function() {
-        if (GabeMZ.fogEffects.tempFog.length > 0) {
-            GabeMZ.fogEffects.tempFog.forEach(fog => {
-                this.removeChild(GabeMZ.fogEffects.fogList[fog[1]]); 
-                GabeMZ.fogEffects.fogList[fog[1]] = null;
+        if (GabeMZ.FogEffects.tempFog.length > 0) {
+            GabeMZ.FogEffects.tempFog.forEach(fog => {
+                this.removeChild(GabeMZ.FogEffects.fogList[fog[1]]); 
+                GabeMZ.FogEffects.fogList[fog[1]] = null;
                 if (fog[0]) this.createFog(fog[0], fog[1]);
             });
         } else {
             this.clearList();
         }
-        GabeMZ.fogEffects.needRefresh = false;
+        GabeMZ.FogEffects.needRefresh = false;
     }
 
     Spriteset_Base.prototype.clearList = function() {
-        GabeMZ.fogEffects.fogList.forEach(fog => {this.removeChild(fog)});
-        GabeMZ.fogEffects.fogList = [];
+        GabeMZ.FogEffects.fogList.forEach(fog => {this.removeChild(fog)});
+        GabeMZ.FogEffects.fogList = [];
     }
 
     Spriteset_Base.prototype.updateFog = function(fog) {
