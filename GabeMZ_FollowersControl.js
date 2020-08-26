@@ -1,7 +1,7 @@
 //============================================================================
 // Gabe MZ - Followers Control
 //----------------------------------------------------------------------------
-// 25/08/20 | Version: 0.0.1
+// 26/08/20 | Version: 1.0.0
 // This plugin is released under the zlib License.
 //============================================================================
 
@@ -115,7 +115,7 @@
  */
 var GabeMZ                      = GabeMZ || {};
 GabeMZ.FollowersControl         = GabeMZ.FollowersControl || {};
-GabeMZ.FollowersControl.VERSION = [1, 0, 3];
+GabeMZ.FollowersControl.VERSION = [1, 0, 0];
 
 (() => {
     'use strict'
