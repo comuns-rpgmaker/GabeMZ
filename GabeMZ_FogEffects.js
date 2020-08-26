@@ -1,7 +1,7 @@
 //============================================================================
-// GabeMZ - Fog Effects
+// Gabe MZ - Fog Effects
 //----------------------------------------------------------------------------
-// 25/08/20 | Version: 1.0
+// 25/08/20 | Version: 1.0.3
 // This software is released under the zlib License.
 //============================================================================
 
@@ -11,7 +11,8 @@
  * @author Gabe (Gabriel Nascimento)
  * @url https://github.com/comuns-rpgmaker/GabeMZ
  * 
- * @help GabeMZ - Fog Effects
+ * @help Gabe MZ - Fog Effects
+ *  - This plugin is released under the zlib License.
  * 
  * This plugin provides a option to add fog effects on the game screen.
  * 
@@ -146,7 +147,8 @@
  * @author Gabe (Gabriel Nascimento)
  * @url https://github.com/comuns-rpgmaker/GabeMZ
  * 
- * @help GabeMZ - Fog Effects
+ * @help Gabe MZ - Fog Effects
+ *  - Esse plugin foi disponibilizado sob a licença zlib.
  * 
  * Esse plugin permite adicionar efeitos de névoa ao jogo.
  * 
