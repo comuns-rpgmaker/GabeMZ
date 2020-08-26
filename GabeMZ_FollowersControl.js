@@ -148,7 +148,7 @@ GabeMZ.FollowersControl.VERSION = [1, 0, 0];
         if ($gameParty.inBattle()) {
             return null;
         } else if (param < 0 && GabeMZ.FollowersControl.followerControl &&
-            (GabeMZ.FollowersControl.followerID > 0)) {
+            GabeMZ.FollowersControl.followerID > 0) {
             return $gamePlayer.followers().follower(GabeMZ.FollowersControl.followerID - 1);
         } else {
             return _Game_Interpreter_character.call(this, param);
