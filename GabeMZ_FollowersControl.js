@@ -118,7 +118,6 @@ GabeMZ.FollowersControl         = GabeMZ.FollowersControl || {};
 GabeMZ.FollowersControl.VERSION = [1, 0, 0];
 
 (() => {
-    'use strict'
 
     const pluginName = "GabeMZ_FollowersControl";
     GabeMZ.params = PluginManager.parameters(pluginName);
