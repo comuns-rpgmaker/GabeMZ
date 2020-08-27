@@ -1,7 +1,7 @@
 //============================================================================
 // Gabe MZ - Followers Control
 //----------------------------------------------------------------------------
-// 26/08/20 | Version: 1.0.0
+// 26/08/20 | Version: 1.0.3
 // This plugin is released under the zlib License.
 //============================================================================
 
@@ -10,6 +10,7 @@
  * @plugindesc Allows to control the followers via the event commands.
  * @author Gabe (Gabriel Nascimento)
  * @url https://github.com/comuns-rpgmaker/GabeMZ
+ * @orderAfter GabeMZ_SmartFollowers
  * 
  * @help Gabe MZ - Followers Control
  *  - This plugin is released under the zlib License.
@@ -115,7 +116,7 @@
  */
 var GabeMZ                      = GabeMZ || {};
 GabeMZ.FollowersControl         = GabeMZ.FollowersControl || {};
-GabeMZ.FollowersControl.VERSION = [1, 0, 0];
+GabeMZ.FollowersControl.VERSION = [1, 0, 3];
 
 (() => {
 
@@ -166,7 +167,6 @@ GabeMZ.FollowersControl.VERSION = [1, 0, 0];
             Game_Character.prototype.update.call(this);
         } else {
             _Game_Follower_update.call(this);
-            this.setThrough(true);
         }
     };
 
