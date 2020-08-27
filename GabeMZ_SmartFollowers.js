@@ -91,7 +91,7 @@
 
 var GabeMZ                    = GabeMZ || {};
 GabeMZ.SmartFollowers         = GabeMZ.SmartFollowers || {};
-GabeMZ.SmartFollowers.VERSION = [0, 0, 1];
+GabeMZ.SmartFollowers.VERSION = [1, 0, 0];
 
 (() => {
 
