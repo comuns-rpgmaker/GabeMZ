@@ -1,7 +1,7 @@
 //============================================================================
 // Gabe MZ - Smart Control
 //----------------------------------------------------------------------------
-// 27/08/20 | Version: 1.0.0
+// 27/08/20 | Version: 1.0.5
 // This plugin is released under the zlib License.
 //============================================================================
 
@@ -91,7 +91,7 @@
 
 var GabeMZ                    = GabeMZ || {};
 GabeMZ.SmartFollowers         = GabeMZ.SmartFollowers || {};
-GabeMZ.SmartFollowers.VERSION = [1, 0, 0];
+GabeMZ.SmartFollowers.VERSION = [1, 0, 5];
 
 (() => {
 
@@ -163,36 +163,37 @@ GabeMZ.SmartFollowers.VERSION = [1, 0, 0];
     // The game object class for a follower. A follower is an allied character,
     // other than the front character, displayed in the party.
 
+    let _Game_Follower_chaseCharacter = Game_Follower.prototype.chaseCharacter;
     Game_Follower.prototype.chaseCharacter = function(character) {
-        const sx = this.deltaXFrom(character.x);
-        const sy = this.deltaYFrom(character.y);
-        const px = this.deltaXFrom(character.previousPosition().x);
-        const py = this.deltaYFrom(character.previousPosition().y);
-        const asx = Math.abs(sx);
-        const asy = Math.abs(sy);
-        this._previousPosition = {x: this.x, y: this.y};
-        if (((asx > 1 && asy >= 1) || (asx >= 1 && asy > 1)) && character.isMovingStraight() 
-            && this.canPassDiagonally(this.x, this.y, sx > 0 ? 4 : 6, sy > 0 ? 8 : 2)) {
-            this.moveDiagonally(sx > 0 ? 4 : 6, sy > 0 ? 8 : 2);
-        } else if (asx > 1 && asy > 1) {
-            this.moveDiagonally(px > 0 ? 4 : 6, py > 0 ? 8 : 2);
-        } else if (asx > 1 && this.canPass(this.x, this.y, sx > 0 ? 4 : 6)) {
-            this.moveStraight(sx > 0 ? 4 : 6);
-        } else if (asy > 1 && this.canPass(this.x, this.y, sy > 0 ? 8 : 2)) {
-            this.moveStraight(sy > 0 ? 8 : 2);
-        } else if (asx > 1 || asy > 1) {
-            this.moveDiagonally(px > 0 ? 4 : 6, py > 0 ? 8 : 2);
+        if ($gamePlayer.areFollowersGathering()) {
+            this.setThrough(true);
+            _Game_Follower_chaseCharacter.call(this, character);
         } else {
-            if (GabeMZ.SmartFollowers.turnToward) this.turnTowardCharacter(character);
+            this.setThrough(false);
+            const sx = this.deltaXFrom(character.x);
+            const sy = this.deltaYFrom(character.y);
+            const px = this.deltaXFrom(character.previousPosition().x);
+            const py = this.deltaYFrom(character.previousPosition().y);
+            const asx = Math.abs(sx);
+            const asy = Math.abs(sy);
+            this._previousPosition = {x: this.x, y: this.y};
+            if (((asx > 1 && asy >= 1) || (asx >= 1 && asy > 1)) && character.isMovingStraight() 
+                && this.canPassDiagonally(this.x, this.y, sx > 0 ? 4 : 6, sy > 0 ? 8 : 2)) {
+                this.moveDiagonally(sx > 0 ? 4 : 6, sy > 0 ? 8 : 2);
+            } else if (asx > 1 && asy > 1) {
+                this.moveDiagonally(px > 0 ? 4 : 6, py > 0 ? 8 : 2);
+            } else if (asx > 1 && this.canPass(this.x, this.y, sx > 0 ? 4 : 6)) {
+                this.moveStraight(sx > 0 ? 4 : 6);
+            } else if (asy > 1 && this.canPass(this.x, this.y, sy > 0 ? 8 : 2)) {
+                this.moveStraight(sy > 0 ? 8 : 2);
+            } else if (asx > 1 || asy > 1) {
+                this.moveDiagonally(px > 0 ? 4 : 6, py > 0 ? 8 : 2);
+            } else {
+                if (GabeMZ.SmartFollowers.turnToward) this.turnTowardCharacter(character);
+            }
+            this.setMoveSpeed($gamePlayer.realMoveSpeed());
         }
-        this.setMoveSpeed($gamePlayer.realMoveSpeed());
     };
-
-    let _Game_Follower_update = Game_Follower.prototype.update;
-    Game_Follower.prototype.update = function() {
-        _Game_Follower_update.call(this);
-        this.setThrough(false);
-    }
 
     //-----------------------------------------------------------------------------
     // Game_Followers
