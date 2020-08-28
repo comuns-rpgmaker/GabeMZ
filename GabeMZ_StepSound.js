@@ -57,6 +57,14 @@
  *       | This tag adds the step sound of ID 4 at the map
  *       | region 3.
  * 
+ * It is also possible to add step sounds to the events movement. To do 
+ * this add the following note to them:
+ * 
+ * Event Note Tag:
+ *   <stepSound>
+ *       | Just by inserting this note in an event it will emit step sounds 
+ *       | when moving.
+ * 
   * Plugin Commands:
  *   Player Step Sound
  *       | This command allows to set if the player will emit step sounds
