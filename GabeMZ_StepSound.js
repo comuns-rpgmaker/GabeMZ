@@ -216,7 +216,7 @@ GabeMZ.StepSound.VERSION = [1, 0, 0];
     let _Game_CharacterBase_initMembers = Game_CharacterBase.prototype.initMembers;
     Game_CharacterBase.prototype.initMembers = function() {
         _Game_CharacterBase_initMembers.call(this);
-        this._stepSoundEmittance = false
+        this._stepSoundEmittance = false;
     };
 
     let _Game_CharacterBase_increaseSteps = Game_CharacterBase.prototype.increaseSteps;
