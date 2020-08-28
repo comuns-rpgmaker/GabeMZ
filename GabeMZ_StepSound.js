@@ -269,9 +269,9 @@ GabeMZ.StepSound.VERSION = [1, 0, 0];
     // The game object class for a follower. A follower is an allied character,
     // other than the front character, displayed in the party.
 
-    let _Game_Followerr_initMembers = Game_Follower.prototype.initMembers;
+    let _Game_Follower_initMembers = Game_Follower.prototype.initMembers;
     Game_Follower.prototype.initMembers = function() {
-        _Game_Followerr_initMembers.call(this);
+        _Game_Follower_initMembers.call(this);
         this._stepSoundEmittance = GabeMZ.StepSound.followersStepSound;
     };
 
