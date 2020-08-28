@@ -367,8 +367,7 @@ GabeMZ.FogEffects.VERSION = [1, 0, 3];
     Spriteset_Base.prototype.createFog = function(id, layer) {
         if (layer < 1) return;
         let fogSetting = JSON.parse(GabeMZ.FogEffects.fogSettings[id - 1]);
-        this._fog = new TilingSprite();
-        this._fog.bitmap = ImageManager.loadFogs(fogSetting.fogFilename);
+        this._fog = new TilingSprite(ImageManager.loadFogs(fogSetting.fogFilename));
         this._fog.move(-48, -48, Graphics.width + 96, Graphics.height + 96);
         this._fog.opacity = parseInt(fogSetting.fogOpacity);
         this._fog.blendMode = parseInt(fogSetting.fogBlendMode);
