@@ -224,18 +224,18 @@ GabeMZ.StepSound.VERSION = [1, 0, 0];
         _Game_CharacterBase_increaseSteps.call(this)
         let settings = this.stepSound();
         if (this.stepSoundEmittance() && settings && this.isNearTheScreen()) {
-        let variance = Math.floor(Math.random() * parseInt(settings.variance)) + 1;
-        let name = `${settings.baseName + variance}`
-        let volume = parseInt(settings.volume);
-        let pitch = parseInt(settings.pitch);
-        let pan = parseInt(settings.pan);
-        let se = {
-            name: name,
-            volume: volume,
-            pitch: pitch,
-            pan: pan
-        }
-        AudioManager.playSe(se);
+            let variance = Math.floor(Math.random() * parseInt(settings.variance)) + 1;
+            let name = `${settings.baseName + variance}`
+            let volume = parseInt(settings.volume);
+            let pitch = parseInt(settings.pitch);
+            let pan = parseInt(settings.pan);
+            let se = {
+                name: name,
+                volume: volume,
+                pitch: pitch,
+                pan: pan
+            }
+            AudioManager.playSe(se);
         }
     };
 
