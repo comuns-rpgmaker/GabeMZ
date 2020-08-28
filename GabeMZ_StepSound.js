@@ -68,8 +68,8 @@
  * 
  *   Event Step Sound
  *       | This command allows to set if the event will emit step sounds
- *       | or not. When the id is 0 it will be the current event. Else, the 
- *       | event of the defined ID.
+ *       | or not. When the id is 0 it will be applied to the current event. 
+ *       | Else, the event of the defined ID.
  * 
  * For support and new plugins join our Discord server: 
  * https://discord.gg/GG85QRz
