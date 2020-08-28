@@ -39,13 +39,12 @@
  *   <addFog layer: id>
  *       | This note tag add the fog effect from specific id to the
  *       | specific layer.
- * 
  * Usage Example:
- *   <addFog: 0: 1> 
+ *   <addFog 0: 1> 
  *       | This tag adds the fog effects of ID 1 at layer 0.
- *   <addFog: 4: 3> 
+ *   <addFog 4: 3> 
  *       | This tag adds the fog effects of ID 3 at layer 4.
- *   <addFog: 2: 7> 
+ *   <addFog 2: 7> 
  *       | This tag adds the fog effects of ID 7 at layer 2.
  * 
  * For support and new plugins join our Discord server: 
@@ -290,6 +289,7 @@ GabeMZ.FogEffects.VERSION = [1, 0, 3];
     GabeMZ.FogEffects.fogSettings = JSON.parse(GabeMZ.params.fogSettings);
     GabeMZ.FogEffects.fogList = [];
     GabeMZ.FogEffects.currentMap = 0
+    
     //-----------------------------------------------------------------------------
     // PluginManager
     //
