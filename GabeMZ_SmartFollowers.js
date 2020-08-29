@@ -1,5 +1,5 @@
 //============================================================================
-// Gabe MZ - Smart Control
+// Gabe MZ - Smart Followers
 //----------------------------------------------------------------------------
 // 27/08/20 | Version: 1.0.5
 // This plugin is released under the zlib License.
@@ -12,7 +12,7 @@
  * @url https://github.com/comuns-rpgmaker/GabeMZ
  * @orderBefore GabeMZ_FollowersControl
  * 
- * @help Gabe MZ - Smart Control
+ * @help Gabe MZ - Smart Followers
  *  - This plugin is released under the zlib License.
  *  - Thanks to Reisen for the original source.
  * 
@@ -53,7 +53,7 @@
  * @author Gabe (Gabriel Nascimento)
  * @url https://github.com/comuns-rpgmaker/GabeMZ
  * 
- * @help Gabe MZ - Smart Control
+ * @help Gabe MZ - Smart Followers
  *  - Esse plugin foi disponibilizado sob a licença zlib.
  *  - Agradecimento ao Reisen pelo código original.
  * 
