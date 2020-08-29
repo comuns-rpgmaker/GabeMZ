@@ -1,7 +1,7 @@
 //============================================================================
 // Gabe MZ - Fog Effects
 //----------------------------------------------------------------------------
-// 25/08/20 | Version: 1.0.3
+// 25/08/20 | Version: 1.0.5
 // This software is released under the zlib License.
 //============================================================================
 
@@ -279,7 +279,7 @@
 
 var GabeMZ                = GabeMZ || {};
 GabeMZ.FogEffects         = GabeMZ.FogEffects || {};
-GabeMZ.FogEffects.VERSION = [1, 0, 3];
+GabeMZ.FogEffects.VERSION = [1, 0, 5];
 
 (() => {
 
@@ -362,6 +362,7 @@ GabeMZ.FogEffects.VERSION = [1, 0, 3];
                 this.createFog(match[2], match[1]);
             }
         }
+        
     }
 
     Spriteset_Base.prototype.createFog = function(id, layer) {
@@ -376,9 +377,25 @@ GabeMZ.FogEffects.VERSION = [1, 0, 3];
         this._fog.speedX = -parseFloat(fogSetting.fogMoveX);
         this._fog.speedY = -parseFloat(fogSetting.fogMoveY);
         this._fog.id = id;
+        this._fog.z = layer;
         this.addChildAt(this._fog, 1); 
+        this._sortChildren();
         GabeMZ.FogEffects.fogList[layer] = this._fog;
     }
+
+    Spriteset_Base.prototype._sortChildren = function() {
+        this.children.sort(this._compareChildOrder.bind(this));
+    };
+    
+    Spriteset_Base.prototype._compareChildOrder = function(a, b) {
+        if (a.z !== b.z) {
+            return a.z - b.z;
+        } else if (a.y !== b.y) {
+            return a.y - b.y;
+        } else {
+            return a.spriteId - b.spriteId;
+        }
+    };
 
     Spriteset_Base.prototype.refreshFogList = function() {
         if (GabeMZ.FogEffects.tempFog.length > 0) {
