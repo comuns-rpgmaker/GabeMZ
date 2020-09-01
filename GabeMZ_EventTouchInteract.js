@@ -1,7 +1,7 @@
 //============================================================================
 // Gabe MZ - Event Touch Interact
 //----------------------------------------------------------------------------
-// 29/08/20 | Version: 1.0.0
+// 29/08/20 | Version: 1.0.3
 // This plugin is released under the zlib License.
 //============================================================================
 
@@ -55,7 +55,7 @@
 
 var GabeMZ                        = GabeMZ || {};
 GabeMZ.EventTouchInteract         = GabeMZ.EventTouchInteract || {};
-GabeMZ.EventTouchInteract.VERSION = [1, 0, 0];
+GabeMZ.EventTouchInteract.VERSION = [1, 0, 3];
 
 (() => {
 
@@ -92,7 +92,7 @@ GabeMZ.EventTouchInteract.VERSION = [1, 0, 0];
     let _Game_Event_update = Game_Event.prototype.update;
     Game_Event.prototype.update = function() {
         _Game_Event_update.call(this);
-        if (this._distanceTrigger && GabeMZ.EventTouchInteract.enabled) this.checkEventTouchInteract();
+        if (this._distanceTrigger && GabeMZ.EventTouchInteract.enabled && this.page()) this.checkEventTouchInteract();
     };
 
     Game_Event.prototype.checkEventTouchInteract = function() {
