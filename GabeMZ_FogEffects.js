@@ -1,20 +1,25 @@
 //============================================================================
 // Gabe MZ - Fog Effects
 //----------------------------------------------------------------------------
-// 25/08/20 | Version: 1.0.5
+// 02/09/20 | Version: 2.0.0 | Completely rewritten code
+// 28/09/20 | Version> 1.1.0 | Redone fog effects layer system 
+// 26/08/20 | Version: 1.0.3 | Cleaned code and help section improved
+// 25/08/20 | Version: 1.0.0 | Released
+//----------------------------------------------------------------------------
 // This software is released under the zlib License.
 //============================================================================
 
 /*:
  * @target MZ
- * @plugindesc Add fog effects on the game screen.
+ * @plugindesc Allows to create and display fog effects on maps and battles.
  * @author Gabe (Gabriel Nascimento)
  * @url https://github.com/comuns-rpgmaker/GabeMZ
  * 
  * @help Gabe MZ - Fog Effects
  *  - This plugin is released under the zlib License.
  * 
- * This plugin provides a option to add fog effects on the game screen.
+ * This plugin provides a option to create and display fog effects on maps 
+ * and battles.
  * 
  * The first step are set the Fog Settings in this plugin parameters. After 
  * that, you can add a fog effect in the map inserting the specific tag in the 
@@ -35,6 +40,14 @@
  *       | This command clear all screen, removing all fog effects from 
  *       | all layers.
  * 
+ *   Set Fog in Map
+ *       | This command allows to set whether the fog effects will be 
+ *       | displayed in the game maps.
+ * 
+ *   Set Fog in Battle
+ *       | This command allows to set whether the fog effects will be 
+ *       | displayed during battles.
+ * 
  * Map Note Tag:
  *   <addFog layer: id>
  *       | This note tag add the fog effect from specific id to the
@@ -54,6 +67,18 @@
  * @text Fog Settings
  * @desc Set the Fog Setings to use in game maps
  * @type struct<fogSettingsStruct>[]
+ * 
+ * @param fogInMap
+ * @text Fog in Map?
+ * @desc Sets whether the fog effects will be displayed in the game maps by default.
+ * @type boolean
+ * @default true
+ * 
+ * @param fogInBattle
+ * @text Fog in Battle?
+ * @desc Sets whether the fog effects will be displayed during battles by default.
+ * @type boolean
+ * @default true
  * 
  * @command setFogEffect
  * @text Set Fog Effect
@@ -78,6 +103,25 @@
  * @text Clear Screen
  * @desc Remove all fog effects from the screen
  * 
+ * @command setFogInMap
+ * @text Set Fog in Map.
+ * @desc Sets whether the fog effects will be displayed in the game maps.
+ * 
+ * @arg fogInMap
+ * @text Fog in Map?
+ * @desc Sets whether the fog effects will be displayed in the game maps.
+ * @type boolean
+ * @default true
+ * 
+ * @command setFogInBattle
+ * @text Set Fog in Battle
+ * @desc Sets whether the fog effects will be displayed during battles.
+ * 
+ * @arg fogInBattle
+ * @text Fog in Battle?
+ * @desc Sets whether the fog effects will be displayed during battles.
+ * @type boolean
+ * @default true
  */
 
 /*~struct~setFogStruct:
@@ -170,6 +214,14 @@
  *       | Esse comando limpa toda a tela, removendo todos efeitos do
  *       | mapa atual.
  * 
+ *   Set Fog in Map
+ *       | Esse comando permite configurar se os efeitos de névoa 
+ *       | serão exibidos nos mapas do jogo
+ * 
+ *   Set Fog in Battle
+ *       | Esse comando permite configurar se os efeitos da névoa 
+ *       | serão exibidos durante as batalhas.
+ * 
  * Tag para Notas do Mapa:
  *   <addFog layer: id>
  *       | Essa nota adiciona o efeito de névoa correspondendo ao ID
@@ -191,6 +243,18 @@
  * @text Fog Settings
  * @desc Define as configurações de efeitos de névoa que serão usadas pelo plugin
  * @type struct<fogSettingsStruct>[]
+ * 
+ * @arg fogInMap
+ * @text Fog in Map?
+ * @desc Define se os efeitos de névoa serão exibidos nos mapas do jogo por padrão.
+ * @type boolean
+ * @default true
+ * 
+ * @param fogInBattle
+ * @text Fog in Battle?
+ * @desc Define se os efeitos da névoa serão exibidos durante as batalhas por padrão.
+ * @type boolean
+ * @default true
  * 
  * @command setFogEffect
  * @text Set Fog Effect
@@ -215,6 +279,25 @@
  * @text Clear Screen
  * @desc Remove todos os efeitos de névoa da tela no mapa atual
  * 
+ * @command setFogInMap
+ * @text Set Fog in Map.
+ * @desc Define se os efeitos de névoa serão exibidos nos mapas do jogo.
+ * 
+ * @arg fogInMap
+ * @text Fog in Map?
+ * @desc Define se os efeitos de névoa serão exibidos nos mapas do jogo.
+ * @type boolean
+ * @default true
+ * 
+ * @command setFogInBattle
+ * @text Set Fog in Battle
+ * @desc Define se os efeitos de névoa serão exibidos durante as batalhas.
+ * 
+ * @arg fogInBattle
+ * @text Fog in Battle?
+ * @desc Define se os efeitos de névoa serão exibidos durante as batalhas.
+ * @type boolean
+ * @default true
  */
 
 /*~struct~setFogStruct:pt
@@ -279,16 +362,15 @@
 
 var GabeMZ                = GabeMZ || {};
 GabeMZ.FogEffects         = GabeMZ.FogEffects || {};
-GabeMZ.FogEffects.VERSION = [1, 0, 5];
+GabeMZ.FogEffects.VERSION = [2, 0, 0];
 
 (() => {
 
     const pluginName = "GabeMZ_FogEffects";
     GabeMZ.params = PluginManager.parameters(pluginName);
-
     GabeMZ.FogEffects.fogSettings = JSON.parse(GabeMZ.params.fogSettings);
-    GabeMZ.FogEffects.fogList = [];
-    GabeMZ.FogEffects.currentMap = 0
+    GabeMZ.FogEffects.fogInMap    = JSON.parse(GabeMZ.params.fogInMap);
+    GabeMZ.FogEffects.fogInBattle = JSON.parse(GabeMZ.params.fogInBattle);
     
     //-----------------------------------------------------------------------------
     // PluginManager
@@ -313,9 +395,20 @@ GabeMZ.FogEffects.VERSION = [1, 0, 5];
     });
 
     PluginManager.registerCommand(pluginName, "clearScreen", args => {
-        let layer = parseInt(args.fogLayer);
         GabeMZ.FogEffects.tempFog = {id: null, layer: null};
         GabeMZ.FogEffects.needRefresh = true;
+    });
+
+    PluginManager.registerCommand(pluginName, "setFogInMap", args => {
+        GabeMZ.FogEffects.fogInMap = JSON.parse(args.fogInMap);
+        if (!GabeMZ.FogEffects.fogInMap) {
+            GabeMZ.FogEffects.tempFog = {id: null, layer: null};
+            GabeMZ.FogEffects.needRefresh = true;
+        }
+    });
+
+    PluginManager.registerCommand(pluginName, "setFogInBattle", args => {
+        GabeMZ.FogEffects.fogInBattle = JSON.parse(args.fogInBattle);
     });
 
     //-----------------------------------------------------------------------------
@@ -327,34 +420,33 @@ GabeMZ.FogEffects.VERSION = [1, 0, 5];
         return this.loadBitmap("img/fogs/", filename);
     };
 
-    //-----------------------------------------------------------------------------
-    // Spriteset_Base
-    //
-    // The superclass of Spriteset_Map and Spriteset_Battle.
 
-    let _Spriteset_Base_createLowerLayer = Spriteset_Base.prototype.createLowerLayer;
-    Spriteset_Base.prototype.createLowerLayer = function() {
-        _Spriteset_Base_createLowerLayer.call(this);
+    //-----------------------------------------------------------------------------
+    // Spriteset_Fog
+    //
+    // The set of sprites of fogs used in map and battle.
+
+    function Spriteset_Fog() {
+        this.initialize(...arguments);
+    }
+
+    Spriteset_Fog.prototype = Object.create(Sprite.prototype);
+    Spriteset_Fog.prototype.constructor = Spriteset_Fog;
+
+    Spriteset_Fog.prototype.initialize = function() {
+        Sprite.prototype.initialize.call(this);
+        this.setFrame(0, 0, Graphics.width, Graphics.height);
+        this._fogList = [];
         this.createFogList();
     };
 
-    let _Spriteset_Base_update = Spriteset_Base.prototype.update;
-    Spriteset_Base.prototype.update = function() {
-        _Spriteset_Base_update.call(this);
-        if (GabeMZ.FogEffects.needRefresh) this.refreshFogList();
-        if (!GabeMZ.FogEffects.fogList) return;
-        GabeMZ.FogEffects.fogList.forEach(fog => {
-            if (fog) this.updateFog(fog);
-        });
-    };
-
-    Spriteset_Base.prototype.createFogList = function() {
-        if (GabeMZ.FogEffects.currentMap == $gameMap.mapId()) {
-            GabeMZ.FogEffects.fogList.forEach( (fog, id) => {
+    Spriteset_Fog.prototype.createFogList = function() {
+        if (this._currentMap == $gameMap.mapId()) {
+            this._fogList.forEach( (fog, id) => {
                 if (fog) this.createFog(fog.id, id);
             });
         } else {
-            GabeMZ.FogEffects.currentMap = $gameMap.mapId()
+            this._currentMap = $gameMap.mapId()
             this.clearList();
             let reg = /<addFog\s*(\d+):\s*(\d+)>/g;
             let match;
@@ -365,11 +457,20 @@ GabeMZ.FogEffects.VERSION = [1, 0, 5];
         
     }
 
-    Spriteset_Base.prototype.createFog = function(id, layer) {
+    Spriteset_Fog.prototype.update = function() {
+        Sprite.prototype.update.call(this);
+        if (GabeMZ.FogEffects.needRefresh) this.refreshFogList();
+        if (!this._fogList) return;
+        this._fogList.forEach(fog => {
+            if (fog) this.updateFog(fog);
+        });
+    };
+
+    Spriteset_Fog.prototype.createFog = function(id, layer) {
         if (layer < 1) return;
         let fogSetting = JSON.parse(GabeMZ.FogEffects.fogSettings[id - 1]);
         this._fog = new TilingSprite(ImageManager.loadFogs(fogSetting.fogFilename));
-        this._fog.move(-48, -48, Graphics.width + 96, Graphics.height + 96);
+        this._fog.move(-96, -96, Graphics.width + 192, Graphics.height + 192);
         this._fog.opacity = parseInt(fogSetting.fogOpacity);
         this._fog.blendMode = parseInt(fogSetting.fogBlendMode);
         this._fog.constX = 0;
@@ -378,16 +479,16 @@ GabeMZ.FogEffects.VERSION = [1, 0, 5];
         this._fog.speedY = -parseFloat(fogSetting.fogMoveY);
         this._fog.id = id;
         this._fog.z = layer;
-        this.addChildAt(this._fog, 1); 
+        this.addChild(this._fog); 
         this._sortChildren();
-        GabeMZ.FogEffects.fogList[layer] = this._fog;
+        this._fogList[layer] = this._fog;
     }
 
-    Spriteset_Base.prototype._sortChildren = function() {
+    Spriteset_Fog.prototype._sortChildren = function() {
         this.children.sort(this._compareChildOrder.bind(this));
     };
     
-    Spriteset_Base.prototype._compareChildOrder = function(a, b) {
+    Spriteset_Fog.prototype._compareChildOrder = function(a, b) {
         if (a.z !== b.z) {
             return a.z - b.z;
         } else if (a.y !== b.y) {
@@ -397,11 +498,11 @@ GabeMZ.FogEffects.VERSION = [1, 0, 5];
         }
     };
 
-    Spriteset_Base.prototype.refreshFogList = function() {
+    Spriteset_Fog.prototype.refreshFogList = function() {
         if (GabeMZ.FogEffects.tempFog.length > 0) {
             GabeMZ.FogEffects.tempFog.forEach(fog => {
-                this.removeChild(GabeMZ.FogEffects.fogList[fog[1]]); 
-                GabeMZ.FogEffects.fogList[fog[1]] = null;
+                this.removeChild(this._fogList[fog[1]]); 
+                this._fogList[fog[1]] = null;
                 if (fog[0]) this.createFog(fog[0], fog[1]);
             });
         } else {
@@ -410,16 +511,49 @@ GabeMZ.FogEffects.VERSION = [1, 0, 5];
         GabeMZ.FogEffects.needRefresh = false;
     }
 
-    Spriteset_Base.prototype.clearList = function() {
-        GabeMZ.FogEffects.fogList.forEach(fog => {this.removeChild(fog)});
-        GabeMZ.FogEffects.fogList = [];
+    Spriteset_Fog.prototype.clearList = function() {
+        this._fogList.forEach(fog => {this.removeChild(fog)});
+        this._fogList = [];
     }
 
-    Spriteset_Base.prototype.updateFog = function(fog) {
+    Spriteset_Fog.prototype.updateFog = function(fog) {
         fog.constX += fog.speedX;
         fog.origin.x = ($gameMap.displayX() * $gameMap.tileWidth()) + fog.constX;
         fog.constY += fog.speedY;
         fog.origin.y = ($gameMap.displayY() * $gameMap.tileHeight()) + fog.constY;
+    }
+
+
+    //-----------------------------------------------------------------------------
+    // Spriteset_Base
+    //
+    // The superclass of Spriteset_Map and Spriteset_Battle.
+
+    Spriteset_Base.prototype.createFogLayer = function() {
+        this._fogLayer = new Spriteset_Fog();
+        this._baseSprite.addChild(this._fogLayer);
+    }
+
+    //-----------------------------------------------------------------------------
+    // Spriteset_Map
+    //
+    // The set of sprites on the map screen.
+
+    const _Spriteset_Map_createWeather = Spriteset_Map.prototype.createWeather;
+    Spriteset_Map.prototype.createWeather = function() {
+        if (GabeMZ.FogEffects.fogInMap) this.createFogLayer();
+        _Spriteset_Map_createWeather.call(this);
+    };
+
+    //-----------------------------------------------------------------------------
+    // Spriteset_Battle
+    //
+    // The set of sprites on the battle screen.
+
+    const _Spriteset_Battle_createLowerLayer = Spriteset_Battle.prototype.createLowerLayer;
+    Spriteset_Battle.prototype.createLowerLayer = function() {
+        _Spriteset_Battle_createLowerLayer.call(this);
+        if (GabeMZ.FogEffects.fogInBattle) this.createFogLayer();
     }
 
 })();
