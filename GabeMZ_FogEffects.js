@@ -1,6 +1,7 @@
 //============================================================================
 // Gabe MZ - Fog Effects
 //----------------------------------------------------------------------------
+// 03/09/20 | Version: 2.0.1 | Scene return bug fix
 // 02/09/20 | Version: 2.0.0 | Completely rewritten code
 // 28/09/20 | Version> 1.1.0 | Redone fog effects layer system 
 // 26/08/20 | Version: 1.0.3 | Cleaned code and help section improved
@@ -362,7 +363,7 @@
 
 var GabeMZ                = GabeMZ || {};
 GabeMZ.FogEffects         = GabeMZ.FogEffects || {};
-GabeMZ.FogEffects.VERSION = [2, 0, 0];
+GabeMZ.FogEffects.VERSION = [2, 0, 1];
 
 (() => {
 
@@ -371,7 +372,8 @@ GabeMZ.FogEffects.VERSION = [2, 0, 0];
     GabeMZ.FogEffects.fogSettings = JSON.parse(GabeMZ.params.fogSettings);
     GabeMZ.FogEffects.fogInMap    = JSON.parse(GabeMZ.params.fogInMap);
     GabeMZ.FogEffects.fogInBattle = JSON.parse(GabeMZ.params.fogInBattle);
-    
+    GabeMZ.FogEffects.fogList = [];
+    GabeMZ.FogEffects.currentMap = 0;
     //-----------------------------------------------------------------------------
     // PluginManager
     //
@@ -436,17 +438,16 @@ GabeMZ.FogEffects.VERSION = [2, 0, 0];
     Spriteset_Fog.prototype.initialize = function() {
         Sprite.prototype.initialize.call(this);
         this.setFrame(0, 0, Graphics.width, Graphics.height);
-        this._fogList = [];
         this.createFogList();
     };
 
     Spriteset_Fog.prototype.createFogList = function() {
-        if (this._currentMap == $gameMap.mapId()) {
-            this._fogList.forEach( (fog, id) => {
+        if (GabeMZ.FogEffects.currentMap == $gameMap.mapId()) {
+            GabeMZ.FogEffects.fogList.forEach( (fog, id) => {
                 if (fog) this.createFog(fog.id, id);
             });
         } else {
-            this._currentMap = $gameMap.mapId()
+            GabeMZ.FogEffects.currentMap = $gameMap.mapId()
             this.clearList();
             let reg = /<addFog\s*(\d+):\s*(\d+)>/g;
             let match;
@@ -460,8 +461,8 @@ GabeMZ.FogEffects.VERSION = [2, 0, 0];
     Spriteset_Fog.prototype.update = function() {
         Sprite.prototype.update.call(this);
         if (GabeMZ.FogEffects.needRefresh) this.refreshFogList();
-        if (!this._fogList) return;
-        this._fogList.forEach(fog => {
+        if (!GabeMZ.FogEffects.fogList) return;
+        GabeMZ.FogEffects.fogList.forEach(fog => {
             if (fog) this.updateFog(fog);
         });
     };
@@ -481,7 +482,7 @@ GabeMZ.FogEffects.VERSION = [2, 0, 0];
         this._fog.z = layer;
         this.addChild(this._fog); 
         this._sortChildren();
-        this._fogList[layer] = this._fog;
+        GabeMZ.FogEffects.fogList[layer] = this._fog;
     }
 
     Spriteset_Fog.prototype._sortChildren = function() {
@@ -501,8 +502,8 @@ GabeMZ.FogEffects.VERSION = [2, 0, 0];
     Spriteset_Fog.prototype.refreshFogList = function() {
         if (GabeMZ.FogEffects.tempFog.length > 0) {
             GabeMZ.FogEffects.tempFog.forEach(fog => {
-                this.removeChild(this._fogList[fog[1]]); 
-                this._fogList[fog[1]] = null;
+                this.removeChild(GabeMZ.FogEffects.fogList[fog[1]]); 
+                GabeMZ.FogEffects.fogList[fog[1]] = null;
                 if (fog[0]) this.createFog(fog[0], fog[1]);
             });
         } else {
@@ -512,8 +513,8 @@ GabeMZ.FogEffects.VERSION = [2, 0, 0];
     }
 
     Spriteset_Fog.prototype.clearList = function() {
-        this._fogList.forEach(fog => {this.removeChild(fog)});
-        this._fogList = [];
+        GabeMZ.FogEffects.fogList.forEach(fog => {this.removeChild(fog)});
+        GabeMZ.FogEffects.fogList = [];
     }
 
     Spriteset_Fog.prototype.updateFog = function(fog) {
