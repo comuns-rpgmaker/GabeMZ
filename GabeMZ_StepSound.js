@@ -271,7 +271,7 @@ GabeMZ.StepSound.VERSION = [1, 5, 0];
         const settings = this.stepSound();
         if (this.stepSoundEmittance() && settings && this.isNearTheScreen()) {
             let variance = Math.floor(Math.random() * parseInt(settings.variance)) + 1;
-            let name = variance == 1 ? `${settings.baseName}` : `${settings.baseName + variance}`;
+            let name = parseInt(settings.variance) == 1 ? `${settings.baseName}` : `${settings.baseName + variance}`;
             let volume = parseInt(settings.volume) + (Math.floor(Math.random() * parseInt(settings.volumeVariance)) + 1);
             let pitch = parseInt(settings.pitch) + (Math.floor(Math.random() * parseInt(settings.pitchVariance)) + 1);
             let pan = parseInt(settings.pan) + (Math.floor(Math.random() * parseInt(settings.panVariance)) + 1);
