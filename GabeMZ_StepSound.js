@@ -99,6 +99,22 @@
  * @type boolean
  * @default true
  * 
+ * @param walkingFrequency
+ * @text Walking Frequency
+ * @desc Set the steps sound frequency when walking.
+ * @type number
+ * @default 100
+ * @min 0
+ * @max 100
+ * 
+ * @param dashingFrequency
+ * @text Dashing Frequency
+ * @desc Set the steps sound frequency when dashing.
+ * @type number
+ * @default 90
+ * @min 0
+ * @max 100
+ * 
  * @command playerStepSound
  * @text Player Step Sound
  * @desc Set if the player emit the step sound.
@@ -143,6 +159,14 @@
  * @desc Set the SE base filename
  * @type text
  * 
+ * @param variance
+ * @text Files Variance
+ * @desc Set the SE files variance
+ * @type number
+ * @min 1
+ * @max 100
+ * @default 1
+ * 
  * @param volume
  * @text Volume
  * @desc Set the SE volume
@@ -150,6 +174,14 @@
  * @min 0
  * @max 100
  * @default 75
+ * 
+ * @param volumeVariance
+ * @text Volume Variance
+ * @desc Set the SE volume variance
+ * @type number
+ * @default 0
+ * @min -100
+ * @max 100
  * 
  * @param pitch
  * @text Pitch
@@ -159,6 +191,14 @@
  * @max 150
  * @default 100
  * 
+ * @param pitchVariance
+ * @text Pitch Variance
+ * @desc Set the SE pitch variance
+ * @type number
+ * @default 0
+ * @min -150
+ * @max 150
+ * 
  * @param pan
  * @text Pan
  * @desc Set the SE pan
@@ -167,13 +207,13 @@
  * @max 100
  * @default 0
  * 
- * @param variance
- * @text Variance
- * @desc Set the SE variance
+ * @param panVariance
+ * @text Pan Variance
+ * @desc Set the SE pan variance
  * @type number
- * @min 1
+ * @default 0
+ * @min -100
  * @max 100
- * @default 1
  */
 
 var GabeMZ               = GabeMZ || {};
@@ -187,6 +227,8 @@ GabeMZ.StepSound.VERSION = [1, 0, 0];
     GabeMZ.StepSound.stepSoundSettings = JSON.parse(GabeMZ.params.stepSoundSettings)
     GabeMZ.StepSound.playerStepSound = JSON.parse(GabeMZ.params.playerStepSound);
     GabeMZ.StepSound.followersStepSound = JSON.parse(GabeMZ.params.followersStepSound);
+    GabeMZ.StepSound.walkingFrequency = JSON.parse(GabeMZ.params.walkingFrequency);
+    GabeMZ.StepSound.dashingFrequency = JSON.parse(GabeMZ.params.dashingFrequency);
 
     //-----------------------------------------------------------------------------
     // PluginManager
@@ -213,22 +255,24 @@ GabeMZ.StepSound.VERSION = [1, 0, 0];
     // The superclass of Game_Character. It handles basic information, such as
     // coordinates and images, shared by all characters.
 
-    let _Game_CharacterBase_initMembers = Game_CharacterBase.prototype.initMembers;
+    const _Game_CharacterBase_initMembers = Game_CharacterBase.prototype.initMembers;
     Game_CharacterBase.prototype.initMembers = function() {
         _Game_CharacterBase_initMembers.call(this);
         this._stepSoundEmittance = false;
     };
 
-    let _Game_CharacterBase_increaseSteps = Game_CharacterBase.prototype.increaseSteps;
+    const _Game_CharacterBase_increaseSteps = Game_CharacterBase.prototype.increaseSteps;
     Game_CharacterBase.prototype.increaseSteps = function() {
         _Game_CharacterBase_increaseSteps.call(this)
-        let settings = this.stepSound();
+        const frequency = this.isDashing() ? GabeMZ.StepSound.dashingFrequency : GabeMZ.StepSound.walkingFrequency;
+        if ((Math.floor(Math.random() * 100) + 1) > frequency) return;
+        const settings = this.stepSound();
         if (this.stepSoundEmittance() && settings && this.isNearTheScreen()) {
             let variance = Math.floor(Math.random() * parseInt(settings.variance)) + 1;
             let name = `${settings.baseName + variance}`;
-            let volume = parseInt(settings.volume);
-            let pitch = parseInt(settings.pitch);
-            let pan = parseInt(settings.pan);
+            let volume = parseInt(settings.volume) + (Math.floor(Math.random() * parseInt(settings.volumeVariance)) + 1);
+            let pitch = parseInt(settings.pitch) + (Math.floor(Math.random() * parseInt(settings.pitchVariance)) + 1);
+            let pan = parseInt(settings.pan) + (Math.floor(Math.random() * parseInt(settings.panVariance)) + 1);
             let se = {
                 name: name,
                 volume: volume,
@@ -269,7 +313,7 @@ GabeMZ.StepSound.VERSION = [1, 0, 0];
     // The game object class for a follower. A follower is an allied character,
     // other than the front character, displayed in the party.
 
-    let _Game_Follower_initMembers = Game_Follower.prototype.initMembers;
+    const _Game_Follower_initMembers = Game_Follower.prototype.initMembers;
     Game_Follower.prototype.initMembers = function() {
         _Game_Follower_initMembers.call(this);
         this._stepSoundEmittance = GabeMZ.StepSound.followersStepSound;
@@ -292,7 +336,7 @@ GabeMZ.StepSound.VERSION = [1, 0, 0];
     // The game object class for an event. It contains functionality for event page
     // switching and running parallel process events.
 
-    let _Game_Event_initialize = Game_Event.prototype.initialize;
+    const _Game_Event_initialize = Game_Event.prototype.initialize;
     Game_Event.prototype.initialize = function(mapId, eventId) {
         _Game_Event_initialize.call(this, mapId, eventId);
         // 
@@ -305,14 +349,14 @@ GabeMZ.StepSound.VERSION = [1, 0, 0];
     // The game object class for a map. It contains scrolling and passage
     // determination functions.
 
-    let _Game_Map_initialize = Game_Map.prototype.initialize;
+    const _Game_Map_initialize = Game_Map.prototype.initialize;
     Game_Map.prototype.initialize = function() {
         _Game_Map_initialize.call(this);
         this._stepSoundTerrains = {};
         this._stepSoundRegions = {};
     };
 
-    let _Game_Map_setup = Game_Map.prototype.setup;
+    const _Game_Map_setup = Game_Map.prototype.setup;
     Game_Map.prototype.setup = function(mapId) {
         _Game_Map_setup.call(this, mapId);
         this._stepSoundRegions = this.setMapStepSoundSettings($dataMap.note)
