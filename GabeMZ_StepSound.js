@@ -1,7 +1,9 @@
 //============================================================================
 // Gabe MZ - Step Sound
 //----------------------------------------------------------------------------
-// 28/08/20 | Version: 1.0.0
+// 07/09/20 | Version: 1.5.0 | Included new sound control parameters
+// 28/08/20 | Version: 1.0.0 | Released
+//----------------------------------------------------------------------------
 // This plugin is released under the zlib License.
 //============================================================================
 
@@ -218,7 +220,7 @@
 
 var GabeMZ               = GabeMZ || {};
 GabeMZ.StepSound         = GabeMZ.StepSound || {};
-GabeMZ.StepSound.VERSION = [1, 0, 0];
+GabeMZ.StepSound.VERSION = [1, 5, 0];
 
 (() => {
 
