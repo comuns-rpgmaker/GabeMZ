@@ -87,12 +87,22 @@ GabeMZ.EquipRequirements.VERSION = [1, 0, 0];
     GabeMZ.params = PluginManager.parameters(pluginName);
     GabeMZ.EquipRequirements.hideEquip = JSON.parse(GabeMZ.params.hideEquip);
 
+    //-----------------------------------------------------------------------------
+    // Window_EquipItem
+    //
+    // The window for selecting an equipment item on the equipment screen.
+
     const _Window_EquipItem_isEnabled = Window_EquipItem.prototype.isEnabled;
     Window_EquipItem.prototype.isEnabled = function(item) {
         if (!item) return _Window_EquipItem_isEnabled.call(this, item);
         return this._actor.checkEquipRequiriments(this._actor, item) ? 
         _Window_EquipItem_isEnabled.call(this, item) : false;
     };
+
+    //-----------------------------------------------------------------------------
+    // Game_Actor
+    //
+    // The game object class for an actor.
 
     const _Game_Actor_calcEquipItemPerformance = Game_Actor.prototype.calcEquipItemPerformance;
     Game_Actor.prototype.calcEquipItemPerformance = function(item) {
