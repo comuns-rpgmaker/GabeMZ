@@ -129,28 +129,28 @@ GabeMZ.EquipRequirements.VERSION = [1, 0, 0];
                     if (result) result = actor.level >= match[2];
                     break;
                 case "maxhp":
-                    if (result) result = actor.mhp >= match[2];
+                    if (result) result = actor.paramBase(0) >= match[2];
                     break;
                 case "maxmp":
-                    if (result) result = actor.mmp >= match[2];
+                    if (result) result = actor.paramBase(1) >= match[2];
                     break;
                 case "attack":
-                    if (result) result = actor.atk >= match[2];
+                    if (result) result = actor.paramBase(2) >= match[2];
                     break;
                 case "defense":
-                    if (result) result = actor.def >= match[2];
+                    if (result) result = actor.paramBase(3) >= match[2];
                     break;
                 case "magicAttack":
-                    if (result) result = actor.mat >= match[2];
+                    if (result) result = actor.paramBase(4) >= match[2];
                     break;
                 case "magicDefense":
-                    if (result) result = actor.mdf >= match[2];
+                    if (result) result = actor.paramBase(5) >= match[2];
                     break;
                 case "agility":
-                    if (result) result = actor.agi >= match[2];
+                    if (result) result = actor.paramBase(6) >= match[2];
                     break;
                 case "luck":
-                    if (result) result = actor.luk >= match[2];
+                    if (result) result = actor.paramBase(7) >= match[2];
                     break;
                 case "actorId":
                     if (result) result = actor._actorId == match[2];
