@@ -31,7 +31,7 @@ The first step are setup the Plugin Parameters.
 
 ![](https://i.imgur.com/wMuff23.png)
 
-- **Fog Settings** - This parameter is a list where all the effects that will be used in the game must be configured.
+- **Fog Settings** - This parameter is a list where all the fog effects that will be used in the game must be configured.
 
 - **Fog in Map?** - This parameter defines whether the fog effects will be visible on the maps by default.
 
