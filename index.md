@@ -11,8 +11,8 @@
 - Gabe MZ - Followers Control
 - Gabe MZ - Smart Followers
 - Gabe MZ - Followers Interaction
-- Game MZ - Random Parameters
-- Game MZ - Random Parameters: Enemies
+- Gabe MZ - Random Parameters
+- Gabe MZ - Random Parameters: Enemies
 - Gabe MZ - Step Sound
 
 ## Battle Plugins
