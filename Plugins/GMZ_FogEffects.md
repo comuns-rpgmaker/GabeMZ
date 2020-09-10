@@ -23,7 +23,7 @@ This plugin provides a option to create and display fog effects on maps and batt
 
 ## How to use?
 
-The first step are set the Plugin Parameters.
+The first step are setup the Plugin Parameters.
 
 ***
 
