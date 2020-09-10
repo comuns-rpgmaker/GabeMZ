@@ -1,4 +1,5 @@
 # Gabe MZ Plugins List
+
 ## Gameplay Plugins
 - Gabe MZ - Disable Title Screen
 - Gabe MZ - Message Plus
@@ -13,6 +14,7 @@
 - Game MZ - Random Parameters
 - Game MZ - Random Parameters: Enemies
 - Gabe MZ - Step Sound
+
 ## Battle Plugins
 - Akea - Battle Camera
 - Akea - Battle Camera: Effects
@@ -21,6 +23,7 @@
 - Akea - Skill Cast Time
 - Akea - Actions Order
 - Akea - Visual Weapons
+
 ## Menus Plugins
 - Gabe MZ - Quest System
 - Gabe MZ - Rune System
@@ -36,8 +39,10 @@
 - Gabe MZ - Fog Effects
 - Gabe MZ - Enhanced Camera
 - Gabe MZ - Animated Picture
+
 ## Utility Plugins
 - Gabe MZ - Free Debug Mode
+
 ```js
 function banana() {
     return "Banana";
