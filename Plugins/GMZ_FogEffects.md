@@ -59,7 +59,7 @@ Now just configure a new fog effect as you wish.
 
 - **Fog Opacity** - The fog effect opacity. It can be any value between 0 (transparent) and 255 (opaque).
 
-- **Fog Blend Mode** - The fog effect blending mode. It can be *Normal*, *Addition* and *Subtract*. If you don't know what it is, read [this wikipedia article](https://en.wikipedia.org/wiki/Blend_modes).
+- **Fog Blend Mode** - The fog effect blending mode. It can be *Normal*, *Addition* or *Subtract*. If you don't know what is this, read [this article](https://en.wikipedia.org/wiki/Blend_modes).
 
 - **Fog Move X** - The fog effect horizontal movement constant. When *0* the fog *don't move* horizontally. When it's *negative* it *moves to the left* and when it's *positive* to the *right*.
 
