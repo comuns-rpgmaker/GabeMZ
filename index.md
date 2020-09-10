@@ -26,7 +26,7 @@
 - Gabe MZ - Rune System
 - Gabe MZ - Forge System
 - Gabe MZ - Bestiary Menu
-- ### One Player Menu
+- One Player Menu
   - Gabe MZ - OPM: Main Menu
   - Gabe MZ - OPM: Item Menu
   - Gabe MZ - OPM: Info Menu
