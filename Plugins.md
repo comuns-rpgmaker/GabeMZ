@@ -1,4 +1,10 @@
-# Gabe MZ Plugins List
+---
+title: "Gabe MZ | Plugins Documentation"
+author: "Gabriel"
+date: "10/09/20"
+---
+
+# Gabe MZ - Plugins Documentation
 
 ## System Plugins
 - Disable Title Screen
