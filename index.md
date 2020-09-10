@@ -29,7 +29,7 @@
 - Akea Actions Order
 - Akea Visual Weapons
 
-## Menus Plugins
+## Menu Plugins
 - Quest System
 - Rune System
 - Forge System
