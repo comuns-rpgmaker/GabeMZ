@@ -20,21 +20,15 @@
         <button id="i_contact" class="li">Contato</buttons>
     </div>
     <div class="post_body" id="post_area"  markdown="1">
+        <span class="note">
         Teste **apenas** TESTE!
+       </span>
     </div>
 </body>
 
 <script>
 
 function loadDoc(page_name) {
-  var xhttp = new XMLHttpRequest();
-  xhttp.onreadystatechange = function() {
-    if (this.readyState == 4 && this.status == 200) {
-     document.getElementById("post_area").innerHTML = this.responseText;
-    }
-  };
-  xhttp.open("GET", page_name + ".html", true);
-  xhttp.send();
 
   var buttons = document.getElementsByTagName('button')
   var id = "i_" + page_name
