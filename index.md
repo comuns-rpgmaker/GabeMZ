@@ -23,6 +23,8 @@ All of my plugins are **100% free** and are under the [Zlib License](github.com/
 If you liked my work and want to support me, consider visiting my [Patreon](www.patreon.com/gabriel_nfd) or [Itch](dromarch.itch.io/) pages. If you have any questions, need help or want to report something about my plugins, feel free to join the [Comuns Plugins](discord.gg/GG85QRz) server on Discord.
 
 I hope my work can be useful. :)
+
 ***
+
 For the complete documentation of all my plugins check the list at the link below:
 ## [Gabe MZ - Plugins Documentation](Plugins)
