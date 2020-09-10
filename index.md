@@ -1,2 +1,2 @@
-![Main Thumb](images/MainThumb.png)
+![Main Thumb](/images/MainThumb.png)
 ## [Plugin List](Plugins)
