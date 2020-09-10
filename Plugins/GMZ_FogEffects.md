@@ -7,15 +7,14 @@ date: "10/09/20"
 
 # Gabe MZ - Fog Effects
 
-`03/09/20 | Version: 2.0.1 | Scene return bug fix`
+```
+03/09/20 | Version: 2.0.1 | Scene return bug fix
+02/09/20 | Version: 2.0.0 | Completely rewritten code
+28/09/20 | Version> 1.1.0 | Redone fog effects layer system
+26/08/20 | Version: 1.0.3 | Cleaned code and help section improved
+25/08/20 | Version: 1.0.0 | Released
+```
 
-`02/09/20 | Version: 2.0.0 | Completely rewritten code`
-
-`28/09/20 | Version> 1.1.0 | Redone fog effects layer system `
-
-`26/08/20 | Version: 1.0.3 | Cleaned code and help section improved`
-
-`25/08/20 | Version: 1.0.0 | Released`
 ***
 
 This plugin provides a option to create and display fog effects on maps and battles.
