@@ -11,7 +11,7 @@ This plugin adds improvements to the standard message system of RPG Maker MZ.
 ## Escape Commands:
 Below is a list of the new escape commands that can be used within messages:
 
-### Message Controll:
+### Message Control:
 ```js
 \color[colorName]           // Change the color of the text with the Custom Color defined in this Plugin Parameters.
                             //    colorName: The color name
