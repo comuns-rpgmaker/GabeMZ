@@ -69,7 +69,7 @@ Now just configure a new fog effect as you wish.
 
 ### Adding a Fog Effect to the map:
 
-After that, you can add the fog effects you're created in the map using a specific **Note Tag** in the **Map Notes** or using the provided **Plugin Commands**.
+After that, you can add the fog effects you're created to the map using a specific **Note Tag** in the **Map Notes** or using the provided **Plugin Commands**.
 
 When adding a fog effects through the **Map Notes**, it will be *perpetually linked to that map*. You can, through the Plugin Commands, temporarily erase all fog effects from the map, but *when moving from one map to the other the effect will be returned*.
 
