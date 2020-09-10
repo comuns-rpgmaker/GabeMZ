@@ -8,7 +8,7 @@ output:
      self_contained: no
 
 ---
-![Main Thumb](GabeMZ/images/MainThumb.PNG)
+![Main Thumb](images/MainThumb.PNG)
 ## [Plugin List](Plugins)
 
 <i class="fa fa-renren fa-5x"></i>
