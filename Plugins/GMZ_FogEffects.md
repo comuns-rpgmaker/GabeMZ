@@ -91,8 +91,8 @@ The fog effects are added to the map through a layer system. Whenever you add a 
 
 ```
 <addFog layer: id>      // This tag links the defined fog effect to the defined layer on the map.
-                        // layer: The layer id
-                        // id: The fog effect id
+                        //    layer: The layer id
+                        //    id: The fog effect id
 ```
 #### Usage Examples:
 ```
