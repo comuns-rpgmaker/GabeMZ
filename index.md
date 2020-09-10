@@ -14,7 +14,7 @@ output:
 
 Hi everyone! I'm Gabriel, or just Gabe. 
 
-I've already experienced RPG Maker for over ten years, I'm one of administrators of the brazilian RM forum [Centro RPG Maker](centrorpg.com) and currently I'm dedicating to create **FREE** plugins for RPG Maker MZ.
+I've already experienced RPG Maker for over ten years, I'm one of administrators of the brazilian RM forum [Centro RPG Maker](https://centrorpg.com/) and currently I'm dedicating to create **FREE** plugins for RPG Maker MZ.
 
 I'm in this initiative with the staff of the [Comuns RPG Maker](comuns-rpgmaker.github.io), in a partnership with my great friends Brandt, Jorge, Reisen and Syureri.
 
