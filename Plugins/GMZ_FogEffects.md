@@ -21,6 +21,11 @@ This plugin provides a option to create and display fog effects on maps and batt
 
 ***
 
+## Download
+### [Gabe MZ - Fog Effects](https://dromarch.itch.io/gabe-mz-fog-effects) (v2.0.1)
+
+***
+
 ## How to use?
 
 The first step are setup the Plugin Parameters.
