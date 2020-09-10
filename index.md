@@ -1,19 +1,17 @@
 # Gabe MZ Plugins List
 
 ## Gameplay Plugins
-- Gabe MZ - Disable Title Screen
-- [Gabe MZ - Message Plus](https://comuns-rpgmaker.github.io/GabeMZ/Plugins/GMZ_MessagePlus)
-- Gabe MZ - Message Plus: Text Effects
-- Gabe MZ - Message Plus: Balloon
-- Gabe MZ - Equip Requeriments
-- Gabe MZ - Event Touch Interact
-- Gabe MZ - Event Sound Emittance
-- Gabe MZ - Followers Control
-- Gabe MZ - Smart Followers
-- Gabe MZ - Followers Interaction
-- Gabe MZ - Random Parameters
-- Gabe MZ - Random Parameters: Enemies
-- Gabe MZ - Step Sound
+- Disable Title Screen
+- [Message Plus](https://comuns-rpgmaker.github.io/GabeMZ/Plugins/GMZ_MessagePlus)
+- Message Plus: Text Effects
+- Message Plus: Balloon
+- Equip Requeriments
+- Event Touch Interact
+- Event Sound Emittance
+- Followers Control
+- Smart Followers
+- Followers Interaction
+- Step Sound
 
 ## Battle Plugins
 - Akea - Battle Camera
@@ -25,23 +23,30 @@
 - Akea - Visual Weapons
 
 ## Menus Plugins
-- Gabe MZ - Quest System
-- Gabe MZ - Rune System
-- Gabe MZ - Forge System
-- Gabe MZ - Bestiary Menu
+- Quest System
+- Rune System
+- Forge System
+- Bestiary Menu
 - One Player Menu
-  - Gabe MZ - OPM: Main Menu
-  - Gabe MZ - OPM: Item Menu
-  - Gabe MZ - OPM: Info Menu
-  - Gabe MZ - OPM: Save Menu
+  - OPM: Main Menu
+  - OPM: Item Menu
+  - OPM: Info Menu
+  - OPM: Save Menu
 
 ## Visual Plugins 
-- Gabe MZ - Fog Effects
-- Gabe MZ - Enhanced Camera
-- Gabe MZ - Animated Picture
+- Fog Effects
+- Enhanced Camera
+- Animated Picture
 
 ## Utility Plugins
-- Gabe MZ - Free Debug Mode
+- Free Debug Mode
+
+## Ultra Roguelike
+- Random Dungeon Generator
+- Random Parameters: Equipments
+- Random Parameters: Enemies
+- Random Loots
+- Random Chests
 
 ```js
 function banana() {
