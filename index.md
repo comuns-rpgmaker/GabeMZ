@@ -2,7 +2,7 @@
 
 ## Gameplay Plugins
 - Gabe MZ - Disable Title Screen
-- Gabe MZ - Message Plus
+- [Gabe MZ - Message Plus](https://comuns-rpgmaker.github.io/GabeMZ/Plugins/GMZ_MessagePlus)
 - Gabe MZ - Message Plus: Text Effects
 - Gabe MZ - Message Plus: Balloon
 - Gabe MZ - Equip Requeriments
