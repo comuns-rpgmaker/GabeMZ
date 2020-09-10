@@ -45,7 +45,7 @@ This is the Fog Settings parameter interface:
 
 ![](https://i.imgur.com/Gcs8gfl.png)
 
-- **Red Area** - The values in this area indicate the **ID** of each configured effect.
+- **Red Area** - The values in this area indicate the **ID** of each configured fog effect.
 
 - **Green Area** - Each line in this area corresponds to a configured fog effect.
 
