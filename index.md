@@ -1,10 +1,12 @@
 # Gabe MZ Plugins List
 
-## Gameplay Plugins
+## System Plugins
 - Disable Title Screen
 - [Message Plus](https://comuns-rpgmaker.github.io/GabeMZ/Plugins/GMZ_MessagePlus)
 - Message Plus: Text Effects
 - Message Plus: Balloon
+
+## Gameplay Plugins
 - Equip Requeriments
 - Event Touch Interact
 - Event Sound Emittance
@@ -12,15 +14,20 @@
 - Smart Followers
 - Followers Interaction
 - Step Sound
+- Ultra Roguelike
+  - Random Dungeon Generator
+  - Random Parameters: Equipments
+  - Random Parameters: Enemies
+  - Random Loots
 
 ## Battle Plugins
-- Akea - Battle Camera
-- Akea - Battle Camera: Effects
-- Akea - Battle Cry
-- Akea - Commands Extension
-- Akea - Skill Cast Time
-- Akea - Actions Order
-- Akea - Visual Weapons
+- Akea Battle Camera
+- Akea Battle Camera: Effects
+- Akea Battle Cry
+- Akea Commands Extension
+- Akea Skill Cast Time
+- Akea Actions Order
+- Akea Visual Weapons
 
 ## Menus Plugins
 - Quest System
@@ -36,17 +43,10 @@
 ## Visual Plugins 
 - Fog Effects
 - Enhanced Camera
-- Animated Picture
+- Animated Pictures
 
 ## Utility Plugins
 - Free Debug Mode
-
-## Ultra Roguelike
-- Random Dungeon Generator
-- Random Parameters: Equipments
-- Random Parameters: Enemies
-- Random Loots
-- Random Chests
 
 ```js
 function banana() {
