@@ -31,6 +31,7 @@
   - Gabe MZ - OPM: Item Menu
   - Gabe MZ - OPM: Info Menu
   - Gabe MZ - OPM: Save Menu
+
 ## Visual Plugins 
 - Gabe MZ - Fog Effects
 - Gabe MZ - Enhanced Camera
