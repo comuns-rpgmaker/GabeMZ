@@ -47,7 +47,7 @@ date: "10/09/20"
   - OPM: Save Menu
 
 ## Visual Plugins 
-- Fog Effects
+- [Fog Effects](Plugins/GMZ_FogEffects)
 - Enhanced Camera
 - Animated Pictures
 
