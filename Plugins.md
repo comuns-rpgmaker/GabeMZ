@@ -13,7 +13,7 @@ date: "10/09/20"
 - Message Plus: Balloon
 
 ## Gameplay Plugins
-- Equip Requeriments
+- [Equip Requeriments](Plugins/GMZ_EquipRequeriments)
 - Event Touch Interact
 - Event Sound Emittance
 - Followers Control
