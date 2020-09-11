@@ -1,11 +1,11 @@
 ---
-title: "Gabe MZ | Equip Requeriments"
+title: "Gabe MZ | Equip Requirements"
 author: "Gabriel"
 date: "10/09/20"
 ---
-![Main Thumb](../images/Thumb_GMZ_EquipRequeriments.png)
+![Main Thumb](../images/Thumb_GMZ_EquipRequirements.png)
 
-# Gabe MZ - Equip Requeriments
+# Gabe MZ - Equip Requirements
 
 ```
 08/09/20 | Version: 1.0.0 | Released
@@ -18,7 +18,7 @@ This plugin provides the possibility to add extra requirements to the equipments
 ***
 
 ## Download
-### [Gabe MZ - Equip Requeriments](https://dromarch.itch.io/gabe-mz-equip-requeriments) (v1.0.0)
+### [Gabe MZ - Equip Requirements](https://dromarch.itch.io/gabe-mz-equip-requirements) (v1.0.0)
 
 ***
 
