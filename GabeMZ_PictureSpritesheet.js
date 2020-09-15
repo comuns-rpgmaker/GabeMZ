@@ -198,7 +198,8 @@ GabeMZ.PictureSpritesheet.VERSION = [1, 0, 0];
 (() => {
 
     const pluginName = "GabeMZ_PictureSpritesheet";
-
+    GabeMZ.PictureSpritesheet.spriteSheetInfo = [];
+    
     //-----------------------------------------------------------------------------
     // PluginManager
     //
