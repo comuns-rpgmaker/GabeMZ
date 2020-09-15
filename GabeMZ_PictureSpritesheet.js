@@ -199,7 +199,7 @@ GabeMZ.PictureSpritesheet.VERSION = [1, 0, 0];
 
     const pluginName = "GabeMZ_PictureSpritesheet";
     GabeMZ.PictureSpritesheet.spriteSheetInfo = [];
-    
+
     //-----------------------------------------------------------------------------
     // PluginManager
     //
@@ -314,7 +314,7 @@ GabeMZ.PictureSpritesheet.VERSION = [1, 0, 0];
         this._timer = 0;
         this._isLooped = false;
         this._isReversal = false;
-        this._isSpriteSheet = true;
+        this._isSpriteSheet = false;
     };
 
     Game_Picture.prototype.setSpriteSheet = function(w, h, f, s, l, t) {
