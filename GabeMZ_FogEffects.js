@@ -315,7 +315,7 @@
  * @min 1
  */
 
-/*~struct~fogSettingsStruct:br
+/*~struct~fogSettingsStruct:pt
  * @param fogFilename
  * @text Fog Filename
  * @desc Defina o arquivo de imagem da névoa
@@ -474,6 +474,8 @@ GabeMZ.FogEffects.VERSION = [2, 0, 1];
         this._fog.move(-96, -96, Graphics.width + 192, Graphics.height + 192);
         this._fog.opacity = parseInt(fogSetting.fogOpacity);
         this._fog.blendMode = parseInt(fogSetting.fogBlendMode);
+        this._fog.origin.x = 96;
+        this._fog.origin.y = 96;
         this._fog.constX = 0;
         this._fog.constY = 0;
         this._fog.speedX = -parseFloat(fogSetting.fogMoveX);
