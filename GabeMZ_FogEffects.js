@@ -474,8 +474,8 @@ GabeMZ.FogEffects.VERSION = [2, 0, 1];
         this._fog.move(-96, -96, Graphics.width + 192, Graphics.height + 192);
         this._fog.opacity = parseInt(fogSetting.fogOpacity);
         this._fog.blendMode = parseInt(fogSetting.fogBlendMode);
-        this._fog.origin.x = 96;
-        this._fog.origin.y = 96;
+        this._fog.origin.x = -96;
+        this._fog.origin.y = -96;
         this._fog.constX = 0;
         this._fog.constY = 0;
         this._fog.speedX = -parseFloat(fogSetting.fogMoveX);
@@ -521,9 +521,9 @@ GabeMZ.FogEffects.VERSION = [2, 0, 1];
 
     Spriteset_Fog.prototype.updateFog = function(fog) {
         fog.constX += fog.speedX;
-        fog.origin.x = ($gameMap.displayX() * $gameMap.tileWidth()) + fog.constX;
+        fog.origin.x = ($gameMap.displayX() * $gameMap.tileWidth()) + fog.constX - 96;
         fog.constY += fog.speedY;
-        fog.origin.y = ($gameMap.displayY() * $gameMap.tileHeight()) + fog.constY;
+        fog.origin.y = ($gameMap.displayY() * $gameMap.tileHeight()) + fog.constY - 96;
     }
 
 
