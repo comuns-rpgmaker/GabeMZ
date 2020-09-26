@@ -120,7 +120,7 @@ State                       // Activate or deactivate the Input Show Fast.
 Write a Custom Message.
 
 ```
-Message                     // The message
+Message                     // The message text
 ```
 
 ***
