@@ -18,48 +18,44 @@ This plugin adds improvements to the standard message system of RPG Maker MZ.
 Below is a list of the new escape commands that can be used within messages:
 
 ### Message Control:
-```js
-\color[colorName]           // Change the color of the text with the Custom Color defined in this Plugin Parameters.
-                            //    colorName: The color name
+```
+\clr[colorIndex]            // Change the color of the text with the Color Picker defined in this Plugin Parameters.
+                            //    colorIndex: The color index
+\olc[colorIndex]            // Change the outline color of the text with the Color Picker defined in this Plugin 
+                            // Parameters.  
+                            //    colorIndex: The color index   
+\olw[value]                 // Change the text outline width.
+                            //    value: The outrline width       
 
-\face[faceName, faceIndex]  // Change the current message face to the specified face.
+\fc[faceName, faceIndex]    // Change the current message face to the specified face.
                             //    faceName:  The face filename
                             //    faceIndex: The face index
+\actfc[actorId]             // Change the current message face to the specified actor face.
+                            //    actorId:  The actor index
+\prtfc[value]               // Change the current message face to the actor face of the specified party position.
+                            //    value:  The party position
 
-\actorFace[id]              // Change the current message face to the face of the specified id actor.
-                            //    id: The actor id
-```
+\b[state]                   // Displays the following text with bold.
+                            //    state:  The bold state
+                            //    1 - Enable bold | 0 - Disable bold
+\it[state]                  // Displays the following text with italic.
+                            //    state:  The italic state
+                            //    1 - Enable italic | 0 - Disable italic
 
-### Data Info: Actors Parameters:
-```js
-\ahp[id]                    // Displays the HP of the specified id actor.
-\amhp[id]                   // Displays the Max HP of the specified id actor.
-\amp[id]                    // Displays the MP of the specified id actor.
-\ammp[id]                   // Displays the Max MP of the specified id actor.
-\aatk[id]                   // Displays the attack of the specified id actor.
-\adef[id]                   // Displays the defense of the specified id actor.
-\amatk[id]                  // Displays the magic attack of the specified id actor.
-\amdef[id]                  // Displays the magic defense of the specified id actor.
-\aagi[id]                   // Displays the agility of the specified id actor.
-\aluk[id]                   // Displays the luck of the specified id actor.
-                            //    id: The actor id
-```
 
-### Data Info: Enemies Parameters:
-```js
-\emhp[id]                   // Displays the Max HP of the specified id enemy.
-\emmp[id]                   // Displays the Max MP of the specified id enemy
-\eatk[id]                   // Displays the attack of the specified id enemy.
-\edef[id]                   // Displays the defense of the specified id enemy.
-\ematk[id]                  // Displays the magic attack of the specified id enemy.
-\emdef[id]                  // Displays the magic defense of the specified id enemy.
-\eagi[id]                   // Displays the agility of the specified id enemy.
-\eluk[id]                   // Displays the luck of the specified id enemy.
-                            //    id: The enemy id
+\sfx[state]                 // Control the message sound effect.
+                            //    state:  The SFX state
+                            //    on - Enable SFX | off - Disable SFX
+\sfx[id]                    // Change the current message sound effect.
+                            //    id:  The SFX index
+ 
+\isf[state]                 // Control the input show fast.
+                            //    state:  The input show fast state
+                            //    on - Enable ISF | off - Disable ISF
 ```
 
 ### Data Info: Items:
-```js
+```
 // Items
 \itn[id]                    // Displays the name of the specified id item.
 \iti[id]                    // Displays the icon of the specified id item.
@@ -84,8 +80,30 @@ Below is a list of the new escape commands that can be used within messages:
                             //    id: The skill id
 ```
 
-### Other Commands:
-```js
-\snp[id]                    // Displays the Text Snippet defined in this Plugin Parameters.
-                            //    id: The text snippet id
+### Balloon Mode Commands:
+```
+\tgt[this]                  // Change the target of the message balloon to the current event.
+
+\tgt[id]                    // Change the target of the message balloon.
+                            //    id: The target id
+                            //    0   - player
+                            //    1 > - event
+
+\tgt[pPos]                  // Change the target of the message balloon to the actor of the specified 
+                            // party position. If you're using the Akea Animated Battle System plugin 
+                            // it will also work during battles,
+                            //    Pos: The party position
+
+\tgt[aId]                   // Change the target of the message balloon to the specified actor id. If 
+                            // you're using the Akea Animated Battle System plugin it will also work 
+                            // during battles,
+                            //    Id: The actor index
+
+\tgt[eId]                   // Change the target of the message balloon to the specified battle target 
+                            // id. Only works if you are using the Akea Animated Battle System plugin.
+                            //    Id: The battle target index
+
+\spp                        // Show the balloon pop.
+
+\hpp                        // Hide the ballon pop.
 ```
