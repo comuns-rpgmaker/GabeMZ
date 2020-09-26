@@ -21,13 +21,47 @@ Below is a list of the plugin commands that can be used:
 
 ### Window Settings (Easy):
 
+```
+Window Horizontal Pos
+Window Vertical Pos
+Window Width
+Window Height
+Window Padding
+```
+
 ### Window Settings (Hard):
+
+```
+Window X Pos
+Window Y Pos
+Window Width
+Window Height
+Window Padding
+```
 
 ### Pause Sign Settings:
 
+```
+Pause Sign X Pos
+Pause Sign Y Pos
+Pause Sign Visibility
+```
+
 ### Name Box Settings:
 
+```
+Name Box X Offset
+Name Box Y Offset
+Name Box Padding
+```
+
 ### Choice List Settings:
+
+```
+Choice List X Offset
+Choice List Y Offset
+Choice List Padding
+```
 
 ### Reset Message Window Settings:
 
@@ -39,11 +73,29 @@ Below is a list of the plugin commands that can be used:
 
 ### Balloon Mode Settings:
 
+```
+Balloon Mode
+Balloon Pop
+```
+
 ### Message SFX Settings:
+
+```
+SFX ID
+SFX State
+```
 
 ### Input Show Fast:
 
+```
+State
+```
+
 ### Custom Message:
+
+```
+Message
+```
 
 ***
 
