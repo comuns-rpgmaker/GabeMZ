@@ -21,80 +21,106 @@ Below is a list of the plugin commands that can be used:
 
 ### Window Settings (Easy):
 
+Easy configuration mode, to set the parameters of the Message Window quickly and efficiently.
+
 ```
-Window Horizontal Pos
-Window Vertical Pos
-Window Width
-Window Height
-Window Padding
+Window Horizontal Pos       // Changes the horizontal position of the Message Window.
+Window Vertical Pos         // Changes the vertical position of the Message Window.
+Window Width                // Changes the width of the Message Window.
+Window Height               // Changes the height of the Message Window.
+Window Padding              // Changes the padding of the Message Window.
 ```
 
 ### Window Settings (Hard):
 
+Advanced configuration mode, allows full control of the Message Window, but requires a certain level of knowledge.
+
 ```
-Window X Pos
-Window Y Pos
-Window Width
-Window Height
-Window Padding
+Window X Pos                // Changes the X position of the Message Window.
+Window Y Pos                // Changes the Y position of the Message Window.
+Window Width                // Changes the width of the Message Window.
+Window Height               // Changes the height of the Message Window.
+Window Padding              // Changes the padding of the Message Window.
 ```
 
 ### Pause Sign Settings:
 
+Configure the Message Window Pause Sign settings.
+
 ```
-Pause Sign X Pos
-Pause Sign Y Pos
-Pause Sign Visibility
+Pause Sign X Pos            // Changes the X position of the Pause Sign.
+Pause Sign Y Pos            // Changes the Y position of the Pause Sign.
+Pause Sign Visibility       // Changes the visibility of the Pause Sign.
 ```
 
 ### Name Box Settings:
 
+Configure the Name Box window settings.
+
 ```
-Name Box X Offset
-Name Box Y Offset
-Name Box Padding
+Name Box X Offset           // Changes the X offset of the Name Box window.
+Name Box Y Offset           // Changes the Y offset of the Name Box window.
+Name Box Padding            // Changes the padding of the Name Box window.
 ```
 
 ### Choice List Settings:
 
+Configure the Choice List window settings.
+
 ```
-Choice List X Offset
-Choice List Y Offset
-Choice List Padding
+Choice List X Offset        // Changes the X offset of the Choice List window.
+Choice List Y Offset        // Changes the Y offset of the Choice List window.
+Choice List Padding         // Changes the padding of the Choice List window.
 ```
 
 ### Reset Message Window Settings:
 
+Reset all Message Window settings to their default settings.
+
 ### Reset Pause Sign Settings:
+
+Reset all Pause Sign settings to their default settings.
 
 ### Reset Name Box Window Settings:
 
+Reset all Name Box settings to their default settings.
+
 ### Reset Choice List Window Settings:
+
+Reset all Choice List settings to their default settings.
 
 ### Balloon Mode Settings:
 
+Configure the Balloon Mode message settings.
+
 ```
-Balloon Mode
-Balloon Pop
+Balloon Mode                // Activate or deactivate the Balloon Mode message.
+Balloon Pop                 // Activate or deactivate the balloon pop arrow visibility.
 ```
 
 ### Message SFX Settings:
 
+Configure the message text SFX settings.
+
 ```
-SFX ID
-SFX State
+SFX ID                      // Set the current ID of the text SFX.
+SFX State                   // Set the current state of the text SFX.
 ```
 
 ### Input Show Fast:
 
+Activate or deactivate the Input Show Fast.
+
 ```
-State
+State                       // Activate or deactivate the Input Show Fast.
 ```
 
 ### Custom Message:
 
+Write a Custom Message.
+
 ```
-Message
+Message                     // The message
 ```
 
 ***
