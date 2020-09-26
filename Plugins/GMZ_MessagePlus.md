@@ -1,16 +1,49 @@
 ---
 title: "Gabe MZ | Message Plus"
 author: "Gabriel"
-date: "10/09/20"
+date: "26/09/20"
 ---
 
 # Gabe MZ - Message Plus
 
-`10/09/20 | Version: 0.0.5 | Under development`
+```
+26/09/20 | Version: 1.0.0 | Released
+```
 
 ***
 
-This plugin adds improvements to the standard message system of RPG Maker MZ.
+This plugin adds significant improvements to the default RPG Maker message system.
+
+***
+
+## Plugin Commands:
+Below is a list of the plugin commands that can be used:
+
+### Window Settings (Easy):
+
+### Window Settings (Hard):
+
+### Pause Sign Settings:
+
+### Name Box Settings:
+
+### Choice List Settings:
+
+### Reset Message Window Settings:
+
+### Reset Pause Sign Settings:
+
+### Reset Name Box Window Settings:
+
+### Reset Choice List Window Settings:
+
+### Balloon Mode Settings:
+
+### Message SFX Settings:
+
+### Input Show Fast:
+
+### Custom Message:
 
 ***
 
