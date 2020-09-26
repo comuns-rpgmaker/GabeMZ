@@ -3,6 +3,7 @@ title: "Gabe MZ | Message Plus"
 author: "Gabriel"
 date: "26/09/20"
 ---
+![Main Thumb](../images/Thumb_GMZ_MessagePlus.png)
 
 # Gabe MZ - Message Plus
 
