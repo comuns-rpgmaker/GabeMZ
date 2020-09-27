@@ -913,7 +913,7 @@ $gameMessagePlus = null;
                 if (arr) {
                     if (arr[1] == 'p') {
                         const id = parseInt(arr[2]);
-                        if ($gameParty.inBattle() && Akea.BattleSystem) {
+                        if ($gameParty.inBattle()) {
                             target = SceneManager._scene._spriteset._actorSprites[id - 1];
                             $gameMessagePlus.target = { target: target, type: 1 };
                             return;
@@ -926,12 +926,16 @@ $gameMessagePlus = null;
                         return;
                     } else if (arr[1] == 'a') {
                         const id = parseInt(arr[2]);
-                        if ($gameParty.inBattle() && Akea.BattleSystem) {
+                        if ($gameParty.inBattle()) {
                             target = SceneManager._scene._spriteset._actorSprites.find(sprite => sprite._actor ? sprite._actor.actorId() == id : null);
                             if (target) $gameMessagePlus.target = { target: target, type: 1 };
                             return;
                         }
-                        target = $gamePlayer.followers().data().find(follower => follower.actor() ? follower.actor().actorId() == id : null);
+                        if ($gameParty.leader().actorId() == id) {
+                            target = $gamePlayer;
+                        } else {
+                            target = $gamePlayer.followers().data().find(follower => follower.actor() ? follower.actor().actorId() == id : null);
+                        }
                         if (target) {
                             $gameMessagePlus.target = { target: target, type: 0 };
                             return;
