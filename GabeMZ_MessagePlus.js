@@ -1,6 +1,7 @@
 //============================================================================
 // Gabe MZ - Message Plus
 //----------------------------------------------------------------------------
+// 27/09/20 | Version: 1.0.1 | Compatibility path with VisuMZ_1_MessageCore
 // 26/09/20 | Version: 1.0.0 | Released
 //----------------------------------------------------------------------------
 // This software is released under the zlib License.
@@ -8,9 +9,10 @@
 
 /*:
  * @target MZ
- * @plugindesc [v1.0.0] Improved message system to the RPG Maker MZ.
+ * @plugindesc [v1.0.1] Improved message system.
  * @author Gabe (Gabriel Nascimento)
  * @url http://patreon.com/gabriel_nfd
+ * @orderAfter VisuMZ_1_MessageCore
  * 
  * @help Gabe MZ - Message Plus
  *  - This plugin is released under the zlib License.
@@ -501,9 +503,12 @@
  * @default 0
  */
 
+var Imported = Imported || {};
+Imported.GMZ_MessagePlus = true;
+
 var GabeMZ                 = GabeMZ || {};
 GabeMZ.MessagePlus         = GabeMZ.MessagePlus || {};
-GabeMZ.MessagePlus.VERSION = [1, 0, 0];
+GabeMZ.MessagePlus.VERSION = [1, 0, 1];
 
 $gameMessagePlus = null;
 
@@ -608,7 +613,7 @@ $gameMessagePlus = null;
             args.balloonMode, $gameMessagePlus.balloonMode);
         $gameMessagePlus.pop         = GabeMZ.MessagePlus.getParamState(
         args.pop, $gameMessagePlus.pop);
-        $gameMessagePlus.target      = $gamePlayer;
+        $gameMessagePlus.target      = { target: $gamePlayer, type: 0 };
     });
 
     PluginManager.registerCommand(pluginName, "sfxSettings", args => {
@@ -900,37 +905,35 @@ $gameMessagePlus = null;
                 let target;
                 if(param == 'this') {
                     target = $gameMap.event($gameMessagePlus.currentEventId);
-                    $gameMessagePlus.target = { x: target.screenX(), y: target.screenY() };
+                    $gameMessagePlus.target = { target: target, type: 0 };
                     return;
                 }
                 const regExp = /(\w+)(\d+)/i;
                 const arr = regExp.exec(param);
-                const ojamaX = (Graphics.width - Graphics.boxWidth) / 2;
-                const ojamaY = (Graphics.height - Graphics.boxHeight) / 2;
                 if (arr) {
                     if (arr[1] == 'p') {
                         const id = parseInt(arr[2]);
                         if ($gameParty.inBattle() && Akea.BattleSystem) {
                             target = SceneManager._scene._spriteset._actorSprites[id - 1];
-                            $gameMessagePlus.target = { x: target.x + ojamaX, y: target.y + ojamaY - (target.height / 2)};
+                            $gameMessagePlus.target = { target: target, type: 1 };
                             return;
                         } else if (id > 1) {
                             target = $gamePlayer.followers().follower(id - 2);
                         } else {
                             target = $gamePlayer;
                         }
-                        $gameMessagePlus.target = { x: target.screenX(), y: target.screenY() };
+                        $gameMessagePlus.target = { target: target, type: 0 };
                         return;
                     } else if (arr[1] == 'a') {
                         const id = parseInt(arr[2]);
                         if ($gameParty.inBattle() && Akea.BattleSystem) {
                             target = SceneManager._scene._spriteset._actorSprites.find(sprite => sprite._actor ? sprite._actor.actorId() == id : null);
-                            if (target) $gameMessagePlus.target = { x: target.x + ojamaX, y: target.y + ojamaY - (target.height / 2)};
+                            if (target) $gameMessagePlus.target = { target: target, type: 1 };
                             return;
                         }
                         target = $gamePlayer.followers().data().find(follower => follower.actor() ? follower.actor().actorId() == id : null);
                         if (target) {
-                            $gameMessagePlus.target = { x: target.screenX(), y: target.screenY() };
+                            $gameMessagePlus.target = { target: target, type: 0 };
                             return;
                         } else {
                             this._pauseSkip = true;
@@ -941,13 +944,13 @@ $gameMessagePlus = null;
                         if ($gameParty.inBattle() && Akea.BattleSystem) {
                             const id = parseInt(arr[2]);
                             target = SceneManager._scene._spriteset._enemySprites[id - 1];
-                            if (target) $gameMessagePlus.target = { x: target.x + ojamaX, y: target.y + ojamaY - (target.height / 2)};
+                            if (target) $gameMessagePlus.target = { target: target, type: 1 };
                             return;
                         }
                     }
                 }
                 target = param > 0 ? $gameMap.event(param) : $gamePlayer;
-                $gameMessagePlus.target = { x: target.screenX(), y: target.screenY() };
+                $gameMessagePlus.target = { target: target, type: 0 };
                 break;
             case "SPP":
                 if (!$gameMessagePlus.balloonMode) return;
@@ -1064,7 +1067,7 @@ $gameMessagePlus = null;
     Window_Message.prototype.update = function() {
         _Window_Message_update.call(this);
         if ($gameMessagePlus.forceClose) this.terminateMessage();
-        if (this.isOpen() && this._target) this.updatePosition();
+        if (this.isOpen() && $gameMessagePlus.balloonMode) this.updatePosition();
         if ($gameMessagePlus.pop && this._target) this.updatePop();
     }
 
@@ -1089,8 +1092,8 @@ $gameMessagePlus = null;
         let x, y;
         this._pop.scale.y = 1;
         if (this._target) {
-            x = this._target.x - (this.width * 0.5);
-            y = (this._target.y - this.height) - 40 - (this._pop.height - GabeMZ.MessagePlus.balloonPopOffset);
+            x = this.target().x - (this.width * 0.5);
+            y = (this.target().y - this.height) - 40 - (this._pop.height - GabeMZ.MessagePlus.balloonPopOffset);
         } else {
             x = this.getXParam();
             y = this.getYParam();
@@ -1106,7 +1109,7 @@ $gameMessagePlus = null;
             if ((y + this.height) > Graphics.height) {
                 this.y = Graphics.height - this.height;
             } else if (y < (this.height - ojamaY)) {
-                this.y = this._target.y + this._pop.height;
+                this.y = this.target().y + this._pop.height;
                 this._pop.scale.y = -1;
             } else {
                 this.y = y;
@@ -1119,6 +1122,20 @@ $gameMessagePlus = null;
         this.y -= ojamaY;
         this._nameBoxWindow.updatePlacement();
         this._choiceListWindow.updatePlacement();
+    }
+
+    Window_Message.prototype.target = function() {
+        const ojamaY = (Graphics.height - Graphics.boxHeight) / 2;
+        const target = this._target.target;
+        let x, y;
+        if (this._target.type) {
+            x = target.x;
+            y = target.y + ojamaY - (target.height / 2)
+        } else {
+            x = target.screenX();
+            y = target.screenY();
+        }
+        return { x: x, y: y };
     }
     
     Window_Message.prototype.getXParam = function() {
@@ -1210,11 +1227,11 @@ $gameMessagePlus = null;
         const ojamaX = (Graphics.width - Graphics.boxWidth) / 2;
         const ojamaY = (Graphics.height - Graphics.boxHeight) / 2;
         this._pop.visible = $gameMessagePlus.pop;
-        this._pop.x = (this._target.x - this.x) - ojamaX - (this._pop.width / 2);
-        if ((this.y + ojamaY) > this._target.y) {
-            this._pop.y = (this._target.y - this.y) - ojamaY + (this._pop.height + GabeMZ.MessagePlus.balloonPopOffset)
+        this._pop.x = (this.target().x - this.x) - ojamaX - (this._pop.width / 2);
+        if ((this.y + ojamaY) > this.target().y) {
+            this._pop.y = (this.target().y - this.y) - ojamaY + (this._pop.height + GabeMZ.MessagePlus.balloonPopOffset)
         } else {
-            this._pop.y = (this._target.y - this.y) - ojamaY - 40 - (this._pop.height);
+            this._pop.y = (this.target().y - this.y) - ojamaY - 40 - (this._pop.height);
         }
         
     }
@@ -1324,7 +1341,7 @@ $gameMessagePlus = null;
     Window_ChoiceList.prototype.updatePlacement = function() {
         if (!this.isOpen()) {
             this.padding = $gameMessagePlus.choiceListPadding;
-            this.refresh();
+            if (!Imported.VisuMZ_1_MessageCore) this.refresh();
         }
         _Window_ChoiceList_updatePlacement.call(this);
         this.x = (this._messageWindow.x + this._messageWindow.width) - this.width;
