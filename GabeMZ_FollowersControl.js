@@ -7,7 +7,7 @@
 
 /*:
  * @target MZ
- * @plugindesc Allows to control the followers via the event commands.
+ * @plugindesc [v1.0.3] Allows to control the followers via the event commands.
  * @author Gabe (Gabriel Nascimento)
  * @url https://github.com/comuns-rpgmaker/GabeMZ
  * @orderAfter GabeMZ_SmartFollowers

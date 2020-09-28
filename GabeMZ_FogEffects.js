@@ -12,7 +12,7 @@
 
 /*:
  * @target MZ
- * @plugindesc Allows to create and display fog effects on maps and battles.
+ * @plugindesc [v2.0.1] Allows to create and display fog effects on maps and battles.
  * @author Gabe (Gabriel Nascimento)
  * @url https://github.com/comuns-rpgmaker/GabeMZ
  * 

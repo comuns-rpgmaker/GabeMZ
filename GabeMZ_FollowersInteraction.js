@@ -7,7 +7,7 @@
 
 /*:
  * @target MZ
- * @plugindesc Allows to interact with followers, calling Common Events that can be freely configured.
+ * @plugindesc [v1.0.0] Allows to interact with followers, calling Common Events that can be freely configured.
  * @author Gabe (Gabriel Nascimento)
  * @url http://patreon.com/gabriel_nfd
  * @base GabeMZ_SmartFollowers

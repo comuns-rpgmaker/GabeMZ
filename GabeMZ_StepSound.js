@@ -9,7 +9,7 @@
 
 /*:
  * @target MZ
- * @plugindesc Allows characters to emit step sounds when walking.
+ * @plugindesc [v1.5.0] Allows characters to emit step sounds when walking.
  * @author Gabe (Gabriel Nascimento)
  * @url https://github.com/comuns-rpgmaker/GabeMZ
  * 

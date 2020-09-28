@@ -8,7 +8,7 @@
 
 /*:
  * @target MZ
- * @plugindesc Allows to add extra requirements to the equipments.
+ * @plugindesc [v1.0.0] Allows to add extra requirements to the equipments.
  * @author Gabe (Gabriel Nascimento)
  * @url https://github.com/comuns-rpgmaker/GabeMZ
  * 

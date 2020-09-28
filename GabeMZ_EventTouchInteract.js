@@ -7,7 +7,7 @@
 
 /*:
  * @target MZ
- * @plugindesc Allows you to interact with events using touch even from a distance.
+ * @plugindesc [v1.0.3] Allows you to interact with events using touch even from a distance.
  * @author Gabe (Gabriel Nascimento)
  * @url https://github.com/comuns-rpgmaker/GabeMZ
  * 

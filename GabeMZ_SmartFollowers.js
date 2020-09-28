@@ -7,7 +7,7 @@
 
 /*:
  * @target MZ
- * @plugindesc Changes the way followers behave for a more intelligent movement.
+ * @plugindesc [v1.0.5] Changes the way followers behave for a more intelligent movement.
  * @author Gabe (Gabriel Nascimento)
  * @url https://github.com/comuns-rpgmaker/GabeMZ
  * @orderBefore GabeMZ_FollowersControl
