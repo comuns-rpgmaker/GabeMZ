@@ -219,6 +219,9 @@
  * @max 100
  */
 
+var Imported = Imported || {};
+Imported.GMZ_StepSound = true;
+
 var GabeMZ               = GabeMZ || {};
 GabeMZ.StepSound         = GabeMZ.StepSound || {};
 GabeMZ.StepSound.VERSION = [1, 5, 1];
