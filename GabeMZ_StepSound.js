@@ -1,6 +1,7 @@
 //============================================================================
 // Gabe MZ - Step Sound
 //----------------------------------------------------------------------------
+// 23/10/20 | Version: 1.5.1 | Followers step sound bug fix
 // 07/09/20 | Version: 1.5.0 | Included new sound control parameters
 // 28/08/20 | Version: 1.0.0 | Released
 //----------------------------------------------------------------------------
@@ -9,7 +10,7 @@
 
 /*:
  * @target MZ
- * @plugindesc [v1.5.0] Allows characters to emit step sounds when walking.
+ * @plugindesc [v1.5.1] Allows characters to emit step sounds when walking.
  * @author Gabe (Gabriel Nascimento)
  * @url https://github.com/comuns-rpgmaker/GabeMZ
  * 
@@ -220,7 +221,7 @@
 
 var GabeMZ               = GabeMZ || {};
 GabeMZ.StepSound         = GabeMZ.StepSound || {};
-GabeMZ.StepSound.VERSION = [1, 5, 0];
+GabeMZ.StepSound.VERSION = [1, 5, 1];
 
 (() => {
 
@@ -303,7 +304,7 @@ GabeMZ.StepSound.VERSION = [1, 5, 0];
     // The game object class for the player. It contains event starting
     // determinants and map scrolling functions.
 
-    let _Game_Player_initMembers = Game_Player.prototype.initMembers;
+    const _Game_Player_initMembers = Game_Player.prototype.initMembers;
     Game_Player.prototype.initMembers = function() {
         _Game_Player_initMembers.call(this);
         this._stepSoundEmittance = GabeMZ.StepSound.playerStepSound;
@@ -319,6 +320,12 @@ GabeMZ.StepSound.VERSION = [1, 5, 0];
     Game_Follower.prototype.initMembers = function() {
         _Game_Follower_initMembers.call(this);
         this._stepSoundEmittance = GabeMZ.StepSound.followersStepSound;
+    };
+
+    const _Game_Follower_refresh = Game_Follower.prototype.refresh;
+    Game_Follower.prototype.refresh = function() {
+        _Game_Follower_refresh.call(this);
+        this._stepSoundEmittance = this.isVisible() && GabeMZ.StepSound.followersStepSound;
     };
 
     //-----------------------------------------------------------------------------
