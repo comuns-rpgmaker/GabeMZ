@@ -1,13 +1,13 @@
 //============================================================================
 // Gabe MZ - Smart Followers
 //----------------------------------------------------------------------------
-// 27/08/20 | Version: 1.0.5
+// 27/08/20 | Version: 1.0.6
 // This plugin is released under the zlib License.
 //============================================================================
 
 /*:
  * @target MZ
- * @plugindesc [v1.0.5] Changes the way followers behave for a more intelligent movement.
+ * @plugindesc [v1.0.6] Changes the way followers behave for a more intelligent movement.
  * @author Gabe (Gabriel Nascimento)
  * @url https://github.com/comuns-rpgmaker/GabeMZ
  * @orderBefore GabeMZ_FollowersControl
@@ -91,7 +91,7 @@
 
 var GabeMZ                    = GabeMZ || {};
 GabeMZ.SmartFollowers         = GabeMZ.SmartFollowers || {};
-GabeMZ.SmartFollowers.VERSION = [1, 0, 5];
+GabeMZ.SmartFollowers.VERSION = [1, 0, 6];
 
 (() => {
 
@@ -117,7 +117,7 @@ GabeMZ.SmartFollowers.VERSION = [1, 0, 5];
     let _Game_CharacterBase_initMembers = Game_CharacterBase.prototype.initMembers;
     Game_CharacterBase.prototype.initMembers = function() {
         _Game_CharacterBase_initMembers.call(this);
-        this._previousPosition = {x: 0, y: 0};
+        this._previousPosition = { x: 0, y: 0 };
         this._isMovingStraight = true
     }
 
@@ -148,11 +148,13 @@ GabeMZ.SmartFollowers.VERSION = [1, 0, 5];
     // determinants and map scrolling functions.
 
     Game_Player.prototype.moveStraight = function(d) {
+        this._previousPosition = { x: this.x, y: this.y };
         Game_Character.prototype.moveStraight.call(this, d);
         this._followers.updateMove();
     };
     
     Game_Player.prototype.moveDiagonally = function(horz, vert) {
+        this._previousPosition = { x: this.x, y: this.y };
         Game_Character.prototype.moveDiagonally.call(this, horz, vert);
         this._followers.updateMove();
     };
@@ -169,31 +171,51 @@ GabeMZ.SmartFollowers.VERSION = [1, 0, 5];
             this.setThrough(true);
             _Game_Follower_chaseCharacter.call(this, character);
         } else {
-            this.setThrough(false);
-            const sx = this.deltaXFrom(character.x);
-            const sy = this.deltaYFrom(character.y);
-            const px = this.deltaXFrom(character.previousPosition().x);
-            const py = this.deltaYFrom(character.previousPosition().y);
-            const asx = Math.abs(sx);
-            const asy = Math.abs(sy);
-            this._previousPosition = {x: this.x, y: this.y};
-            if (((asx > 1 && asy >= 1) || (asx >= 1 && asy > 1)) && character.isMovingStraight() 
-                && this.canPassDiagonally(this.x, this.y, sx > 0 ? 4 : 6, sy > 0 ? 8 : 2)) {
-                this.moveDiagonally(sx > 0 ? 4 : 6, sy > 0 ? 8 : 2);
-            } else if (asx > 1 && asy > 1) {
-                this.moveDiagonally(px > 0 ? 4 : 6, py > 0 ? 8 : 2);
-            } else if (asx > 1 && this.canPass(this.x, this.y, sx > 0 ? 4 : 6)) {
-                this.moveStraight(sx > 0 ? 4 : 6);
-            } else if (asy > 1 && this.canPass(this.x, this.y, sy > 0 ? 8 : 2)) {
-                this.moveStraight(sy > 0 ? 8 : 2);
-            } else if (asx > 1 || asy > 1) {
-                this.moveDiagonally(px > 0 ? 4 : 6, py > 0 ? 8 : 2);
-            } else {
-                if (GabeMZ.SmartFollowers.turnToward) this.turnTowardCharacter(character);
-            }
-            this.setMoveSpeed($gamePlayer.realMoveSpeed());
+            this._doChaseCharacter(character);
         }
     };
+
+    Game_Follower.prototype._doChaseCharacter = function(character) {
+        this.setThrough(false);
+        this._previousPosition = { x: this.x, y: this.y };
+
+        const sx = this.deltaXFrom(character.x);
+        const sy = this.deltaYFrom(character.y);
+
+        if (sx == 0 && sy == 0) {
+            if (GabeMZ.SmartFollowers.turnToward) {
+                this.turnTowardCharacter(character);
+            }
+        } else {
+            const px = this.deltaXFrom(character.previousPosition().x);
+            const py = this.deltaYFrom(character.previousPosition().y);
+
+            this._chaseWithDelta(character, sx, sy, px, py);
+        }
+
+        this.setMoveSpeed($gamePlayer.realMoveSpeed());
+    };
+
+    Game_Follower.prototype._chaseWithDelta = function(character, sx, sy, px, py) {
+        const asx = Math.abs(sx);
+        const asy = Math.abs(sy);
+
+        const dirX = sx > 0 ? 4 : 6;
+        const dirY = sy > 0 ? 8 : 2;
+
+        if (asx + asy > 2 && character.isMovingStraight()
+            && this.canPassDiagonally(this.x, this.y, dirX, dirY)) {
+            this.moveDiagonally(dirX, dirY);
+        } else if (asx > 1 && asy > 1) {
+            this.moveDiagonally(px > 0 ? 4 : 6, py > 0 ? 8 : 2);
+        } else if (asx > 1 && this.canPass(this.x, this.y, dirX)) {
+            this.moveStraight(dirX);
+        } else if (asy > 1 && this.canPass(this.x, this.y, dirY)) {
+            this.moveStraight(dirY);
+        } else if (asx > 1 || asy > 1) {
+            this.moveDiagonally(px > 0 ? 4 : 6, py > 0 ? 8 : 2);
+        }
+    }
 
     //-----------------------------------------------------------------------------
     // Game_Followers
@@ -205,5 +227,4 @@ GabeMZ.SmartFollowers.VERSION = [1, 0, 5];
             this._data[i].chaseCharacter(precedingCharacter);
         }
     };
-
 })();
