@@ -1,6 +1,7 @@
 //============================================================================
 // Gabe MZ - Fog Effects
 //----------------------------------------------------------------------------
+// 14/01/21 | Version: 2.0.2 | PT-BR header typo fix
 // 03/09/20 | Version: 2.0.1 | Scene return bug fix
 // 02/09/20 | Version: 2.0.0 | Completely rewritten code
 // 28/09/20 | Version> 1.1.0 | Redone fog effects layer system 
@@ -12,7 +13,7 @@
 
 /*:
  * @target MZ
- * @plugindesc [v2.0.1] Allows to create and display fog effects on maps and battles.
+ * @plugindesc [v2.0.2] Allows to create and display fog effects on maps and battles.
  * @author Gabe (Gabriel Nascimento)
  * @url https://github.com/comuns-rpgmaker/GabeMZ
  * 
@@ -187,7 +188,7 @@
 
 /*:pt
  * @target MZ
- * @plugindesc Adicionas efeitos de névoa ao jogo.
+ * @plugindesc [v2.0.2] Adicionas efeitos de névoa ao jogo.
  * @author Gabe (Gabriel Nascimento)
  * @url https://github.com/comuns-rpgmaker/GabeMZ
  * 
@@ -245,7 +246,7 @@
  * @desc Define as configurações de efeitos de névoa que serão usadas pelo plugin
  * @type struct<fogSettingsStruct>[]
  * 
- * @arg fogInMap
+ * @param fogInMap
  * @text Fog in Map?
  * @desc Define se os efeitos de névoa serão exibidos nos mapas do jogo por padrão.
  * @type boolean
@@ -363,7 +364,7 @@
 
 var GabeMZ                = GabeMZ || {};
 GabeMZ.FogEffects         = GabeMZ.FogEffects || {};
-GabeMZ.FogEffects.VERSION = [2, 0, 1];
+GabeMZ.FogEffects.VERSION = [2, 0, 2];
 
 (() => {
 
