@@ -1,6 +1,7 @@
 //============================================================================
 // Gabe MZ - Region Plus
 //----------------------------------------------------------------------------
+// 27/02/21 | Version: 1.0,1 | Repeated effects bug fix
 // 18/09/20 | Version: 1.0.0 | Released
 //----------------------------------------------------------------------------
 // This software is released under the zlib License.
@@ -8,7 +9,7 @@
 
 /*:
  * @target MZ
- * @plugindesc [v1.0.0]  Adds improvements and new functions to the game regions.
+ * @plugindesc [v1.0.1]  Adds improvements and new functions to the game regions.
  * @author Gabe (Gabriel Nascimento)
  * @url http://patreon.com/gabriel_nfd
  * 
@@ -92,7 +93,7 @@
 
 var GabeMZ                = GabeMZ || {};
 GabeMZ.RegionPlus         = GabeMZ.RegionPlus || {};
-GabeMZ.RegionPlus.VERSION = [1, 0, 0];
+GabeMZ.RegionPlus.VERSION = [1, 0, 1];
 
 (() => {
 
@@ -126,6 +127,7 @@ GabeMZ.RegionPlus.VERSION = [1, 0, 0];
     const _Game_Actor_checkFloorEffect = Game_Actor.prototype.checkFloorEffect;
     Game_Actor.prototype.checkFloorEffect = function() {
         _Game_Actor_checkFloorEffect.call(this);
+        if (this.actorId() != $gameParty.leader().actorId()) return;
         const commonEventId = $gameMap.commonRegion($gamePlayer.regionId());
         if (commonEventId) {
             $gameTemp.reserveCommonEvent(commonEventId);
