@@ -1,13 +1,14 @@
 //============================================================================
 // Gabe MZ - Followers Control
 //----------------------------------------------------------------------------
-// 26/08/20 | Version: 1.0.3
+// 20/04/21 | Version: 1.0.4 | Followers jump bug fix
+// 26/08/20 | Version: 1.0.0 | Released
 // This plugin is released under the zlib License.
 //============================================================================
 
 /*:
  * @target MZ
- * @plugindesc [v1.0.3] Allows to control the followers via the event commands.
+ * @plugindesc [v1.0.4] Allows to control the followers via the event commands.
  * @author Gabe (Gabriel Nascimento)
  * @url https://github.com/comuns-rpgmaker/GabeMZ
  * @orderAfter GabeMZ_SmartFollowers
@@ -116,7 +117,7 @@
  */
 var GabeMZ                      = GabeMZ || {};
 GabeMZ.FollowersControl         = GabeMZ.FollowersControl || {};
-GabeMZ.FollowersControl.VERSION = [1, 0, 3];
+GabeMZ.FollowersControl.VERSION = [1, 0, 4];
 
 (() => {
 
@@ -178,6 +179,11 @@ GabeMZ.FollowersControl.VERSION = [1, 0, 3];
     let _Game_Followers_updateMove = Game_Followers.prototype.updateMove;
     Game_Followers.prototype.updateMove = function() {
         if (!GabeMZ.FollowersControl.followerControl) _Game_Followers_updateMove.call(this);
+    };
+
+    let _Game_Followers_jumpAll = Game_Followers.prototype.jumpAll;
+    Game_Followers.prototype.jumpAll = function() {
+        if (!GabeMZ.FollowersControl.followerControl) _Game_Followers_jumpAll.call(this);
     };
 
 })();
