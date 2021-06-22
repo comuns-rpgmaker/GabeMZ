@@ -25,7 +25,7 @@ Imported.GMZ_StopAudioOnBlur = true;
 
 var GabeMZ                     = GabeMZ || {};
 GabeMZ.StopAudioOnBlur         = GabeMZ.StopAudioOnBlur || {};
-GabeMZ.StopAudioOnBlur.VERSION = [1, 1, 0];
+GabeMZ.StopAudioOnBlur.VERSION = [1, 0, 0];
 
 (() => {
 
