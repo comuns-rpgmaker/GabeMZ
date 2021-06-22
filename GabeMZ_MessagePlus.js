@@ -18,8 +18,8 @@
  *  - This plugin is released under the zlib License.
  * 
  * This plugin adds significant improvements to the default RPG Maker
- * message system. Due to all the complexity of the plugin and for a 
- * better explanation of each command and function, the plugin's 
+ * message system. Due to all the complexity of the plugin and for a
+ * better explanation of each command and function, the plugin's
  * documentation was written directly in my page. You can read at:
  * - https://comuns-rpgmaker.github.io/GabeMZ/Plugins/GMZ_MessagePlus
  * 
