@@ -1,8 +1,8 @@
 //============================================================================
 // Gabe MZ - Step Sound
 //----------------------------------------------------------------------------
-// 23/10/20 | Version: 1.5.1 | Followers step sound bug fix
-// 07/09/20 | Version: 1.5.0 | Included new sound control parameters
+// 23/10/20 | Version: 1.1.1 | Followers step sound bug fix
+// 07/09/20 | Version: 1.1.0 | Included new sound control parameters
 // 28/08/20 | Version: 1.0.0 | Released
 //----------------------------------------------------------------------------
 // This plugin is released under the zlib License.
@@ -224,7 +224,7 @@ Imported.GMZ_StepSound = true;
 
 var GabeMZ               = GabeMZ || {};
 GabeMZ.StepSound         = GabeMZ.StepSound || {};
-GabeMZ.StepSound.VERSION = [1, 5, 1];
+GabeMZ.StepSound.VERSION = [1, 1, 1];
 
 (() => {
 
@@ -271,14 +271,14 @@ GabeMZ.StepSound.VERSION = [1, 5, 1];
     Game_CharacterBase.prototype.increaseSteps = function() {
         _Game_CharacterBase_increaseSteps.call(this)
         const frequency = this.isDashing() ? GabeMZ.StepSound.dashingFrequency : GabeMZ.StepSound.walkingFrequency;
-        if ((Math.floor(Math.random() * 100) + 1) > frequency) return;
+        if ((Math.floor(Math.random() * 100)) > frequency) return;
         const settings = this.stepSound();
         if (this.stepSoundEmittance() && settings && this.isNearTheScreen()) {
             let variance = Math.floor(Math.random() * parseInt(settings.variance)) + 1;
             let name = parseInt(settings.variance) == 1 ? `${settings.baseName}` : `${settings.baseName + variance}`;
-            let volume = parseInt(settings.volume) + (Math.floor(Math.random() * parseInt(settings.volumeVariance)) + 1);
-            let pitch = parseInt(settings.pitch) + (Math.floor(Math.random() * parseInt(settings.pitchVariance)) + 1);
-            let pan = parseInt(settings.pan) + (Math.floor(Math.random() * parseInt(settings.panVariance)) + 1);
+            let volume = parseInt(settings.volume) + (Math.floor(Math.random() * parseInt(settings.volumeVariance)));
+            let pitch = parseInt(settings.pitch) + (Math.floor(Math.random() * parseInt(settings.pitchVariance)));
+            let pan = parseInt(settings.pan) + (Math.floor(Math.random() * parseInt(settings.panVariance)));
             let se = {
                 name: name,
                 volume: volume,
