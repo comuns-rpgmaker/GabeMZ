@@ -2,6 +2,7 @@
 // Gabe MZ - Followers Interaction
 //----------------------------------------------------------------------------
 // 08/09/20 | Version: 1.0.0 | Released
+//----------------------------------------------------------------------------
 // This plugin is released under the zlib License.
 //============================================================================
 
@@ -61,6 +62,9 @@
  * @desc Set the Common Event ID that will be called when the player interacts with the defined actor.
  * @type common_event
  */
+
+var Imported = Imported || {};
+Imported.GMZ_FollowersInteraction = true;
 
 var GabeMZ                          = GabeMZ || {};
 GabeMZ.FollowersInteraction         = GabeMZ.FollowersInteraction || {};
