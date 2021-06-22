@@ -204,7 +204,6 @@ GabeMZ.SmartFollowers.VERSION = [1, 1, 0];
 
         if (sx == 0 && sy == 0) {
             if (GabeMZ.SmartFollowers.turnToward) {
-                console.log("OI")
                 this.turnTowardCharacter(character);
             }
         } else {
@@ -249,8 +248,8 @@ GabeMZ.SmartFollowers.VERSION = [1, 1, 0];
         if (!GabeMZ.SmartFollowers.preventDiagonalClip) return _Game_Follower_canPassDiagonally.call(this, ...arguments);
         const x2 = $gameMap.roundXWithDirection(x, horz);
         const y2 = $gameMap.roundYWithDirection(y, vert);
-        return (this.canPass(x, y, vert) && this.canPass(x, y2, horz) &&
-                        this.canPass(x, y, horz) && this.canPass(x2, y, vert));
+        return this.canPass(x, y, horz) && (this.canPass(x, y, vert) &&
+            this.canPass(x, y2, horz) && this.canPass(x2, y, vert));
     }
 
     //-----------------------------------------------------------------------------
