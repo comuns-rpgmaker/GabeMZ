@@ -91,6 +91,9 @@
  * @default true
  */
 
+var Imported = Imported || {};
+Imported.GMZ_RegionPlus = true;
+
 var GabeMZ                = GabeMZ || {};
 GabeMZ.RegionPlus         = GabeMZ.RegionPlus || {};
 GabeMZ.RegionPlus.VERSION = [1, 0, 1];
