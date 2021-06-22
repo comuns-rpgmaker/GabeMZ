@@ -21,7 +21,7 @@
  * 
  * How to Setup a Step Sound:
  * 
- * The first step are set the Step Sound Settings in this plugin 
+ * The first step are set the Step Sound Settings in this plugin
  * parameters. The definitions are simple, but pay attention to the 
  * base name of the SE file and it's variations number. The plugin 
  * runs the SEs randomly within the maximum number of variations.
