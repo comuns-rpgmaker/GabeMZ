@@ -1,13 +1,17 @@
 //============================================================================
 // Gabe MZ - Smart Followers
 //----------------------------------------------------------------------------
-// 27/08/20 | Version: 1.0.6
+// 22/06/21 | Version: 1.1.0 | Improved the followers general behavior
+// 04/01/21 | Version: 1.0.2 | Diagonal movement issues bug fix
+// 27/08/20 | Version: 1.0.1 | Followers gathering bux fix
+// 27/08/20 | Version: 1.0.0 | Released
+//----------------------------------------------------------------------------
 // This plugin is released under the zlib License.
 //============================================================================
 
 /*:
  * @target MZ
- * @plugindesc [v1.0.6] Changes the way followers behave for a more intelligent movement.
+ * @plugindesc [v1.1.0] Changes the way followers behave for a more intelligent movement.
  * @author Gabe (Gabriel Nascimento)
  * @url https://github.com/comuns-rpgmaker/GabeMZ
  * @orderBefore GabeMZ_FollowersControl
@@ -36,6 +40,12 @@
  * @type boolean
  * @default true
  * 
+ * @param preventDiagonalClip
+ * @text Prevent Diagonal Clip
+ * @desc When ON, prevent follower diagonal movemnt clip.
+ * @type boolean
+ * @default true
+ * 
  * @command setTurnToward
  * @text Switch Turn Toward Next Follower
  * @desc Switch Turn Toward Next Follower Setting
@@ -49,7 +59,7 @@
 
 /*:pt
  * @target MZ
- * @plugindesc Muda o comportamento dos seguidores para que se movam de maneira mais inteligente.
+ * @plugindesc [v1.1.0] Muda o comportamento dos seguidores para que se movam de maneira mais inteligente.
  * @author Gabe (Gabriel Nascimento)
  * @url https://github.com/comuns-rpgmaker/GabeMZ
  * 
@@ -78,6 +88,12 @@
  * @type boolean
  * @default true
  * 
+ * @param preventDiagonalClip
+ * @text Prevent Diagonal Clip
+ * @desc Quando ON, previnirá que os seguidores façam movimentos diagonais que clipem nos tiles.
+ * @type boolean
+ * @default true
+ * 
  * @command setTurnToward
  * @text Switch Turn Toward Next Follower
  * @desc Alterne se os seguidores olharão na direção do próximo seguidor ou não.
@@ -89,23 +105,27 @@
  * @default true
  */
 
+var Imported = Imported || {};
+Imported.GMZ_SmartFollowers = true;
+
 var GabeMZ                    = GabeMZ || {};
 GabeMZ.SmartFollowers         = GabeMZ.SmartFollowers || {};
-GabeMZ.SmartFollowers.VERSION = [1, 0, 6];
+GabeMZ.SmartFollowers.VERSION = [1, 1, 0];
 
 (() => {
 
     const pluginName = "GabeMZ_SmartFollowers";
     GabeMZ.params = PluginManager.parameters(pluginName);
-    GabeMZ.SmartFollowers.turnToward = JSON.parse(GabeMZ.params.turnToward);
-
+    GabeMZ.SmartFollowers.turnToward = GabeMZ.params.turnToward == "true";
+    GabeMZ.SmartFollowers.preventDiagonalClip = GabeMZ.params.preventDiagonalClip == "true";
+    
     //-----------------------------------------------------------------------------
     // PluginManager
     //
     // The static class that manages the plugins.
 
     PluginManager.registerCommand(pluginName, "setTurnToward", args => {
-        GabeMZ.SmartFollowers.turnToward = JSON.parse(args.turnToward);
+        GabeMZ.SmartFollowers.turnToward = args.turnToward == "true";
     });
 
     //-----------------------------------------------------------------------------
@@ -114,20 +134,20 @@ GabeMZ.SmartFollowers.VERSION = [1, 0, 6];
     // The superclass of Game_Character. It handles basic information, such as
     // coordinates and images, shared by all characters.
 
-    let _Game_CharacterBase_initMembers = Game_CharacterBase.prototype.initMembers;
+    const _Game_CharacterBase_initMembers = Game_CharacterBase.prototype.initMembers;
     Game_CharacterBase.prototype.initMembers = function() {
         _Game_CharacterBase_initMembers.call(this);
         this._previousPosition = { x: 0, y: 0 };
         this._isMovingStraight = true
     }
 
-    let _Game_CharacterBase_moveStraight = Game_CharacterBase.prototype.moveStraight;
+    const _Game_CharacterBase_moveStraight = Game_CharacterBase.prototype.moveStraight;
     Game_CharacterBase.prototype.moveStraight = function(d) {
         _Game_CharacterBase_moveStraight.call(this, d);
         this._isMovingStraight = true;
     };
 
-    let _Game_CharacterBase_moveDiagonally = Game_CharacterBase.prototype.moveDiagonally;
+    const _Game_CharacterBase_moveDiagonally = Game_CharacterBase.prototype.moveDiagonally;
     Game_CharacterBase.prototype.moveDiagonally = function(horz, vert) {
         _Game_CharacterBase_moveDiagonally.call(this, horz, vert);
         this._isMovingStraight = false;
@@ -165,7 +185,7 @@ GabeMZ.SmartFollowers.VERSION = [1, 0, 6];
     // The game object class for a follower. A follower is an allied character,
     // other than the front character, displayed in the party.
 
-    let _Game_Follower_chaseCharacter = Game_Follower.prototype.chaseCharacter;
+    const _Game_Follower_chaseCharacter = Game_Follower.prototype.chaseCharacter;
     Game_Follower.prototype.chaseCharacter = function(character) {
         if ($gamePlayer.areFollowersGathering()) {
             this.setThrough(true);
@@ -184,6 +204,7 @@ GabeMZ.SmartFollowers.VERSION = [1, 0, 6];
 
         if (sx == 0 && sy == 0) {
             if (GabeMZ.SmartFollowers.turnToward) {
+                console.log("OI")
                 this.turnTowardCharacter(character);
             }
         } else {
@@ -214,17 +235,34 @@ GabeMZ.SmartFollowers.VERSION = [1, 0, 6];
             this.moveStraight(dirY);
         } else if (asx > 1 || asy > 1) {
             this.moveDiagonally(px > 0 ? 4 : 6, py > 0 ? 8 : 2);
+        } else if (asx + asy > 1 && character.isMovingStraight()
+            && !this.canPassDiagonally(this.x, this.y, dirX, dirY)
+            && GabeMZ.SmartFollowers.preventDiagonalClip) {
+            this.moveTowardCharacter(character);
+        } else {
+            if (GabeMZ.SmartFollowers.turnToward) this.turnTowardCharacter(character);
         }
+    }
+
+    const _Game_Follower_canPassDiagonally = Game_Follower.prototype.canPassDiagonally;
+    Game_Follower.prototype.canPassDiagonally = function(x, y, horz, vert) {
+        if (!GabeMZ.SmartFollowers.preventDiagonalClip) return _Game_Follower_canPassDiagonally.call(this, ...arguments);
+        const x2 = $gameMap.roundXWithDirection(x, horz);
+        const y2 = $gameMap.roundYWithDirection(y, vert);
+        return (this.canPass(x, y, vert) && this.canPass(x, y2, horz) &&
+                        this.canPass(x, y, horz) && this.canPass(x2, y, vert));
     }
 
     //-----------------------------------------------------------------------------
     // Game_Followers
     //
     // The wrapper class for a follower array.
+
     Game_Followers.prototype.updateMove = function() {
         for (let i = 0; i <= this._data.length - 1; i++) {
             const precedingCharacter = i > 0 ? this._data[i - 1] : $gamePlayer;
             this._data[i].chaseCharacter(precedingCharacter);
         }
     };
+
 })();
