@@ -5,7 +5,7 @@
 // 03/09/20 | Version: 2.0.1 | Scene return bug fix
 // 02/09/20 | Version: 2.0.0 | Completely rewritten code
 // 28/09/20 | Version> 1.1.0 | Redone fog effects layer system 
-// 26/08/20 | Version: 1.0.3 | Cleaned code and help section improved
+// 26/08/20 | Version: 1.0.1 | Cleaned code and help section improved
 // 25/08/20 | Version: 1.0.0 | Released
 //----------------------------------------------------------------------------
 // This software is released under the zlib License.
@@ -55,8 +55,8 @@
  *       | This note tag add the fog effect from specific id to the
  *       | specific layer.
  * Usage Example:
- *   <addFog 0: 1> 
- *       | This tag adds the fog effects of ID 1 at layer 0.
+ *   <addFog 1: 1> 
+ *       | This tag adds the fog effects of ID 1 at layer 1.
  *   <addFog 4: 3> 
  *       | This tag adds the fog effects of ID 3 at layer 4.
  *   <addFog 2: 7> 
@@ -362,6 +362,9 @@
  * @default 0
  */ 
 
+var Imported = Imported || {};
+Imported.GMZ_FogEffects = true;
+
 var GabeMZ                = GabeMZ || {};
 GabeMZ.FogEffects         = GabeMZ.FogEffects || {};
 GabeMZ.FogEffects.VERSION = [2, 0, 2];
@@ -375,6 +378,7 @@ GabeMZ.FogEffects.VERSION = [2, 0, 2];
     GabeMZ.FogEffects.fogInBattle = JSON.parse(GabeMZ.params.fogInBattle);
     GabeMZ.FogEffects.fogList = [];
     GabeMZ.FogEffects.currentMap = 0;
+
     //-----------------------------------------------------------------------------
     // PluginManager
     //
@@ -422,7 +426,6 @@ GabeMZ.FogEffects.VERSION = [2, 0, 2];
     ImageManager.loadFogs = function(filename) {
         return this.loadBitmap("img/fogs/", filename);
     };
-
 
     //-----------------------------------------------------------------------------
     // Spriteset_Fog
@@ -526,7 +529,6 @@ GabeMZ.FogEffects.VERSION = [2, 0, 2];
         fog.constY += fog.speedY;
         fog.origin.y = ($gameMap.displayY() * $gameMap.tileHeight()) + fog.constY - 96;
     }
-
 
     //-----------------------------------------------------------------------------
     // Spriteset_Base
