@@ -115,6 +115,10 @@
  * @default 0
  *
  */
+
+var Imported = Imported || {};
+Imported.GMZ_FollowersControl = true;
+
 var GabeMZ                      = GabeMZ || {};
 GabeMZ.FollowersControl         = GabeMZ.FollowersControl || {};
 GabeMZ.FollowersControl.VERSION = [1, 0, 4];
