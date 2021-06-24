@@ -9,7 +9,7 @@
 
 /*:
  * @target MZ
- * @plugindesc [v1.0.1]  Adds improvements and new functions to the game regions.
+ * @plugindesc [v1.0.1] Adds improvements and new functions to the game regions.
  * @author Gabe (Gabriel Nascimento)
  * @url http://patreon.com/gabriel_nfd
  * 
