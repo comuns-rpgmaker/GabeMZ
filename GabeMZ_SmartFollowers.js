@@ -249,12 +249,14 @@ GabeMZ.SmartFollowers.VERSION = [1, 1, 1];
     }
 
     const _Game_Follower_canPass = Game_Follower.prototype.canPass;
-    Game_Follower.prototype.canPass = function(x, y, d) {
+    Game_Follower.prototype.canPass = function(x, y, d, diagonal) {
         const canPass = _Game_Follower_canPass.call(this, ...arguments);;
-        const x2 = $gameMap.roundXWithDirection(x, d);
-        const y2 = $gameMap.roundYWithDirection(y, d);
-        if (!canPass && this.isCollidedWithCharacters(x2, y2)) {
-            return true;
+        if (diagonal) {
+            const x2 = $gameMap.roundXWithDirection(x, d);
+            const y2 = $gameMap.roundYWithDirection(y, d);
+            if (!canPass && this.isCollidedWithCharacters(x2, y2)) {
+                return true;
+            }
         }
         return canPass;
     };
@@ -264,8 +266,8 @@ GabeMZ.SmartFollowers.VERSION = [1, 1, 1];
         if (!GabeMZ.SmartFollowers.preventDiagonalClip) return _Game_Follower_canPassDiagonally.call(this, ...arguments);
         const x2 = $gameMap.roundXWithDirection(x, horz);
         const y2 = $gameMap.roundYWithDirection(y, vert);
-        return this.canPass(x, y, horz) && (this.canPass(x, y, vert) &&
-            this.canPass(x, y2, horz) && this.canPass(x2, y, vert));
+        return this.canPass(x, y, horz, true) && (this.canPass(x, y, vert, true) &&
+            this.canPass(x, y2, horz, true) && this.canPass(x2, y, vert, true));
     }
 
     //-----------------------------------------------------------------------------
