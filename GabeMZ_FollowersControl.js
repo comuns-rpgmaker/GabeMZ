@@ -176,7 +176,7 @@ GabeMZ.FollowersControl.VERSION = [1, 1, 0];
     //
     // The interpreter for running event commands.
 
-    let _Game_Interpreter_character = Game_Interpreter.prototype.character;
+    const _Game_Interpreter_character = Game_Interpreter.prototype.character;
     Game_Interpreter.prototype.character = function(param) {
         if ($gameParty.inBattle()) {
             return null;
@@ -194,7 +194,7 @@ GabeMZ.FollowersControl.VERSION = [1, 1, 0];
     // The game object class for a follower. A follower is an allied character,
     // other than the front character, displayed in the party.
 
-    let _Game_Follower_update = Game_Follower.prototype.update;
+    const _Game_Follower_update = Game_Follower.prototype.update;
     Game_Follower.prototype.update = function() {
         if (GabeMZ.FollowersControl.followerControl) {
             Game_Character.prototype.update.call(this);
@@ -208,12 +208,12 @@ GabeMZ.FollowersControl.VERSION = [1, 1, 0];
     //
     // The wrapper class for a follower array.
 
-    let _Game_Followers_updateMove = Game_Followers.prototype.updateMove;
+    const _Game_Followers_updateMove = Game_Followers.prototype.updateMove;
     Game_Followers.prototype.updateMove = function() {
         if (!GabeMZ.FollowersControl.followerControl) _Game_Followers_updateMove.call(this);
     };
 
-    let _Game_Followers_jumpAll = Game_Followers.prototype.jumpAll;
+    const _Game_Followers_jumpAll = Game_Followers.prototype.jumpAll;
     Game_Followers.prototype.jumpAll = function() {
         if (!GabeMZ.FollowersControl.followerControl) _Game_Followers_jumpAll.call(this);
     };
