@@ -1,6 +1,7 @@
 //============================================================================
 // Gabe MZ - Smart Followers
 //----------------------------------------------------------------------------
+// 24/06/21 | Version: 1.1.1 | Ladders and event collision bug fix
 // 22/06/21 | Version: 1.1.0 | Improved the followers general behavior
 // 04/01/21 | Version: 1.0.2 | Diagonal movement issues bug fix
 // 27/08/20 | Version: 1.0.1 | Followers gathering bux fix
@@ -11,7 +12,7 @@
 
 /*:
  * @target MZ
- * @plugindesc [v1.1.0] Changes the way followers behave for a more intelligent movement.
+ * @plugindesc [v1.1.1] Changes the way followers behave for a more intelligent movement.
  * @author Gabe (Gabriel Nascimento)
  * @url https://github.com/comuns-rpgmaker/GabeMZ
  * @orderBefore GabeMZ_FollowersControl
@@ -59,7 +60,7 @@
 
 /*:pt
  * @target MZ
- * @plugindesc [v1.1.0] Muda o comportamento dos seguidores para que se movam de maneira mais inteligente.
+ * @plugindesc [v1.1.1] Muda o comportamento dos seguidores para que se movam de maneira mais inteligente.
  * @author Gabe (Gabriel Nascimento)
  * @url https://github.com/comuns-rpgmaker/GabeMZ
  * 
@@ -110,7 +111,7 @@ Imported.GMZ_SmartFollowers = true;
 
 var GabeMZ                    = GabeMZ || {};
 GabeMZ.SmartFollowers         = GabeMZ.SmartFollowers || {};
-GabeMZ.SmartFollowers.VERSION = [1, 1, 0];
+GabeMZ.SmartFollowers.VERSION = [1, 1, 1];
 
 (() => {
 
@@ -201,7 +202,6 @@ GabeMZ.SmartFollowers.VERSION = [1, 1, 0];
 
         const sx = this.deltaXFrom(character.x);
         const sy = this.deltaYFrom(character.y);
-
         if (sx == 0 && sy == 0) {
             if (GabeMZ.SmartFollowers.turnToward) {
                 this.turnTowardCharacter(character);
@@ -237,11 +237,26 @@ GabeMZ.SmartFollowers.VERSION = [1, 1, 0];
         } else if (asx + asy > 1 && character.isMovingStraight()
             && !this.canPassDiagonally(this.x, this.y, dirX, dirY)
             && GabeMZ.SmartFollowers.preventDiagonalClip) {
-            this.moveTowardCharacter(character);
+                if (character.direction() == 2 || character.direction() == 8) {
+                    this.moveStraight(dirX);
+                } else {
+                    this.moveStraight(dirY);
+                }
         } else {
             if (GabeMZ.SmartFollowers.turnToward) this.turnTowardCharacter(character);
         }
     }
+
+    const _Game_Follower_canPass = Game_Follower.prototype.canPass;
+    Game_Follower.prototype.canPass = function(x, y, d) {
+        const canPass = _Game_Follower_canPass.call(this, ...arguments);;
+        const x2 = $gameMap.roundXWithDirection(x, d);
+        const y2 = $gameMap.roundYWithDirection(y, d);
+        if (!canPass && this.isCollidedWithCharacters(x2, y2)) {
+            return true;
+        }
+        return canPass;
+    };
 
     const _Game_Follower_canPassDiagonally = Game_Follower.prototype.canPassDiagonally;
     Game_Follower.prototype.canPassDiagonally = function(x, y, horz, vert) {
