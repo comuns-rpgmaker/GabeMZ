@@ -202,6 +202,7 @@ GabeMZ.SmartFollowers.VERSION = [1, 1, 1];
 
         const sx = this.deltaXFrom(character.x);
         const sy = this.deltaYFrom(character.y);
+        
         if (sx == 0 && sy == 0) {
             if (GabeMZ.SmartFollowers.turnToward) {
                 this.turnTowardCharacter(character);
