@@ -598,7 +598,7 @@ GabeMZ.FogEffects.VERSION = [2, 1, 0];
     const _ConfigManager_applyData = ConfigManager.applyData;
     ConfigManager.applyData = function(config) {
         _ConfigManager_applyData.call(this, config);
-        this.fogEffects = this.readFlag(config, "fogEffects", false);
+        this.fogEffects = this.readFlag(config, "fogEffects", true);
     };
 
 })();
