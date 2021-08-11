@@ -229,12 +229,13 @@ GabeMZ.StepSound.VERSION = [1, 1, 1];
 (() => {
 
     const pluginName = "GabeMZ_StepSound";
-    GabeMZ.params = PluginManager.parameters(pluginName);
-    GabeMZ.StepSound.stepSoundSettings = JSON.parse(GabeMZ.params.stepSoundSettings)
-    GabeMZ.StepSound.playerStepSound = JSON.parse(GabeMZ.params.playerStepSound);
-    GabeMZ.StepSound.followersStepSound = JSON.parse(GabeMZ.params.followersStepSound);
-    GabeMZ.StepSound.walkingFrequency = JSON.parse(GabeMZ.params.walkingFrequency);
-    GabeMZ.StepSound.dashingFrequency = JSON.parse(GabeMZ.params.dashingFrequency);
+    const params = PluginManager.parameters(pluginName);
+
+    GabeMZ.StepSound.stepSoundSettings = JSON.parse(params.stepSoundSettings)
+    GabeMZ.StepSound.playerStepSound = JSON.parse(params.playerStepSound);
+    GabeMZ.StepSound.followersStepSound = JSON.parse(params.followersStepSound);
+    GabeMZ.StepSound.walkingFrequency = JSON.parse(params.walkingFrequency);
+    GabeMZ.StepSound.dashingFrequency = JSON.parse(params.dashingFrequency);
 
     //-----------------------------------------------------------------------------
     // PluginManager
