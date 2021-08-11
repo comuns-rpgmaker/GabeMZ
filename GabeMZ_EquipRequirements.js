@@ -1,6 +1,7 @@
 //============================================================================
 // Gabe MZ - Equip Requirements
 //----------------------------------------------------------------------------
+// 11/08/21 | Version: 1.0.1 | Added some new equipment note tags.
 // 08/09/20 | Version: 1.0.0 | Released
 //----------------------------------------------------------------------------
 // This software is released under the zlib License.
@@ -8,7 +9,7 @@
 
 /*:
  * @target MZ
- * @plugindesc [v1.0.0] Allows to add extra requirements to the equipments.
+ * @plugindesc [v1.0.1] Allows to add extra requirements to the equipments.
  * @author Gabe (Gabriel Nascimento)
  * @url https://github.com/comuns-rpgmaker/GabeMZ
  * 
@@ -55,7 +56,14 @@
  *   <require classId id>
  *       | Requires that actor have the specified class id.
  *   <require switch id>
- *       | Requires the switch of the specified id is ON,
+ *       | Requires the switch of the specified id is ON.
+ *   <require var variableId value>
+ *       | Requires the variable of the specified id is equal 
+ *       | to or greater than the specified value.
+ *   <require cpram cparamId value>
+ *       | Requires that actor has the specified custom parameter 
+ *       | equal to or greater than the specified value. NOTE: Only 
+ *       | compatible if using the plugin Gabe MZ  - Custom Parameters.
  * 
  * Usage Examples:
  *   <require level 16>
@@ -79,13 +87,14 @@
 
 var GabeMZ                       = GabeMZ || {};
 GabeMZ.EquipRequirements         = GabeMZ.EquipRequirements || {};
-GabeMZ.EquipRequirements.VERSION = [1, 0, 0];
+GabeMZ.EquipRequirements.VERSION = [1, 0, 1];
 
 (() => {
 
     const pluginName = "GabeMZ_EquipRequirements";
-    GabeMZ.params = PluginManager.parameters(pluginName);
-    GabeMZ.EquipRequirements.hideEquip = JSON.parse(GabeMZ.params.hideEquip);
+    const params = PluginManager.parameters(pluginName);
+
+    GabeMZ.EquipRequirements.hideEquip = JSON.parse(params.hideEquip);
 
     //-----------------------------------------------------------------------------
     // Window_EquipItem
@@ -121,50 +130,60 @@ GabeMZ.EquipRequirements.VERSION = [1, 0, 0];
 
     Game_Actor.prototype.checkEquipRequiriments = function(actor, item) {
         let result = true;
-        let reg = /<require\s+(\w+)\s+(\d+)>/g;
+        let reg = /<require\s+([\w\s]*?)>/g; 
         let match;
         while (match = reg.exec(item.note)) {
-            switch (match[1]) {
+            match = match[1].split(/\s/);
+            switch (match[0]) {
                 case "level":
-                    if (result) result = actor.level >= match[2];
+                    if (result) result = actor.level >= match[1];
                     break;
                 case "maxhp":
-                    if (result) result = actor.paramBase(0) >= match[2];
+                    if (result) result = actor.paramBase(0) >= match[1];
                     break;
                 case "maxmp":
-                    if (result) result = actor.paramBase(1) >= match[2];
+                    if (result) result = actor.paramBase(1) >= match[1];
                     break;
                 case "attack":
-                    if (result) result = actor.atk >= match[2];
+                    if (result) result = actor.atk >= match[1];
                     break;
                 case "defense":
-                    if (result) result = actor.def >= match[2];
+                    if (result) result = actor.def >= match[1];
                     break;
                 case "magicAttack":
-                    if (result) result = actor.mat >= match[2];
+                    if (result) result = actor.mat >= match[1];
                     break;
                 case "magicDefense":
-                    if (result) result = actor.mdf >= match[2];
+                    if (result) result = actor.mdf >= match[1];
                     break;
                 case "agility":
-                    if (result) result = actor.agi >= match[2];
+                    if (result) result = actor.agi >= match[1];
                     break;
                 case "luck":
-                    if (result) result = actor.luk >= match[2];
+                    if (result) result = actor.luk >= match[1];
                     break;
                 case "actorId":
-                    if (result) result = actor._actorId == match[2];
+                    if (result) result = actor._actorId == match[1];
                     break;
                 case "classId":
-                    if (result) result = actor.classId == match[2];
+                    if (result) result = actor.classId == match[1];
                     break;
                 case "switch":
-                    if (result) result = $gameSwitches.value(match[2]);
+                    if (result) result = $gameSwitches.value(match[1]);
                     break;
+                case "var":
+                    if (result) result = $gameVariables.value(match[1]) >= match[2];
+                    break;
+                case "cparam": {
+                    if (Imported.GMZ_CustomParameters) {
+                        if (result) result = this.cparam(match[1]) >= match[2];
+                    }
+                    break;
+                }
             }
         }
         return result;
-    }
+    };
 
     const _Game_Actor_changeEquip = Game_Actor.prototype.changeEquip;
     Game_Actor.prototype.changeEquip = function(slotId, item) {
