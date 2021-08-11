@@ -8,7 +8,7 @@
 
 /*:
  * @target MZ
- * @plugindesc [v1.0.0]  Allows to transform the pictures into a animated spritesheets.
+ * @plugindesc [v1.0.0] Allows to transform the pictures into a animated spritesheets.
  * @author Gabe (Gabriel Nascimento)
  * @url http://patreon.com/gabriel_nfd
  * 
@@ -198,6 +198,7 @@ GabeMZ.PictureSpritesheet.VERSION = [1, 0, 0];
 (() => {
 
     const pluginName = "GabeMZ_PictureSpritesheet";
+    
     GabeMZ.PictureSpritesheet.spriteSheetInfo = [];
 
     //-----------------------------------------------------------------------------
