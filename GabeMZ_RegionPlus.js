@@ -101,11 +101,12 @@ GabeMZ.RegionPlus.VERSION = [1, 0, 1];
 (() => {
 
     const pluginName = "GabeMZ_RegionPlus";
-    GabeMZ.params = PluginManager.parameters(pluginName);
-    GabeMZ.RegionPlus.onlyPlayerRegion      = parseInt(GabeMZ.params.onlyPlayerRegion);
-    GabeMZ.RegionPlus.onlyEventRegion       = parseInt(GabeMZ.params.onlyEventRegion);
-    GabeMZ.RegionPlus.impassableRegion      = parseInt(GabeMZ.params.impassableRegion);
-    GabeMZ.RegionPlus.passableRegion        = parseInt(GabeMZ.params.passableRegion);
+    const params = PluginManager.parameters(pluginName);
+
+    GabeMZ.RegionPlus.onlyPlayerRegion      = parseInt(params.onlyPlayerRegion);
+    GabeMZ.RegionPlus.onlyEventRegion       = parseInt(params.onlyEventRegion);
+    GabeMZ.RegionPlus.impassableRegion      = parseInt(params.impassableRegion);
+    GabeMZ.RegionPlus.passableRegion        = parseInt(params.passableRegion);
 
     //-----------------------------------------------------------------------------
     // PluginManager
