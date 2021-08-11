@@ -148,7 +148,8 @@ GabeMZ.FollowersControl.VERSION = [1, 1, 0];
 (() => {
 
     const pluginName = "GabeMZ_FollowersControl";
-    GabeMZ.params = PluginManager.parameters(pluginName);
+    const params = PluginManager.parameters(pluginName);
+    
     GabeMZ.FollowersControl.followerControl = false;
     GabeMZ.FollowersControl.followerID = 0;
 
