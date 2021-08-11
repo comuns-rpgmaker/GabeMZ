@@ -1,6 +1,7 @@
 //============================================================================
 // Gabe MZ - Message Plus
 //----------------------------------------------------------------------------
+// 11/08/21 | Version: 1.1.0 | New features, various fixes and improvements
 // 27/09/20 | Version: 1.0.1 | Compatibility path with VisuMZ_1_MessageCore
 // 26/09/20 | Version: 1.0.0 | Released
 //----------------------------------------------------------------------------
@@ -9,7 +10,7 @@
 
 /*:
  * @target MZ
- * @plugindesc [v1.0.1] Improved message system.
+ * @plugindesc [v1.1.0] Improved message system.
  * @author Gabe (Gabriel Nascimento)
  * @url http://patreon.com/gabriel_nfd
  * @orderAfter VisuMZ_1_MessageCore
@@ -18,8 +19,8 @@
  *  - This plugin is released under the zlib License.
  * 
  * This plugin adds significant improvements to the default RPG Maker
- * message system. Due to all the complexity of the plugin and for a
- * better explanation of each command and function, the plugin's
+ * message system. Due to all the complexity of the plugin and for a 
+ * better explanation of each command and function, the plugin's 
  * documentation was written directly in my page. You can read at:
  * - https://comuns-rpgmaker.github.io/GabeMZ/Plugins/GMZ_MessagePlus
  * 
@@ -42,7 +43,7 @@
  * @text Y Pos
  * @desc Set the default Y coordinate of the Message Window.
  * @type text
- * @default Graphics.boxHeight - this.height
+ * @default Graphics.height - this.height
  * 
  * @param defaultWidth
  * @parent defaultSettings
@@ -64,6 +65,14 @@
  * @desc Set the default padding of the Message Window.
  * @type number
  * @default 12
+ * @min 0
+ * 
+ * @param defaultLineHeight
+ * @parent defaultSettings
+ * @text Window Line Height
+ * @desc Set the default line height of the Message Window.
+ * @type number
+ * @default 36
  * @min 0
  * 
  * @param pauseSignSettings
@@ -115,21 +124,19 @@
  * @text Name Box Default Settings
  * @default ===============================================
  * 
- * @param nameBoxDefaultXOffset
+ * @param nameBoxDefaultX
  * @parent nameBoxDefaultSettings
- * @text X Offset
- * @desc Set the default X offset of the name box window.
- * @type number
+ * @text X
+ * @desc Set the default X position of the name box window.
+ * @type text
  * @default 0
- * @min -9999
  * 
- * @param nameBoxDefaultYOffset
+ * @param nameBoxDefaultY
  * @parent nameBoxDefaultSettings
- * @text Y Offset
- * @desc Set the default Y offset of the name box window.
- * @type number
+ * @text Y
+ * @desc Set the default Y position of the name box window.
+ * @type text
  * @default 0
- * @min -9999
  * 
  * @param nameBoxDefaultPadding
  * @parent nameBoxDefaultSettings
@@ -183,6 +190,20 @@
  * @type number
  * @min 1
  * @default 1
+ * 
+ * @param sfxCommandEnabled
+ * @parent sfxSettings
+ * @text Options Command Enabled
+ * @desc If true, show the message SFX command in the options menu.
+ * @type boolean
+ * @default true
+ * 
+ * @param sfxCommandName
+ * @parent sfxSettings
+ * @text Options Command Name
+ * @desc Set the message SFX control command text
+ * @type text
+ * @default Message SFX
  * 
  * @param otherSettings
  * @text Other Settings
@@ -263,8 +284,8 @@
  * @arg windowPadding
  * @text Window Padding
  * @desc Changes the padding of the Message Window.
- * @type number
- * @default 12
+ * @type text
+ * @default Unchange
  * 
  * @command messageWindowSettingsAdvanced
  * @text Window Settings (Advanced)
@@ -297,8 +318,14 @@
  * @arg windowPadding
  * @text Window Padding
  * @desc Changes the padding of the Message Window.
- * @type number
- * @default 12
+ * @type text
+ * @default Unchange
+ * 
+ * @arg windowLineHeight
+ * @text Window Line Height
+ * @desc Changes the line height of the Message Window.
+ * @type text
+ * @default Unchange
  * 
  * @command pauseSignSettings
  * @text Pause Sign Settings
@@ -308,11 +335,13 @@
  * @text Pause Sign X Pos
  * @desc Changes the X position of the Pause Sign.
  * @type text
+ * @default 0
  * 
  * @arg pauseSignYPos
  * @text Pause Sign Y Pos
  * @desc Changes the Y position of the Pause Sign.
  * @type text
+ * @default 0
  * 
  * @arg pauseSignVisible
  * @text Pause Sign Visibility
@@ -330,26 +359,23 @@
  * @text Name Box Settings
  * @desc Configure the Name Box window settings.
  * 
- * @arg nameBoxXOffset
- * @text Name Box X Offset
- * @desc Changes the X offset of the Name Box window.
- * @type number 
- * @default 0
- * @min -9999
+ * @arg nameBoxX
+ * @text Name Box X
+ * @desc Changes the X position of the Name Box window.
+ * @type text
+ * @default Unchange
  * 
- * @arg nameBoxYOffset
- * @text Name Box Y Offset
- * @desc Changes the Y offset of the Name Box window.
- * @type number 
- * @default 0
- * @min -9999
+ * @arg nameBoxY
+ * @text Name Box Y
+ * @desc Changes the Y position of the Name Box window.
+ * @type text
+ * @default Unchange
  * 
  * @arg nameBoxPadding
  * @text Name Box Padding
  * @desc Changes the padding of the Name Box window.
- * @type number
- * @default 12
- * @min 0
+ * @type text
+ * @default Unchange
  * 
  * @command choiceListWindowSettings
  * @text Choice List Settings
@@ -508,52 +534,50 @@ Imported.GMZ_MessagePlus = true;
 
 var GabeMZ                 = GabeMZ || {};
 GabeMZ.MessagePlus         = GabeMZ.MessagePlus || {};
-GabeMZ.MessagePlus.VERSION = [1, 0, 1];
+GabeMZ.MessagePlus.VERSION = [1, 1, 0];
 
 $gameMessagePlus = null;
 
 (() => {
 
     const pluginName = "GabeMZ_MessagePlus";
-    GabeMZ.params = PluginManager.parameters(pluginName);
+    const params = PluginManager.parameters(pluginName);
 
     // Setting the Message Window default params
-    GabeMZ.MessagePlus.defaultWidth   = GabeMZ.params.defaultWidth;
-    GabeMZ.MessagePlus.defaultHeight  = GabeMZ.params.defaultHeight;
-    GabeMZ.MessagePlus.defaultXPos    = GabeMZ.params.defaultXPos;
-    GabeMZ.MessagePlus.defaultYPos    = GabeMZ.params.defaultYPos;
-    GabeMZ.MessagePlus.defaultPadding = GabeMZ.params.defaultPadding;
+    GabeMZ.MessagePlus.defaultWidth      = params.defaultWidth;
+    GabeMZ.MessagePlus.defaultHeight     = params.defaultHeight;
+    GabeMZ.MessagePlus.defaultXPos       = params.defaultXPos;
+    GabeMZ.MessagePlus.defaultYPos       = params.defaultYPos;
+    GabeMZ.MessagePlus.defaultPadding    = params.defaultPadding;
+    GabeMZ.MessagePlus.defaultLineHeight = params.defaultLineHeight;
 
     // Setting the name box default params
-    GabeMZ.MessagePlus.defaultNameBoxXOffset = parseInt(GabeMZ.params.nameBoxDefaultXOffset);
-    GabeMZ.MessagePlus.defaultNameBoxYOffset = parseInt(GabeMZ.params.nameBoxDefaultYOffset);
-    GabeMZ.MessagePlus.defaultNameBoxPadding = parseInt(GabeMZ.params.nameBoxDefaultPadding);
-
-    // Setting the name box default params
-    GabeMZ.MessagePlus.defaultNameBoxXOffset = parseInt(GabeMZ.params.nameBoxDefaultXOffset);
-    GabeMZ.MessagePlus.defaultNameBoxYOffset = parseInt(GabeMZ.params.nameBoxDefaultYOffset);
-    GabeMZ.MessagePlus.defaultNameBoxPadding = parseInt(GabeMZ.params.nameBoxDefaultPadding);
+    GabeMZ.MessagePlus.defaultNameBoxX = params.nameBoxDefaultX;
+    GabeMZ.MessagePlus.defaultNameBoxY = params.nameBoxDefaultY;
+    GabeMZ.MessagePlus.defaultNameBoxPadding = parseInt(params.nameBoxDefaultPadding);
 
     // Setting the choice list default params
-    GabeMZ.MessagePlus.defaultChoiceListXOffset = parseInt(GabeMZ.params.choiceListDefaultXOffset);
-    GabeMZ.MessagePlus.defaultChoiceListYOffset = parseInt(GabeMZ.params.choiceListDefaultYOffset);
-    GabeMZ.MessagePlus.defaultChoiceListPadding = parseInt(GabeMZ.params.choiceListDefaultPadding);
+    GabeMZ.MessagePlus.defaultChoiceListXOffset = parseInt(params.choiceListDefaultXOffset);
+    GabeMZ.MessagePlus.defaultChoiceListYOffset = parseInt(params.choiceListDefaultYOffset);
+    GabeMZ.MessagePlus.defaultChoiceListPadding = parseInt(params.choiceListDefaultPadding);
 
     // Setting the message text SFX default params
-    GabeMZ.MessagePlus.defaultSFXId   = parseInt(GabeMZ.params.defaultSFXId);
+    GabeMZ.MessagePlus.sfxList            = JSON.parse(params.sfxList);
+    GabeMZ.MessagePlus.defaultSfxSettings = JSON.parse(GabeMZ.MessagePlus.sfxList[parseInt(params.defaultSFXId) - 1]);
+    GabeMZ.MessagePlus.sfxCommandEnabled  = params.sfxCommandEnabled == "true";
+    GabeMZ.MessagePlus.sfxCommandName     = params.sfxCommandName;
 
     // Setting the pause sign default params
-    GabeMZ.MessagePlus.defaultPauseSignXPos    = GabeMZ.params.defaultPauseSignXPos;
-    GabeMZ.MessagePlus.defaultPauseSignYPos    = GabeMZ.params.defaultPauseSignYPos;
-    GabeMZ.MessagePlus.defaultPauseSignVisible = JSON.parse(GabeMZ.params.defaultPauseSignVisible);
+    GabeMZ.MessagePlus.defaultPauseSignXPos    = params.defaultPauseSignXPos;
+    GabeMZ.MessagePlus.defaultPauseSignYPos    = params.defaultPauseSignYPos;
+    GabeMZ.MessagePlus.defaultPauseSignVisible = JSON.parse(params.defaultPauseSignVisible);
 
     // Setting the Balloon Mode params
-    GabeMZ.MessagePlus.balloonPopFilename = GabeMZ.params.balloonPopFilename;
-    GabeMZ.MessagePlus.balloonPopOffset   = parseInt(GabeMZ.params.balloonPopOffset);
+    GabeMZ.MessagePlus.balloonPopFilename = params.balloonPopFilename;
+    GabeMZ.MessagePlus.balloonPopOffset   = parseInt(params.balloonPopOffset);
 
     // Settings other things
-    GabeMZ.MessagePlus.colorPicker = JSON.parse(GabeMZ.params.colorPicker);
-    GabeMZ.MessagePlus.sfxList     = JSON.parse(GabeMZ.params.sfxList);
+    GabeMZ.MessagePlus.colorPicker = JSON.parse(params.colorPicker);
 
     // Setting the current params with the default values
 
@@ -569,14 +593,15 @@ $gameMessagePlus = null;
         $gameMessagePlus.pauseSignXPos    = args.pauseSignXPos;
         $gameMessagePlus.pauseSignYPos    = args.pauseSignYPos;
         $gameMessagePlus.pauseSignVisible = GabeMZ.MessagePlus.getParamState(
-            args.pauseSignVisible, $gameMessagePlus.pauseSignVisible);
-            $gameMessagePlus.pauseSignUpdate  = true;
+            args.pauseSignVisible, "pauseSignVisible");
+        $gameMessagePlus.pauseSignUpdate  = true;
     });
 
     PluginManager.registerCommand(pluginName, "nameBoxWindowSettings", args => {
-        $gameMessagePlus.nameBoxXOffset   = parseInt(args.nameBoxXOffset);
-        $gameMessagePlus.nameBoxYOffset   = parseInt(args.nameBoxYOffset);
-        $gameMessagePlus.nameBoxPadding   = parseInt(args.nameBoxPadding);
+        $gameMessagePlus.nameBoxX         = args.nameBoxX;
+        $gameMessagePlus.nameBoxY         = args.nameBoxY;
+        $gameMessagePlus.nameBoxPadding   = parseInt(GabeMZ.MessagePlus.getParamState(
+            args.nameBoxPadding, "nameBoxPadding"));
     });
 
     PluginManager.registerCommand(pluginName, "choiceListWindowSettings", args => {
@@ -597,8 +622,8 @@ $gameMessagePlus = null;
     });
 
     PluginManager.registerCommand(pluginName, "nameBoxWindowSettingsReset", args => {
-        $gameMessagePlus.nameBoxXOffset   = GabeMZ.MessagePlus.defaultNameBoxXOffset;
-        $gameMessagePlus.nameBoxYOffset   = GabeMZ.MessagePlus.defaultNameBoxYOffset;
+        $gameMessagePlus.nameBoxX         = GabeMZ.MessagePlus.defaultNameBoxX;
+        $gameMessagePlus.nameBoxY         = GabeMZ.MessagePlus.defaultNameBoxY;
         $gameMessagePlus.nameBoxPadding   = GabeMZ.MessagePlus.defaultNameBoxPadding;
     });
 
@@ -610,16 +635,16 @@ $gameMessagePlus = null;
 
     PluginManager.registerCommand(pluginName, "balloonModeSettings", args => {
         $gameMessagePlus.balloonMode = GabeMZ.MessagePlus.getParamState(
-            args.balloonMode, $gameMessagePlus.balloonMode);
+            args.balloonMode, "balloonMode");
         $gameMessagePlus.pop         = GabeMZ.MessagePlus.getParamState(
-        args.pop, $gameMessagePlus.pop);
+        args.pop, "pop");
         $gameMessagePlus.target      = { target: $gamePlayer, type: 0 };
     });
 
     PluginManager.registerCommand(pluginName, "sfxSettings", args => {
-        $gameMessagePlus.currentSFXId = parseInt(args.sfxId);
+        $gameMessagePlus.sfxSettings  = JSON.parse(GabeMZ.MessagePlus.sfxList[args.sfxId -  1])
         $gameMessagePlus.sfxState     = GabeMZ.MessagePlus.getParamState(
-            args.sfxState, $gameMessagePlus.sfxState);
+            args.sfxState, "sfxState");
     });
 
     PluginManager.registerCommand(pluginName, "inputShowFast", args => {
@@ -631,13 +656,20 @@ $gameMessagePlus = null;
     });
 
     GabeMZ.MessagePlus.messageWindowSetParams = function(args) {
-        $gameMessagePlus.windowWidth   = args.windowWidth;
-        $gameMessagePlus.windowHeight  = args.windowHeight;
-        $gameMessagePlus.windowXPos    = args.windowXPos;
-        $gameMessagePlus.windowYPos    = args.windowYPos;
-        $gameMessagePlus.windowPadding = args.windowPadding;
+        $gameMessagePlus.windowWidth   = GabeMZ.MessagePlus.getParamState(
+            args.windowWidth, "windowWidth");
+        $gameMessagePlus.windowHeight  = GabeMZ.MessagePlus.getParamState(
+            args.windowHeight, "windowHeight");
+        $gameMessagePlus.windowXPos    = GabeMZ.MessagePlus.getParamState(
+            args.windowXPos, "windowXPos");
+        $gameMessagePlus.windowYPos    = GabeMZ.MessagePlus.getParamState(
+            args.windowYPos, "windowYPos");
+        $gameMessagePlus.windowPadding = GabeMZ.MessagePlus.getParamState(
+            args.windowPadding, "windowPadding");
+        $gameMessagePlus.lineHeight = GabeMZ.MessagePlus.getParamState(
+            args.lineHeight, "lineHeight")
         GabeMZ.MessagePlus.disableBalloonMode();
-    }
+    };
 
     GabeMZ.MessagePlus.messageWindowResetSettings = function() {
         $gameMessagePlus.windowWidth   = GabeMZ.MessagePlus.defaultWidth;
@@ -645,9 +677,10 @@ $gameMessagePlus = null;
         $gameMessagePlus.windowXPos    = GabeMZ.MessagePlus.defaultXPos;
         $gameMessagePlus.windowYPos    = GabeMZ.MessagePlus.defaultYPos;
         $gameMessagePlus.windowPadding = GabeMZ.MessagePlus.defaultPadding;
-        $gameMessagePlus.currentSFXId  = GabeMZ.MessagePlus.defaultSFXId
+        $gameMessagePlus.lineHeight    = GabeMZ.MessagePlus.defaultLineHeight;
+        $gameMessagePlus.sfxSettings   = GabeMZ.MessagePlus.defaultSfxSettings
         GabeMZ.MessagePlus.disableBalloonMode();
-    }
+    };
 
     GabeMZ.MessagePlus.messageWindowSaveTempSettings = function() {
         $gameTemp.msgSettings = {};
@@ -656,11 +689,12 @@ $gameMessagePlus = null;
         $gameTemp.msgSettings.x            = $gameMessagePlus.windowXPos;
         $gameTemp.msgSettings.y            = $gameMessagePlus.windowYPos;
         $gameTemp.msgSettings.padding      = $gameMessagePlus.windowPadding;
-        $gameTemp.msgSettings.currentSFXId = $gameMessagePlus.currentSFXId;
+        $gameTemp.msgSettings.lineHeight   = $gameMessagePlus.lineHeight; 
+        $gameTemp.msgSettings.sfxSettings  = $gameMessagePlus.sfxSettings;
         $gameTemp.msgSettings.balloonMode  = $gameMessagePlus.balloonMode;
         $gameTemp.msgSettings.target       = $gameMessagePlus.target;
         $gameTemp.msgSettings.pop          = $gameMessagePlus.pop;
-    }
+    };
 
     GabeMZ.MessagePlus.messageWindowLoadTempSettings = function() {
         $gameMessagePlus.windowWidth   = $gameTemp.msgSettings.width;
@@ -668,17 +702,18 @@ $gameMessagePlus = null;
         $gameMessagePlus.windowXPos    = $gameTemp.msgSettings.x;
         $gameMessagePlus.windowYPos    = $gameTemp.msgSettings.y;
         $gameMessagePlus.windowPadding = $gameTemp.msgSettings.padding;
-        $gameMessagePlus.currentSFXId  = $gameTemp.msgSettings.currentSFXId;
+        $gameMessagePlus.lineHeight    = $gameTemp.msgSettings.lineHeight;
+        $gameMessagePlus.sfxSettings   = $gameTemp.msgSettings.sfxSettings;
         $gameMessagePlus.balloonMode   = $gameTemp.msgSettings.balloonMode;
         $gameMessagePlus.target        = $gameTemp.msgSettings.target;
         $gameMessagePlus.pop           = $gameTemp.msgSettings.pop;
-    }
+    };
 
     GabeMZ.MessagePlus.disableBalloonMode = function() {
         $gameMessagePlus.balloonMode = false;
         $gameMessagePlus.target      = null;
         $gameMessagePlus.pop         = false;
-    }
+    };
 
     GabeMZ.MessagePlus.getParamState = function(param, oldState) {
         switch (param.toLowerCase()) {
@@ -687,9 +722,11 @@ $gameMessagePlus = null;
             case "deactivate": 
                 return false;
             case "unchange":
-                return oldState;
+                return $gameMessagePlus[oldState];
+            default:
+                return param;
         }
-    }
+    };
 
     //-----------------------------------------------------------------------------
     // ColorManager
@@ -717,18 +754,19 @@ $gameMessagePlus = null;
         this.windowXPos          = GabeMZ.MessagePlus.defaultXPos;
         this.windowYPos          = GabeMZ.MessagePlus.defaultYPos;
         this.windowPadding       = GabeMZ.MessagePlus.defaultPadding;
+        this.lineHeight          = GabeMZ.MessagePlus.defaultLineHeight;
         this.battleWindowWidth   = this.windowWidth  
         this.battlewindowHeight  = this.windowHeight 
         this.battlewindowXPos    = this.windowXPos   
         this.battlewindowYPos    = this.windowYPos   
         this.battlewindowPadding = this.windowPadding
-        this.nameBoxXOffset      = GabeMZ.MessagePlus.defaultNameBoxXOffset;
-        this.nameBoxYOffset      = GabeMZ.MessagePlus.defaultNameBoxYOffset;
+        this.nameBoxX            = GabeMZ.MessagePlus.defaultNameBoxX;
+        this.nameBoxY            = GabeMZ.MessagePlus.defaultNameBoxY;
         this.nameBoxPadding      = GabeMZ.MessagePlus.defaultNameBoxPadding;
         this.choiceListXOffset   = GabeMZ.MessagePlus.defaultChoiceListXOffset;
         this.choiceListYOffset   = GabeMZ.MessagePlus.defaultChoiceListYOffset;
         this.choiceListPadding   = GabeMZ.MessagePlus.defaultChoiceListPadding;
-        this.currentSFXId        = GabeMZ.MessagePlus.defaultSFXId
+        this.sfxSettings         = GabeMZ.MessagePlus.defaultSfxSettings
         this.pauseSignXPos       = GabeMZ.MessagePlus.defaultPauseSignXPos;
         this.pauseSignYPos       = GabeMZ.MessagePlus.defaultPauseSignYPos;
         this.pauseSignVisible    = GabeMZ.MessagePlus.defaultPauseSignVisible;
@@ -871,7 +909,8 @@ $gameMessagePlus = null;
             // Change Message Face
             case "FC":
                 param = this.obtainEscapeFullParam(textState);
-                this.redrawFace(param, textState)
+                param = param.replace(/[, ]+/g, " ").trim().split(" ");
+                this.redrawFace(param[0], param[1], textState)
                 break;
             // Change Message Face (Actor ID)
             case "ACTFC":
@@ -975,7 +1014,7 @@ $gameMessagePlus = null;
                         $gameMessagePlus.sfxState = false;
                         break;
                     default:
-                        $gameMessagePlus.currentSFXId = parseInt(param);
+                        $gameMessagePlus.sfxSettings  = JSON.parse(GabeMZ.MessagePlus.sfxList[parseInt(param) -  1])
                         break;
                 }
                 break;
@@ -995,11 +1034,11 @@ $gameMessagePlus = null;
     }
 
     Window_Base.prototype.obtainEscapeFullParam = function(textState) {
-        const regExp = /^\[\w+\]/;
+        const regExp = /\[(.*?)\]/;
         const arr = regExp.exec(textState.text.slice(textState.index));
         if (arr) {
             textState.index += arr[0].length;
-            return arr[0].slice(1).slice(0, arr[0].length - 2)
+            return arr[1];
         } else {
             return "";
         }
@@ -1011,7 +1050,7 @@ $gameMessagePlus = null;
         const height = this.innerHeight;
         const x = rtl ? this.innerWidth - width - 4 : 4;
         const y = 0;
-        this.contents.clearRect(x, 0, width, height);
+        this.contents.clearRect(x, y, width, height);
         const bitmap = ImageManager.loadFace(faceName);
         const pw = width;
         const ph = ImageManager.faceHeight;
@@ -1039,10 +1078,21 @@ $gameMessagePlus = null;
     Window_Message.prototype.initMembers = function() {
         _Window_Message_initMembers.call(this);
         this._target = null;
+        this._characterIndex = 0; 
         this._pop = new Sprite(ImageManager.loadSystem(GabeMZ.MessagePlus.balloonPopFilename));
         this._pop.visible = false;
         this.addChild(this._pop)
     }
+
+    Window_Message.prototype.lineHeight = function() {
+        return $gameMessagePlus.lineHeight;
+    };
+
+    const _Window_Message_newPage = Window_Message.prototype.newPage;
+    Window_Message.prototype.newPage = function() {
+        _Window_Message_newPage.call(this, ...arguments)
+        this._characterIndex = 0;
+    };
 
     const _Window_Message__refreshPauseSign = Window_Message.prototype._refreshPauseSign;
     Window_Message.prototype._refreshPauseSign = function() {
@@ -1052,7 +1102,7 @@ $gameMessagePlus = null;
         this._pauseSignSprite.move(x, y);
     };
 
-    let _Window_Message_updatePlacement = Window_Message.prototype.updatePlacement;
+    const _Window_Message_updatePlacement = Window_Message.prototype.updatePlacement;
     Window_Message.prototype.updatePlacement = function() {
         _Window_Message_updatePlacement.call(this)
         const text = $gameMessage.allText(); 
@@ -1072,7 +1122,7 @@ $gameMessagePlus = null;
         _Window_Message_update.call(this);
         if ($gameMessagePlus.forceClose) this.terminateMessage();
         if (this.isOpen() && $gameMessagePlus.balloonMode) this.updatePosition();
-        if ($gameMessagePlus.pop && this._target) this.updatePop();
+        this.updatePop();
     }
 
     const _Window_Message__updatePauseSign = Window_Message.prototype._updatePauseSign;
@@ -1146,7 +1196,7 @@ $gameMessagePlus = null;
         switch ($gameMessagePlus.windowXPos.toLowerCase()) {
             // Unchange
             case "unchange":
-                break;
+                return this.x;
             // Default
             case "default":
                 return eval(GabeMZ.MessagePlus.defaultXPos);
@@ -1168,7 +1218,7 @@ $gameMessagePlus = null;
         switch ($gameMessagePlus.windowYPos.toLowerCase()) {
             // Unchange
             case "unchange":
-                break;
+                return this.y;
             case "default":
                 return eval(GabeMZ.MessagePlus.defaultYPos);
             // Upper
@@ -1190,7 +1240,7 @@ $gameMessagePlus = null;
         switch ($gameMessagePlus.windowWidth.toLowerCase()) {
             // Unchange
             case "unchange":
-                break;
+                return this.width;
             // Default
             case "default":
                 return eval(GabeMZ.MessagePlus.defaultWidth);
@@ -1210,7 +1260,7 @@ $gameMessagePlus = null;
         switch ($gameMessagePlus.windowHeight.toLowerCase()) {
             // Unchange
             case "unchange":
-                break;
+                return this.height;
             // Default
             case "default":
                 return eval(GabeMZ.MessagePlus.defaultHeight);
@@ -1226,8 +1276,8 @@ $gameMessagePlus = null;
     }
 
     Window_Message.prototype.updatePop = function() {
-        this._pop.visible = this.isOpen();
-        if (!this.isOpen()) return;
+        this._pop.visible = this.isOpen() && $gameMessagePlus.pop;
+        if (!$gameMessagePlus.pop || !this._target || !this.isOpen()) return;
         const ojamaX = (Graphics.width - Graphics.boxWidth) / 2;
         const ojamaY = (Graphics.height - Graphics.boxHeight) / 2;
         this._pop.visible = $gameMessagePlus.pop;
@@ -1245,7 +1295,7 @@ $gameMessagePlus = null;
     }
 
     Window_Message.prototype.majorLine = function() {
-        let lineSize = [];
+        const lineSize = [];
         this._icons = 0;
         this._lines.forEach((line, id) => {
             lineSize.push(this.textSizeEx(line).width);
@@ -1255,7 +1305,7 @@ $gameMessagePlus = null;
     }
 
     Window_Message.prototype.autoWidth = function() {
-        return this.textSizeEx(this.majorLine()).width + (this._icons * 24) + (this.padding * 2) + this._textState.x;
+        return this.textSizeEx(this.majorLine()).width + (this._icons * 24) + (this.padding * 3) + this._textState.x;
     }
 
     Window_Message.prototype.autoHeight = function() {
@@ -1283,15 +1333,19 @@ $gameMessagePlus = null;
     const _Window_Message_processCharacter = Window_Message.prototype.processCharacter;
     Window_Message.prototype.processCharacter = function(textState) {
         _Window_Message_processCharacter.call(this, textState);
-        if (!$gameMessagePlus.sfxState) return;
-        const sfxSettings = JSON.parse(GabeMZ.MessagePlus.sfxList[$gameMessagePlus.currentSFXId -  1]);
-        const frequency = sfxSettings.frequency;
-        if ((Math.floor(Math.random() * frequency) + 1) != frequency) return;
+        this._characterIndex++;
+        if (!$gameMessagePlus.sfxState || !ConfigManager.messageSfx) return;
+        const sfxSettings = $gameMessagePlus.sfxSettings;
+        const frequency = parseInt(sfxSettings.frequency);
+        if (!(this._characterIndex % frequency)) this.playCharacterSound(sfxSettings);
+    };
+
+    Window_Message.prototype.playCharacterSound = function(sfxSettings) {
         const name   = sfxSettings.filename;
         const volume = sfxSettings.volume;
         const pitch  = sfxSettings.pitch;
         const pan    = sfxSettings.pan;
-        let se = {
+        const se     = {
             name: name,
             volume: volume,
             pitch: pitch,
@@ -1326,9 +1380,52 @@ $gameMessagePlus = null;
             }
         }
         _Window_NameBox_updatePlacement.call(this);
-        this.x += $gameMessagePlus.nameBoxXOffset;
-        this.y += $gameMessagePlus.nameBoxYOffset;
+        this.x = this.getXParam();
+        this.y = this.getYParam();
     };
+
+    Window_NameBox.prototype.getXParam = function() {
+        switch ($gameMessagePlus.nameBoxX.toLowerCase()) {
+            // Unchange
+            case "unchange":
+                return this.x;
+            // Default
+            case "default":
+                return eval(GabeMZ.MessagePlus.defaultNameBoxX);
+            // Left
+            case "left":
+                return (this._messageWindow.x);
+            // Center
+            case "center":
+                return (this._messageWindow.width - this.width) / 2;
+            // Right
+            case "right":
+                return (this._messageWindow.x + this._messageWindow.width - this.width);;
+            default:
+                return eval($gameMessagePlus.nameBoxX);
+        }
+    }
+
+    Window_NameBox.prototype.getYParam = function() {
+        switch ($gameMessagePlus.nameBoxY.toLowerCase()) {
+            // Unchange
+            case "unchange":
+                return this.y;
+            case "default":
+                return eval(GabeMZ.MessagePlus.defaultNameBoxY);
+            // Upper
+            case "upper":
+                return (this._messageWindow.y - this.height);
+            // Center
+            case "center":
+                return (Graphics.height - this.height) / 2;
+            // Bottom
+            case "bottom":
+                return (this._messageWindow.y + this._messageWindow.height);
+            default:
+                return eval($gameMessagePlus.nameBoxY);
+        }
+    }
 
     Window_NameBox.prototype.windowHeight = function() {
         const textHeight = this.textSizeEx(this._name).height;
@@ -1422,6 +1519,37 @@ $gameMessagePlus = null;
     Scene_Battle.prototype.terminate = function() {
         _Scene_Battle_terminate.call(this);
         GabeMZ.MessagePlus.messageWindowLoadTempSettings();
+    };
+
+    //-----------------------------------------------------------------------------
+    // Window_Options
+    //
+    // The window for changing various settings on the options screen.
+
+    const _Window_Options_addGeneralOptions = Window_Options.prototype.addGeneralOptions;
+    Window_Options.prototype.addGeneralOptions = function() {
+        _Window_Options_addGeneralOptions.call(this);
+        if (GabeMZ.MessagePlus.sfxCommandEnabled) this.addCommand(GabeMZ.MessagePlus.sfxCommandName, "messageSfx");
+    };
+
+    //-----------------------------------------------------------------------------
+    // ConfigManager
+    //
+    // The static class that manages the configuration data.
+
+    ConfigManager.messageSfx = true;
+
+    const _ConfigManager_makeData = ConfigManager.makeData;
+    ConfigManager.makeData = function() {
+        const config = _ConfigManager_makeData.call(this);
+        config.messageSfx = this.messageSfx;
+        return config;
+    };
+
+    const _ConfigManager_applyData = ConfigManager.applyData;
+    ConfigManager.applyData = function(config) {
+        _ConfigManager_applyData.call(this, config);
+        this.messageSfx = this.readFlag(config, "messageSfx", true);
     };
 
 })();
