@@ -1,13 +1,15 @@
 //============================================================================
 // Gabe MZ - Event Touch Interact
 //----------------------------------------------------------------------------
-// 29/08/20 | Version: 1.0.3
+// 01/09/20 | Version: 1.0.1 | Event page bug fix
+// 29/08/20 | Version: 1.0.0 | Released
+//----------------------------------------------------------------------------
 // This plugin is released under the zlib License.
 //============================================================================
 
 /*:
  * @target MZ
- * @plugindesc [v1.0.3] Allows you to interact with events using touch even from a distance.
+ * @plugindesc [v1.0.1] Allows you to interact with events using touch even from a distance.
  * @author Gabe (Gabriel Nascimento)
  * @url https://github.com/comuns-rpgmaker/GabeMZ
  * 
@@ -55,12 +57,12 @@
 
 var GabeMZ                        = GabeMZ || {};
 GabeMZ.EventTouchInteract         = GabeMZ.EventTouchInteract || {};
-GabeMZ.EventTouchInteract.VERSION = [1, 0, 3];
+GabeMZ.EventTouchInteract.VERSION = [1, 0, 1];
 
 (() => {
 
     const pluginName = "GabeMZ_EventTouchInteract";
-    GabeMZ.params = PluginManager.parameters(pluginName);
+    
     GabeMZ.EventTouchInteract.enabled = true;
 
     //-----------------------------------------------------------------------------
@@ -106,6 +108,6 @@ GabeMZ.EventTouchInteract.VERSION = [1, 0, 3];
             }
             this.start();
         }
-    }
+    };
 
 })();
