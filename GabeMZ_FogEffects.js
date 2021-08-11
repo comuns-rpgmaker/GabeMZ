@@ -273,12 +273,13 @@ GabeMZ.FogEffects.VERSION = [2, 1, 0];
 (() => {
 
     const pluginName = "GabeMZ_FogEffects";
-    GabeMZ.params = PluginManager.parameters(pluginName);
-    GabeMZ.FogEffects.fogSettings = JSON.parse(GabeMZ.params.fogSettings);
-    GabeMZ.FogEffects.fogInMap    = GabeMZ.params.fogInMap == "true";
-    GabeMZ.FogEffects.fogInBattle = GabeMZ.params.fogInBattle == "true";
-    GabeMZ.FogEffects.commandEnabled = GabeMZ.params.commandEnabled == "true";
-    GabeMZ.FogEffects.commandName   = GabeMZ.params.commandName;
+    const params = PluginManager.parameters(pluginName);
+
+    GabeMZ.FogEffects.fogSettings = JSON.parse(params.fogSettings);
+    GabeMZ.FogEffects.fogInMap    = params.fogInMap == "true";
+    GabeMZ.FogEffects.fogInBattle = params.fogInBattle == "true";
+    GabeMZ.FogEffects.commandEnabled = params.commandEnabled == "true";
+    GabeMZ.FogEffects.commandName   = params.commandName;
     GabeMZ.FogEffects.fogList = [];
     GabeMZ.FogEffects.currentMap = 0;
 
