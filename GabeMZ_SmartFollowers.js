@@ -116,9 +116,10 @@ GabeMZ.SmartFollowers.VERSION = [1, 1, 1];
 (() => {
 
     const pluginName = "GabeMZ_SmartFollowers";
-    GabeMZ.params = PluginManager.parameters(pluginName);
-    GabeMZ.SmartFollowers.turnToward = GabeMZ.params.turnToward == "true";
-    GabeMZ.SmartFollowers.preventDiagonalClip = GabeMZ.params.preventDiagonalClip == "true";
+    const params = PluginManager.parameters(pluginName);
+
+    GabeMZ.SmartFollowers.turnToward = params.turnToward == "true";
+    GabeMZ.SmartFollowers.preventDiagonalClip = params.preventDiagonalClip == "true";
     
     //-----------------------------------------------------------------------------
     // PluginManager
