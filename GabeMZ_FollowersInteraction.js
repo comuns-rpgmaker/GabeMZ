@@ -75,9 +75,10 @@ if (!GabeMZ.SmartFollowers) throw new Error("Gabe MZ - Followers Interaction plu
 (() => {
 
     const pluginName = "GabeMZ_FollowersInteraction";
-    GabeMZ.params = PluginManager.parameters(pluginName);
-    GabeMZ.FollowersInteraction.keyCode = parseInt(GabeMZ.params.keyCode);
-    GabeMZ.FollowersInteraction.defaultCommonEvents = JSON.parse(GabeMZ.params.commonEventList);
+    const params = PluginManager.parameters(pluginName);
+
+    GabeMZ.FollowersInteraction.keyCode = parseInt(params.keyCode);
+    GabeMZ.FollowersInteraction.defaultCommonEvents = JSON.parse(params.commonEventList);
     GabeMZ.FollowersInteraction.commnEvents = {}
     GabeMZ.FollowersInteraction.defaultCommonEvents.forEach(arg => {
         arg = JSON.parse(arg);
@@ -114,11 +115,11 @@ if (!GabeMZ.SmartFollowers) throw new Error("Gabe MZ - Followers Interaction plu
 
     Game_Actor.prototype.commonEventId = function() {
         return this._commonEventId;
-    }
+    };
 
     Game_Actor.prototype.changeCommonEventId = function(id) {
         this._commonEventId = id;
-    }
+    };
 
     //-----------------------------------------------------------------------------
     // Game_Player
@@ -140,7 +141,7 @@ if (!GabeMZ.SmartFollowers) throw new Error("Gabe MZ - Followers Interaction plu
     Game_Player.prototype.update = function(sceneActive) {
         _Game_Player_update.call(this, sceneActive);
         if (Input.isTriggered("ok")) this.updateFollowersInteraction();
-    }
+    };
 
     Game_Player.prototype.updateFollowersInteraction = function() {
         const follower = this.checkFollowerTriggerFront(this.direction());
@@ -148,7 +149,7 @@ if (!GabeMZ.SmartFollowers) throw new Error("Gabe MZ - Followers Interaction plu
         if (!follower[0].actor() || $gameMap.isEventRunning() || this.isMoving()) return;
         follower[0].turnTowardPlayer();
         $gameMap._interpreter.setup($dataCommonEvents[follower[0].actor().commonEventId()].list);
-    }
+    };
 
     Game_Player.prototype.checkFollowerTriggerFront = function(d) {
         const x2 = $gameMap.roundXWithDirection(this._x, d);
