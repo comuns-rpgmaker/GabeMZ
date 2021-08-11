@@ -95,8 +95,9 @@ GabeMZ.DisableTitleScreen.VERSION = [1, 0, 0];
 (() => {
 
     const pluginName = "GabeMZ_DisableTitleScreen";
-    GabeMZ.params = PluginManager.parameters(pluginName);
-    GabeMZ.DisableTitleScreen.titleInGame = GabeMZ.params.defaultTitleScreen == "true";
+    const params = PluginManager.parameters(pluginName);
+    
+    GabeMZ.DisableTitleScreen.titleInGame = params.defaultTitleScreen == "true";
     GabeMZ.DisableTitleScreen.mapFadeOut = true;
 
     //-----------------------------------------------------------------------------
