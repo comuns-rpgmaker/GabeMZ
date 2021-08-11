@@ -1,7 +1,7 @@
 //============================================================================
 // Gabe MZ - Equip Requirements
 //----------------------------------------------------------------------------
-// 11/08/21 | Version: 1.0.1 | Added some new equipment note tags.
+// 11/08/21 | Version: 1.0.1 | Added some new equipment note tags
 // 08/09/20 | Version: 1.0.0 | Released
 //----------------------------------------------------------------------------
 // This software is released under the zlib License.
