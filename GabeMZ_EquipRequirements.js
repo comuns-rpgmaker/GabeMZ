@@ -60,7 +60,7 @@
  *   <require var variableId value>
  *       | Requires the variable of the specified id is equal 
  *       | to or greater than the specified value.
- *   <require cpram cparamId value>
+ *   <require cparam cparamId value>
  *       | Requires that actor has the specified custom parameter 
  *       | equal to or greater than the specified value. NOTE: Only 
  *       | compatible if using the plugin Gabe MZ  - Custom Parameters.
