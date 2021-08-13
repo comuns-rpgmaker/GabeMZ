@@ -169,7 +169,7 @@ GabeMZ.EquipRequirements.VERSION = [1, 0, 2];
                     if (result) result = actor.actorId() == match[1];
                     break;
                 case "classId":
-                    if (result) result = actor.isClass(match[1]);
+                    if (result) result = actor.isClass($dataClasses[match[1]]);
                     break;
                 case "skill":
                     if (result) result = actor.isLearnedSkill(match[1]);
