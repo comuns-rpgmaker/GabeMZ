@@ -1,6 +1,7 @@
 //============================================================================
 // Gabe MZ - Equip Requirements
 //----------------------------------------------------------------------------
+// 13/08/21 | Version: 1.0.2 | Class ID note tag bug fix
 // 11/08/21 | Version: 1.0.1 | Added some new equipment note tags
 // 08/09/20 | Version: 1.0.0 | Released
 //----------------------------------------------------------------------------
@@ -9,7 +10,7 @@
 
 /*:
  * @target MZ
- * @plugindesc [v1.0.1] Allows to add extra requirements to the equipments.
+ * @plugindesc [v1.0.2] Allows to add extra requirements to the equipments.
  * @author Gabe (Gabriel Nascimento)
  * @url https://github.com/comuns-rpgmaker/GabeMZ
  * 
@@ -55,6 +56,8 @@
  *       | Requires that actor have the specified id.
  *   <require classId id>
  *       | Requires that actor have the specified class id.
+ *   <require skill id>
+ *       | Requires that actor have learned the specified skill id.
  *   <require switch id>
  *       | Requires the switch of the specified id is ON.
  *   <require var variableId value>
@@ -87,7 +90,7 @@
 
 var GabeMZ                       = GabeMZ || {};
 GabeMZ.EquipRequirements         = GabeMZ.EquipRequirements || {};
-GabeMZ.EquipRequirements.VERSION = [1, 0, 1];
+GabeMZ.EquipRequirements.VERSION = [1, 0, 2];
 
 (() => {
 
@@ -163,10 +166,13 @@ GabeMZ.EquipRequirements.VERSION = [1, 0, 1];
                     if (result) result = actor.luk >= match[1];
                     break;
                 case "actorId":
-                    if (result) result = actor._actorId == match[1];
+                    if (result) result = actor.actorId() == match[1];
                     break;
                 case "classId":
-                    if (result) result = actor.classId == match[1];
+                    if (result) result = actor.isClass(match[1]);
+                    break;
+                case "skill":
+                    if (result) result = actor.isLearnedSkill(match[1]);
                     break;
                 case "switch":
                     if (result) result = $gameSwitches.value(match[1]);
