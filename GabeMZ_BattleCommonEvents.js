@@ -23,6 +23,10 @@
 var Imported = Imported || {};
 Imported.GMZ_BattleCommonEvents = true;
 
+var GabeMZ                        = GabeMZ || {};
+GabeMZ.BattleCommonEvents         = GabeMZ.BattleCommonEvents || {};
+GabeMZ.BattleCommonEvents.VERSION = [1, 0, 0];
+
 (() => {
 
     //-----------------------------------------------------------------------------
