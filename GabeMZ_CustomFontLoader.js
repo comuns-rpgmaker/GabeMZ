@@ -6,7 +6,6 @@
 // This software is released under the zlib License.
 //============================================================================
 
-
 /*: 
  * @target MZ
  * @plugindesc [v1.0.0] Allows to import custom fonts into the project.
