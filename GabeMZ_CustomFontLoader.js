@@ -43,6 +43,9 @@
  * @type text
  */
 
+var Imported = Imported || {};
+Imported.GMZ_CustomFontLoader = true;
+
 (() => {
 
     const pluginName = "GabeMZ_CustomFontLoader";
