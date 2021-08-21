@@ -1,7 +1,8 @@
 //============================================================================
 // Gabe MZ - Message Plus
 //----------------------------------------------------------------------------
-// 21/08/21 | Version: 1.1.0 | New features, various fixes and improvements
+// 21/08/21 | Version: 1,1,1 | Some new Windowskin and Pop features
+// 11/08/21 | Version: 1.1.0 | Various new features, fixes and improvements
 // 27/09/20 | Version: 1.0.1 | Compatibility path with VisuMZ_1_MessageCore
 // 26/09/20 | Version: 1.0.0 | Released
 //----------------------------------------------------------------------------
@@ -10,7 +11,7 @@
 
 /*:
  * @target MZ
- * @plugindesc [v1.1.0] Improved message system.
+ * @plugindesc [v1.1.1] Improved message system.
  * @author Gabe (Gabriel Nascimento)
  * @url http://patreon.com/gabriel_nfd
  * @orderAfter VisuMZ_1_MessageCore
@@ -576,7 +577,7 @@ Imported.GMZ_MessagePlus = true;
 
 var GabeMZ                 = GabeMZ || {};
 GabeMZ.MessagePlus         = GabeMZ.MessagePlus || {};
-GabeMZ.MessagePlus.VERSION = [1, 1, 0];
+GabeMZ.MessagePlus.VERSION = [1, 1, 1];
 
 $gameMessagePlus = null;
 
