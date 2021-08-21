@@ -1,7 +1,7 @@
 //============================================================================
 // Gabe MZ - Message Plus
 //----------------------------------------------------------------------------
-// 11/08/21 | Version: 1.1.0 | New features, various fixes and improvements
+// 21/08/21 | Version: 1.1.0 | New features, various fixes and improvements
 // 27/09/20 | Version: 1.0.1 | Compatibility path with VisuMZ_1_MessageCore
 // 26/09/20 | Version: 1.0.0 | Released
 //----------------------------------------------------------------------------
@@ -75,6 +75,14 @@
  * @default 36
  * @min 0
  * 
+ * @param defaultWindowskin
+ * @parent defaultSettings
+ * @text Windowskin
+ * @desc Set the default windowskin of the Message Window.
+ * @type file
+ * @dir img/system/
+ * @default Window
+ * 
  * @param pauseSignSettings
  * @text Pause Sign Settings
  * @default ===============================================
@@ -104,7 +112,7 @@
  * @text Balloon Mode Settings
  * @default ===============================================
  * 
- * @param balloonPopFilename
+ * @param popFilename
  * @parent balloonModeSettings
  * @text Balloon Pop Filename
  * @desc Set the default Balloon Mode pop image filename.
@@ -112,7 +120,7 @@
  * @dir img/system/
  * @default MessagePop
  * 
- * @param balloonPopOffset
+ * @param popOffset
  * @parent balloonModeSettings
  * @text Balloon Pop Offset
  * @desc Set the default Balloon Mode pop vertical offset.
@@ -287,6 +295,19 @@
  * @type text
  * @default Unchange
  * 
+ * @arg windowLineHeight
+ * @text Window Line Height
+ * @desc Changes the line height of the Message Window.
+ * @type text
+ * @default Unchange
+ * 
+ * @arg windowskin
+ * @text Windowskin
+ * @desc Changes the windowskin of the Message Window.
+ * @type file
+ * @dir img/system/
+ * @default Unchange
+ * 
  * @command messageWindowSettingsAdvanced
  * @text Window Settings (Advanced)
  * @desc Advanced configuration mode, allows full control of the Message Window, but requires a certain level of knowledge.
@@ -325,6 +346,13 @@
  * @text Window Line Height
  * @desc Changes the line height of the Message Window.
  * @type text
+ * @default Unchange
+ * 
+ * @arg windowskin
+ * @text Windowskin
+ * @desc Changes the windowskin of the Message Window.
+ * @type file
+ * @dir img/system/
  * @default Unchange
  * 
  * @command pauseSignSettings
@@ -446,6 +474,20 @@
  * @value Unchange
  * @default Unchange
  * 
+ * @arg popFilename
+ * @text Balloon Pop Filename
+ * @desc Set the default Balloon Mode pop image filename.
+ * @type file
+ * @dir img/system/
+ * @default Unchange
+ * 
+ * @arg popOffset
+ * @text Balloon Pop Offset
+ * @desc Set the default Balloon Mode pop vertical offset.
+ * @type number
+ * @default Unchange
+ * @min -9999
+ * 
  * @command sfxSettings
  * @text Message SFX Settings
  * @desc Configure the message text SFX settings.
@@ -550,6 +592,7 @@ $gameMessagePlus = null;
     GabeMZ.MessagePlus.defaultYPos       = params.defaultYPos;
     GabeMZ.MessagePlus.defaultPadding    = params.defaultPadding;
     GabeMZ.MessagePlus.defaultLineHeight = params.defaultLineHeight;
+    GabeMZ.MessagePlus.defaultWindowskin = params.defaultWindowskin;
 
     // Setting the name box default params
     GabeMZ.MessagePlus.defaultNameBoxX = params.nameBoxDefaultX;
@@ -573,8 +616,8 @@ $gameMessagePlus = null;
     GabeMZ.MessagePlus.defaultPauseSignVisible = JSON.parse(params.defaultPauseSignVisible);
 
     // Setting the Balloon Mode params
-    GabeMZ.MessagePlus.balloonPopFilename = params.balloonPopFilename;
-    GabeMZ.MessagePlus.balloonPopOffset   = parseInt(params.balloonPopOffset);
+    GabeMZ.MessagePlus.popFilename = params.popFilename;
+    GabeMZ.MessagePlus.popOffset   = params.popOffset;
 
     // Settings other things
     GabeMZ.MessagePlus.colorPicker = JSON.parse(params.colorPicker);
@@ -638,6 +681,10 @@ $gameMessagePlus = null;
             args.balloonMode, "balloonMode");
         $gameMessagePlus.pop         = GabeMZ.MessagePlus.getParamState(
         args.pop, "pop");
+        $gameMessagePlus.popFilename = GabeMZ.MessagePlus.getParamState(
+            args.popFilename, "popFilename");
+        $gameMessagePlus.popOffset   = GabeMZ.MessagePlus.getParamState(
+            args.popOffset, "popOffset");
         $gameMessagePlus.target      = { target: $gamePlayer, type: 0 };
     });
 
@@ -667,7 +714,9 @@ $gameMessagePlus = null;
         $gameMessagePlus.windowPadding = GabeMZ.MessagePlus.getParamState(
             args.windowPadding, "windowPadding");
         $gameMessagePlus.lineHeight = GabeMZ.MessagePlus.getParamState(
-            args.lineHeight, "lineHeight")
+            args.lineHeight, "lineHeight");
+        $gameMessagePlus.windowskin = GabeMZ.MessagePlus.getParamState(
+            args.windowskin, "windowskin");
         GabeMZ.MessagePlus.disableBalloonMode();
     };
 
@@ -678,7 +727,8 @@ $gameMessagePlus = null;
         $gameMessagePlus.windowYPos    = GabeMZ.MessagePlus.defaultYPos;
         $gameMessagePlus.windowPadding = GabeMZ.MessagePlus.defaultPadding;
         $gameMessagePlus.lineHeight    = GabeMZ.MessagePlus.defaultLineHeight;
-        $gameMessagePlus.sfxSettings   = GabeMZ.MessagePlus.defaultSfxSettings
+        $gameMessagePlus.windowskin    = GabeMZ.MessagePlus.defaultWindowskin;
+        $gameMessagePlus.sfxSettings   = GabeMZ.MessagePlus.defaultSfxSettings;
         GabeMZ.MessagePlus.disableBalloonMode();
     };
 
@@ -690,10 +740,13 @@ $gameMessagePlus = null;
         $gameTemp.msgSettings.y            = $gameMessagePlus.windowYPos;
         $gameTemp.msgSettings.padding      = $gameMessagePlus.windowPadding;
         $gameTemp.msgSettings.lineHeight   = $gameMessagePlus.lineHeight; 
+        $gameTemp.msgSettings.windowskin   = $gameMessagePlus.windowskin;
         $gameTemp.msgSettings.sfxSettings  = $gameMessagePlus.sfxSettings;
         $gameTemp.msgSettings.balloonMode  = $gameMessagePlus.balloonMode;
         $gameTemp.msgSettings.target       = $gameMessagePlus.target;
         $gameTemp.msgSettings.pop          = $gameMessagePlus.pop;
+        $gameTemp.msgSettings.popFilename  = $gameMessagePlus.popFilename;
+        $gameTemp.msgSettings.popOffset    = $gameMessagePlus.popOffset;
     };
 
     GabeMZ.MessagePlus.messageWindowLoadTempSettings = function() {
@@ -703,10 +756,13 @@ $gameMessagePlus = null;
         $gameMessagePlus.windowYPos    = $gameTemp.msgSettings.y;
         $gameMessagePlus.windowPadding = $gameTemp.msgSettings.padding;
         $gameMessagePlus.lineHeight    = $gameTemp.msgSettings.lineHeight;
+        $gameMessagePlus.windowskin    = $gameTemp.msgSettings.windowskin;
         $gameMessagePlus.sfxSettings   = $gameTemp.msgSettings.sfxSettings;
         $gameMessagePlus.balloonMode   = $gameTemp.msgSettings.balloonMode;
         $gameMessagePlus.target        = $gameTemp.msgSettings.target;
         $gameMessagePlus.pop           = $gameTemp.msgSettings.pop;
+        $gameMessagePlus.popFilename   = $gameTemp.msgSettings.popFilename;
+        $gameMessagePlus.popOffset     = $gameTemp.msgSettings.popOffset;
     };
 
     GabeMZ.MessagePlus.disableBalloonMode = function() {
@@ -716,6 +772,7 @@ $gameMessagePlus = null;
     };
 
     GabeMZ.MessagePlus.getParamState = function(param, oldState) {
+        if (!param) return $gameMessagePlus[oldState];
         switch (param.toLowerCase()) {
             case "activate":
                 return true;
@@ -755,6 +812,7 @@ $gameMessagePlus = null;
         this.windowYPos          = GabeMZ.MessagePlus.defaultYPos;
         this.windowPadding       = GabeMZ.MessagePlus.defaultPadding;
         this.lineHeight          = GabeMZ.MessagePlus.defaultLineHeight;
+        this.windowskin          = GabeMZ.MessagePlus.defaultWindowskin;
         this.battleWindowWidth   = this.windowWidth  
         this.battlewindowHeight  = this.windowHeight 
         this.battlewindowXPos    = this.windowXPos   
@@ -775,6 +833,8 @@ $gameMessagePlus = null;
         this.currentEventId      = 0;
         this.target              = null;
         this.pop                 = false;
+        this.popFilename         = GabeMZ.MessagePlus.popFilename;
+        this.popOffset           = GabeMZ.MessagePlus.popOffset;
         this.sfxState            = true;
         this.inputShowFast       = true;
         this.forceClose          = false;
@@ -1074,18 +1134,34 @@ $gameMessagePlus = null;
     //
     // The window for displaying text messages.
 
+    const _Window_Message_initialize = Window_Message.prototype.initialize;
+    Window_Message.prototype.initialize = function() {
+        this._windowskinName = $gameMessagePlus.windowskin;
+        this._popFilename = $gameMessagePlus.popFilename;
+        _Window_Message_initialize.call(this, ...arguments);
+        this._pop = new Sprite();
+        this._pop.visible = false;
+        this.addChild(this._pop)
+        this.loadPopBitmap();
+    };
+
     const _Window_Message_initMembers = Window_Message.prototype.initMembers;
     Window_Message.prototype.initMembers = function() {
         _Window_Message_initMembers.call(this);
         this._target = null;
         this._characterIndex = 0; 
-        this._pop = new Sprite(ImageManager.loadSystem(GabeMZ.MessagePlus.balloonPopFilename));
-        this._pop.visible = false;
-        this.addChild(this._pop)
     }
 
     Window_Message.prototype.lineHeight = function() {
         return $gameMessagePlus.lineHeight;
+    };
+
+    Window_Message.prototype.loadWindowskin = function() {
+        this.windowskin = ImageManager.loadSystem(this._windowskinName);
+    };
+
+    Window_Message.prototype.loadPopBitmap = function() {
+        this._pop.bitmap = ImageManager.loadSystem(this._popFilename);
     };
 
     const _Window_Message_newPage = Window_Message.prototype.newPage;
@@ -1097,8 +1173,8 @@ $gameMessagePlus = null;
     const _Window_Message__refreshPauseSign = Window_Message.prototype._refreshPauseSign;
     Window_Message.prototype._refreshPauseSign = function() {
         _Window_Message__refreshPauseSign.call(this);
-        const x = eval($gameMessagePlus.pauseSignXPos);
-        const y = eval($gameMessagePlus.pauseSignYPos);
+        const x = parseInt(eval($gameMessagePlus.pauseSignXPos));
+        const y = parseInt(eval($gameMessagePlus.pauseSignYPos));
         this._pauseSignSprite.move(x, y);
     };
 
@@ -1108,8 +1184,8 @@ $gameMessagePlus = null;
         const text = $gameMessage.allText(); 
         this.setLines(text);
         this.padding = parseInt($gameMessagePlus.windowPadding);
-        this.width = this.getWidthParam();
-        this.height = this.getHeightParam();
+        this.width = parseInt(this.getWidthParam());
+        this.height = parseInt(this.getHeightParam());
         if (this.contents) {
             this.contents.destroy();
             this.createContents();
@@ -1120,6 +1196,14 @@ $gameMessagePlus = null;
     const _Window_Message_update = Window_Message.prototype.update;
     Window_Message.prototype.update = function() {
         _Window_Message_update.call(this);
+        if (this._windowskinName != $gameMessagePlus.windowskin) {
+            this._windowskinName = $gameMessagePlus.windowskin;
+            this.loadWindowskin();
+        }
+        if (this._popFilename != $gameMessagePlus.popFilename){
+            this._popFilename = $gameMessagePlus.popFilename;
+            this.loadPopBitmap();
+        }
         if ($gameMessagePlus.forceClose) this.terminateMessage();
         if (this.isOpen() && $gameMessagePlus.balloonMode) this.updatePosition();
         this.updatePop();
@@ -1131,8 +1215,8 @@ $gameMessagePlus = null;
         const sprite = this._pauseSignSprite;
         const visible = $gameMessagePlus.pauseSignVisible;
         if ($gameMessagePlus.pauseSignUpdate) {
-            const x = eval($gameMessagePlus.pauseSignXPos);
-            const y = eval($gameMessagePlus.pauseSignYPos);
+            const x = parseInt(eval($gameMessagePlus.pauseSignXPos));
+            const y = parseInt(eval($gameMessagePlus.pauseSignYPos));
             sprite.move(x, y);
             $gameMessagePlus.pauseSignUpdate = false;
         }
@@ -1143,11 +1227,12 @@ $gameMessagePlus = null;
         this._target = $gameMessagePlus.target;
         const ojamaX = (Graphics.width - Graphics.boxWidth) / 2;
         const ojamaY = (Graphics.height - Graphics.boxHeight) / 2;
+        const offset = parseInt($gameMessagePlus.popOffset);
         let x, y;
         this._pop.scale.y = 1;
         if (this._target) {
             x = this.target().x - (this.width * 0.5);
-            y = (this.target().y - this.height) - 40 - (this._pop.height - GabeMZ.MessagePlus.balloonPopOffset);
+            y = (this.target().y - this.height) - 40 - (this._pop.height - offset);
         } else {
             x = this.getXParam();
             y = this.getYParam();
@@ -1174,6 +1259,8 @@ $gameMessagePlus = null;
         }
         this.x -= ojamaX;
         this.y -= ojamaY;
+        this.x = parseInt(this.x);
+        this.y = parseInt(this.y);
         this._nameBoxWindow.updatePlacement();
         this._choiceListWindow.updatePlacement();
     }
@@ -1280,10 +1367,11 @@ $gameMessagePlus = null;
         if (!$gameMessagePlus.pop || !this._target || !this.isOpen()) return;
         const ojamaX = (Graphics.width - Graphics.boxWidth) / 2;
         const ojamaY = (Graphics.height - Graphics.boxHeight) / 2;
+        const offset = parseInt($gameMessagePlus.popOffset);
         this._pop.visible = $gameMessagePlus.pop;
         this._pop.x = (this.target().x - this.x) - ojamaX - (this._pop.width / 2);
         if ((this.y + ojamaY) > this.target().y) {
-            this._pop.y = (this.target().y - this.y) - ojamaY + (this._pop.height + GabeMZ.MessagePlus.balloonPopOffset)
+            this._pop.y = (this.target().y - this.y) - ojamaY + (this._pop.height + offset);
         } else {
             this._pop.y = (this.target().y - this.y) - ojamaY - 40 - (this._pop.height);
         }
@@ -1380,8 +1468,8 @@ $gameMessagePlus = null;
             }
         }
         _Window_NameBox_updatePlacement.call(this);
-        this.x = this.getXParam();
-        this.y = this.getYParam();
+        this.x = parseInt(this.getXParam());
+        this.y = parseInt(this.getYParam());
     };
 
     Window_NameBox.prototype.getXParam = function() {
