@@ -27,8 +27,4 @@ I hope my work can be useful. :)
 For the complete documentation of all my plugins check the list at the link below:
 ## [Gabe MZ - Plugins Documentation](Plugins)
 
-<table>
-    <tr>
-        <td>Foo</td>
-    </tr>
-</table>
+<iframe frameborder="0" src="https://itch.io/embed/749105" width="552" height="167"><a href="https://dromarch.itch.io/akea-battle-camera">Akea - Battle Camera by Gabriel</a></iframe>
