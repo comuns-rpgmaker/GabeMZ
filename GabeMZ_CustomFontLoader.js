@@ -1,6 +1,7 @@
 //============================================================================
 // Gabe MZ - Custom Font Loader
 //----------------------------------------------------------------------------
+// 22/09/21 | Version: 1.0.1 | Optimized resources
 // 09/08/21 | Version: 1.0.0 | Released
 //----------------------------------------------------------------------------
 // This software is released under the zlib License.
@@ -8,9 +9,9 @@
 
 /*: 
  * @target MZ
- * @plugindesc [v1.0.0] Allows to import custom fonts into the project.
+ * @plugindesc [v1.0.1] Allows to import custom fonts into the project.
  * @author Gabe (Gabriel Nascimento)
- * @url http://patreon.com/gabriel_nfd
+ * @url http://patreon.com/gabeplugins
  * 
  * @help Gabe MZ - Custom Font Loader
  *  - This plugin is released under the zlib License.
@@ -47,12 +48,14 @@ Imported.GMZ_CustomFontLoader = true;
 
 var GabeMZ                      = GabeMZ || {};
 GabeMZ.CustomFontLoader         = GabeMZ.CustomFontLoader || {};
-GabeMZ.CustomFontLoader.VERSION = [1, 0, 0];
+GabeMZ.CustomFontLoader.VERSION = [1, 0, 1];
 
 (() => {
 
     const pluginName = "GabeMZ_CustomFontLoader";
     const params = PluginManager.parameters(pluginName);
+
+    GabeMZ.CustomFontLoader.fonts = JSON.parse(params.fonts).map((e) => {return JSON.parse(e)});
 
     //-----------------------------------------------------------------------------
     // Scene_Boot
@@ -62,9 +65,8 @@ GabeMZ.CustomFontLoader.VERSION = [1, 0, 0];
     const _Scene_Boot_loadGameFonts = Scene_Boot.prototype.loadGameFonts;
     Scene_Boot.prototype.loadGameFonts = function() {
         _Scene_Boot_loadGameFonts.call(this);
-        const fonts = JSON.parse(params.fonts);
-        for (const fontSettings of fonts) {
-            const font = JSON.parse(fontSettings);
+        const fonts = GabeMZ.CustomFontLoader.fonts;
+        for (const font of fonts) {
             FontManager.load(font.name, font.filename);
         };
     };
